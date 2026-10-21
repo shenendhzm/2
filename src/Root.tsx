@@ -1,6 +1,10 @@
 import { Composition } from "remotion";
 import {
   BlackSample,
+  CrtSample,
+  ForestSample,
+  GoldSample,
+  VioletSample,
   BlueprintSample,
   NeonSample,
   PaperSample,
@@ -24,6 +28,10 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="TauLawBlueprint" component={BlueprintSample} {...BASE} />
       <Composition id="TauLawWarm" component={WarmSample} {...BASE} />
       <Composition id="TauLawSwiss" component={SwissSample} {...BASE} />
+      <Composition id="TauLawGold" component={GoldSample} {...BASE} />
+      <Composition id="TauLawForest" component={ForestSample} {...BASE} />
+      <Composition id="TauLawCrt" component={CrtSample} {...BASE} />
+      <Composition id="TauLawViolet" component={VioletSample} {...BASE} />
     </>
   );
 };

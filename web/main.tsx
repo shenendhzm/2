@@ -9,6 +9,10 @@ import type {
 } from "@remotion/web-renderer";
 import {
   BlackSample,
+  CrtSample,
+  ForestSample,
+  GoldSample,
+  VioletSample,
   BlueprintSample,
   NeonSample,
   PaperSample,
@@ -77,6 +81,38 @@ const STYLES: StyleDef[] = [
     file: "瑞士",
     chip: ["#FFFFFF", "#E30613"],
     component: SwissSample,
+  },
+  {
+    id: "TauLawGold",
+    label: "黑金",
+    note: "黑底 · 琥珀金 · 细线",
+    file: "黑金",
+    chip: ["#0B0906", "#E0A94A"],
+    component: GoldSample,
+  },
+  {
+    id: "TauLawForest",
+    label: "墨绿",
+    note: "深绿 · 米白 · 黄铜",
+    file: "墨绿",
+    chip: ["#0D231B", "#D9A05B"],
+    component: ForestSample,
+  },
+  {
+    id: "TauLawCrt",
+    label: "CRT 终端",
+    note: "荧光绿 · 扫描线 · 终端",
+    file: "CRT",
+    chip: ["#020604", "#8CFFB0"],
+    component: CrtSample,
+  },
+  {
+    id: "TauLawViolet",
+    label: "深紫夜幕",
+    note: "夜幕紫 · 浅紫 · 珊瑚",
+    file: "深紫",
+    chip: ["#130B24", "#FF8A65"],
+    component: VioletSample,
   },
 ];
 
@@ -278,7 +314,7 @@ const App: React.FC = () => {
         Tau Law · Style Lab
       </div>
       <h1 style={{ fontSize: 30, margin: "0 0 10px", letterSpacing: 1 }}>
-        韬（τ）定律 · 11 秒样片｜六种风格
+        韬（τ）定律 · 11 秒样片｜十种风格
       </h1>
       <p style={{ color: "rgba(255,255,255,.58)", margin: "0 0 22px", lineHeight: 1.75 }}>
         同一个镜头、同一条 47 条字幕时间轴，只换视觉语言。点开对比，选一个我就按它做完整片。
