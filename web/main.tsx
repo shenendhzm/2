@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { Player } from "@remotion/player";
 import { canRenderMediaOnWeb, renderMediaOnWeb } from "@remotion/web-renderer";
 import type {
   WebRendererAudioCodec,
@@ -11,7 +12,7 @@ import { HelloWorld } from "../src/HelloWorld";
 const COMPOSITION = {
   id: "TauLaw",
   component: HelloWorld,
-  durationInFrames: 300,
+  durationInFrames: 330,
   fps: 30,
   width: 1920,
   height: 1080,
@@ -160,7 +161,7 @@ const App: React.FC = () => {
       setResult({
         url,
         size: blob.size,
-        name: `韬定律-10s样片.${ext}`,
+        name: `韬定律-样片-01-换尺子.${ext}`,
         container: plan.container,
       });
       setProgress(100);
@@ -205,15 +206,49 @@ const App: React.FC = () => {
           marginBottom: 10,
         }}
       >
-        Tau Law · Sample 01
+        Tau Law · Sample 01 / Shot 01
       </div>
       <h1 style={{ fontSize: 30, margin: "0 0 10px", letterSpacing: 1 }}>
-        韬（τ）定律 · 10 秒样片
+        韬（τ）定律 · 11 秒样片｜01 换尺子
       </h1>
       <p style={{ color: "rgba(255,255,255,.58)", margin: "0 0 24px", lineHeight: 1.75 }}>
         1920×1080 · 30fps · {fmt(DURATION_SECONDS)}s（{COMPOSITION.durationInFrames}{" "}
         帧）· H.264 + AAC · 原创配乐由代码合成
       </p>
+
+      <section style={{ marginBottom: 26 }}>
+        <Player
+          component={HelloWorld}
+          durationInFrames={COMPOSITION.durationInFrames}
+          fps={COMPOSITION.fps}
+          compositionWidth={COMPOSITION.width}
+          compositionHeight={COMPOSITION.height}
+          style={{
+            width: "100%",
+            aspectRatio: "16 / 9",
+            borderRadius: 14,
+            overflow: "hidden",
+            background: "#000",
+            border: "1px solid rgba(255,255,255,.1)",
+          }}
+          controls
+          loop
+          clickToPlay
+          doubleClickToFullscreen
+          initiallyMuted
+          acknowledgeRemotionLicense
+        />
+        <div
+          style={{
+            marginTop: 8,
+            fontSize: 12.5,
+            lineHeight: 1.6,
+            color: "rgba(255,255,255,.42)",
+          }}
+        >
+          实时预览（默认静音，点右下角喇叭开声音；双击画面全屏）。导出 MP4 用下面的按钮。
+        </div>
+      </section>
 
       <section
         style={{
@@ -252,7 +287,7 @@ const App: React.FC = () => {
             }}
             style={{ width: 18, height: 18, accentColor: "#54c8ff" }}
           />
-          含原创配乐（A 小调 / 120 BPM / 10 秒片段）
+          含原创配乐与音效（A 小调 / 11 秒）
         </label>
 
         {issues.length > 0 && (
@@ -351,7 +386,7 @@ const App: React.FC = () => {
           color: "rgba(255,255,255,.42)",
         }}
       >
-        渲染时请保持本页在前台、不要锁屏。10 秒样片在这台手机上预计 1–4
+        渲染时请保持本页在前台、不要锁屏。11 秒样片在这台手机上预计 2–5
         分钟；若音频编码不可用，页面会自动回退到 WebM/Opus，或取消勾选配乐出无声片。
       </p>
 
@@ -388,8 +423,8 @@ const App: React.FC = () => {
           color: "rgba(255,255,255,.38)",
         }}
       >
-        <div>画面段落：00:00–00:08 片头 / 00:08–00:10 图表入场（样片截止）</div>
-        <div>音乐段落：pad + 低频脉冲 0–8s，16 分琶音 + sub bass 8–10s</div>
+        <div>画面段落：00:00–00:11 第 1 镜「换尺子」（分镜表 S1，帧 0–330）</div>
+        <div>音乐段落：pad + 55Hz 次低音 0–11s；2.45s 卡尺咬合 · 6.9s 扫光 · 9.05s τ 落版</div>
       </div>
     </main>
   );
