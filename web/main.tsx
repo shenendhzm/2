@@ -233,6 +233,7 @@ const App: React.FC = () => {
           }}
           controls
           loop
+          autoPlay
           clickToPlay
           doubleClickToFullscreen
           initiallyMuted
