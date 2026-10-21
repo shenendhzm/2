@@ -66,13 +66,14 @@ const App: React.FC = () => {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      setChecked(false);
-      setPlan(null);
-      setIssues([]);
-      setError(null);
-      const collected: string[] = [];
+      try {
+        setChecked(false);
+        setPlan(null);
+        setIssues([]);
+        setError(null);
+        const collected: string[] = [];
 
-      for (const candidate of PLANS) {
+        for (const candidate of PLANS) {
         const check = await canRenderMediaOnWeb({
           container: candidate.container,
           videoCodec: candidate.videoCodec,
@@ -84,25 +85,30 @@ const App: React.FC = () => {
           audioBitrate: "medium",
         });
         if (cancelled) return;
-        if (check.canRender) {
-          setPlan(candidate);
-          setIssues(
-            [...collected, ...check.issues.map((i) => `${i.severity}: ${i.message}`)].slice(
-              0,
-              8,
-            ),
+          if (check.canRender) {
+            setPlan(candidate);
+            setIssues(
+              [...collected, ...check.issues.map((i) => `${i.severity}: ${i.message}`)].slice(
+                0,
+                8,
+              ),
+            );
+            setChecked(true);
+            return;
+          }
+          collected.push(
+            `${candidate.container}/${candidate.videoCodec}: ` +
+              check.issues.map((i) => i.message).join("; "),
           );
-          setChecked(true);
-          return;
         }
-        collected.push(
-          `${candidate.container}/${candidate.videoCodec}: ` +
-            check.issues.map((i) => i.message).join("; "),
-        );
-      }
 
-      setIssues(collected);
-      setChecked(true);
+        setIssues(collected);
+        setChecked(true);
+      } catch (e) {
+        if (cancelled) return;
+        setIssues([e instanceof Error ? `${e.name}: ${e.message}` : String(e)]);
+        setChecked(true);
+      }
     })();
     return () => {
       cancelled = true;

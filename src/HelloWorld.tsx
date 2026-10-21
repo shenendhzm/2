@@ -161,7 +161,7 @@ const Ring: React.FC<{
 };
 
 const Intro: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
-  const scene = interpolate(frame, [0, 18, 232, 248], [0, 1, 1, 0], CLAMP);
+  const scene = interpolate(frame, [0, 18, 232, 240], [0, 1, 1, 0], CLAMP);
   const tauIn = spring({
     frame: Math.max(0, frame - 26),
     fps,
@@ -332,17 +332,17 @@ const Intro: React.FC<{ frame: number; fps: number }> = ({ frame, fps }) => {
 };
 
 const Chart: React.FC<{ frame: number }> = ({ frame }) => {
-  const scene = interpolate(frame, [232, 252], [0, 1], CLAMP);
-  const panelIn = interpolate(frame, [232, 266], [26, 0], {
+  const scene = interpolate(frame, [232, 240], [0, 1], CLAMP);
+  const panelIn = interpolate(frame, [232, 244], [26, 0], {
     ...CLAMP,
     easing: Easing.out(Easing.cubic),
   });
-  const axisP = interpolate(frame, [240, 298], [0, 1], {
+  const axisP = interpolate(frame, [240, 296], [0, 1], {
     ...CLAMP,
     easing: Easing.inOut(Easing.cubic),
   });
-  const labelP = interpolate(frame, [250, 284], [0, 1], CLAMP);
-  const titleP = interpolate(frame, [240, 262], [0, 1], CLAMP);
+  const labelP = interpolate(frame, [246, 278], [0, 1], CLAMP);
+  const titleP = interpolate(frame, [240, 258], [0, 1], CLAMP);
   const scanP = interpolate(frame, [240, 300], [0, 1], CLAMP);
   const scanX = 110 + scanP * 1400;
 
@@ -398,7 +398,7 @@ const Chart: React.FC<{ frame: number }> = ({ frame }) => {
           borderRadius: 28,
           border: "1px solid rgba(255,255,255,.09)",
           background:
-            "linear-gradient(180deg, rgba(84,200,255,.055) 0%, rgba(255,255,255,.012) 100%)",
+            "linear-gradient(180deg, rgba(10,20,38,.94) 0%, rgba(6,11,24,.90) 100%)",
           boxShadow: "0 40px 120px rgba(0,0,0,.4)",
           overflow: "hidden",
           transform: `translateY(${panelIn}px)`,
