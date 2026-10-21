@@ -77,6 +77,15 @@ def stereo_pan(sig: np.ndarray, pan: float):
     return left, right
 
 
+def delayed(x: np.ndarray, seconds: float, gain: float) -> np.ndarray:
+    """单抽头延迟，用来做 ping-pong。"""
+    out = np.zeros_like(x)
+    d = int(round(seconds * SR))
+    if 0 < d < len(x):
+        out[d:] = x[:-d] * gain
+    return out
+
+
 def reverb(x: np.ndarray, decay: float = 0.62, length: float = 2.4, wet: float = 0.32) -> np.ndarray:
     """合成脉冲响应做卷积混响。"""
     n_ir = int(length * SR)
@@ -245,6 +254,11 @@ def build(duration: float) -> np.ndarray:
     pulse_l, pulse_r = make_pulse(n, duration)
     shim_l, shim_r = make_shimmer(n)
     arp_l, arp_r = make_arp(n, duration)
+    # 1/8 拍 ping-pong 延迟：L→R→L，衰减 0.32/0.16/0.08
+    dly_l = delayed(arp_r, 0.25, 0.32) + delayed(arp_l, 0.50, 0.16) + delayed(arp_r, 0.75, 0.08)
+    dly_r = delayed(arp_l, 0.25, 0.32) + delayed(arp_r, 0.50, 0.16) + delayed(arp_l, 0.75, 0.08)
+    arp_l = arp_l + dly_l
+    arp_r = arp_r + dly_r
     sub_l, sub_r = make_sub(n, duration)
     riser = make_riser(n, duration)
 
