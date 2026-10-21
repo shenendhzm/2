@@ -10,6 +10,7 @@ import { WarmBackdrop } from "./components/WarmBackdrop";
 import { SwissBackdrop } from "./components/SwissBackdrop";
 import { BlackBackdrop } from "./components/BlackBackdrop";
 import { ThemeBackdrop } from "./components/ThemeBackdrop";
+import { NoirBackdrop } from "./components/NoirBackdrop";
 import { S1 } from "./scenes/S1";
 import { S1Paper } from "./scenes/S1Paper";
 import { S1Blueprint } from "./scenes/S1Blueprint";
@@ -20,6 +21,7 @@ import { S1Gold } from "./scenes/S1Gold";
 import { S1Forest } from "./scenes/S1Forest";
 import { S1Crt } from "./scenes/S1Crt";
 import { S1Violet } from "./scenes/S1Violet";
+import { S1Noir } from "./scenes/S1Noir";
 import { SCORE_SRC } from "./score";
 import { FONT as NEON_FONT } from "./theme";
 import { FONT as PAPER_FONT, PAPER } from "./paper";
@@ -30,6 +32,7 @@ import { FONT as BLACK_FONT, INK as BLACK_INK } from "./looks/black";
 import { FONT as GOLD_FONT, INK as GOLD_INK, PAPER as GOLD_BG, RED as GOLD_ACCENT, MUTED as GOLD_MUTED } from "./looks/gold";
 import { FONT as FOREST_FONT, INK as FOREST_INK, PAPER as FOREST_BG, RED as FOREST_ACCENT, MUTED as FOREST_MUTED } from "./looks/forest";
 import { FONT as CRT_FONT, INK as CRT_INK, PAPER as CRT_BG, RED as CRT_ACCENT, MUTED as CRT_MUTED } from "./looks/crt";
+import { INK as NOIR_INK, MUTED as NOIR_MUTED } from "./looks/noir";
 import { FONT as VIOLET_FONT, INK as VIOLET_INK, PAPER as VIOLET_BG, RED as VIOLET_ACCENT, MUTED as VIOLET_MUTED } from "./looks/violet";
 
 const Shell: React.FC<{ bg: string; font: string; children: React.ReactNode }> = ({
@@ -182,3 +185,63 @@ export const CoralAccentSample = makeAccentSample("#FF7A59");
 export const VioletAccentSample = makeAccentSample("#A78BFA");
 /** 14 黑银 */
 export const SilverAccentSample = makeAccentSample("#C9D1D9");
+
+/** 黑底三变体：同一个镜头，只换背景语言 */
+const NoirShell: React.FC<{
+  variant: "dots" | "glow" | "lines";
+  accent: string;
+  header: string;
+  right: string;
+  label: string;
+}> = ({ variant, accent, header, right, label }) => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ backgroundColor: "#000000", fontFamily: BLACK_FONT, overflow: "hidden" }}>
+      <Audio src={SCORE_SRC} />
+      <NoirBackdrop
+        variant={variant}
+        ink={NOIR_INK}
+        accent={accent}
+        muted={NOIR_MUTED}
+        header={header}
+        right={right}
+        label={label}
+      />
+      <S1Noir frame={frame} accent={accent} />
+      <CaptionPaper color={NOIR_INK} scrim="0,0,0" />
+    </AbsoluteFill>
+  );
+};
+
+/** 15 黑点阵 */
+export const DotsSample: React.FC = () => (
+  <NoirShell
+    variant="dots"
+    accent="#8FD8FF"
+    header="TAU / GRID 34 — 01"
+    right="2026.05.25"
+    label="DOT MATRIX · 34PX"
+  />
+);
+
+/** 16 黑光晕 */
+export const GlowSample: React.FC = () => (
+  <NoirShell
+    variant="glow"
+    accent="#E0A94A"
+    header="TAU / LOW KEY 01"
+    right="2026.05.25"
+    label="AMBIENT GLOW · 1.4"
+  />
+);
+
+/** 17 黑横线 */
+export const LinesSample: React.FC = () => (
+  <NoirShell
+    variant="lines"
+    accent="#FF5A4E"
+    header="TAU / SCAN 01"
+    right="LIVE_"
+    label="SCANLINE · 7PX"
+  />
+);
