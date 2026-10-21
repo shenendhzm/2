@@ -1,10 +1,13 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { CAPTIONS } from "../captions";
-import { CLAMP, FONT, INK, PAPER } from "../paper";
+import { CLAMP, FONT, INK } from "../paper";
 
 /** 纸面风格字幕：黑字、无发光，底部留白 */
-export const CaptionPaper: React.FC = () => {
+export const CaptionPaper: React.FC<{ color?: string; scrim?: string }> = ({
+  color = INK,
+  scrim = "243,238,228",
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
@@ -25,7 +28,7 @@ export const CaptionPaper: React.FC = () => {
           right: 0,
           bottom: 0,
           height: 240,
-          background: `linear-gradient(180deg, rgba(243,238,228,0) 0%, rgba(243,238,228,.86) 55%, ${PAPER} 100%)`,
+          background: `linear-gradient(180deg, rgba(${scrim},0) 0%, rgba(${scrim},.86) 55%, rgba(${scrim},1) 100%)`,
           opacity,
         }}
       />
@@ -46,7 +49,7 @@ export const CaptionPaper: React.FC = () => {
             lineHeight: 1.5,
             fontWeight: 500,
             letterSpacing: 1,
-            color: INK,
+            color,
             textAlign: "center",
             opacity,
             transform: `translateY(${(1 - opacity) * 8}px)`,
