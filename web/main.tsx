@@ -8,6 +8,7 @@ import type {
   WebRendererVideoCodec,
 } from "@remotion/web-renderer";
 import {
+  BlackSample,
   BlueprintSample,
   NeonSample,
   PaperSample,
@@ -29,6 +30,14 @@ type StyleDef = {
 };
 
 const STYLES: StyleDef[] = [
+  {
+    id: "TauLawBlack",
+    label: "纯黑底",
+    note: "黑底 · 米白制图线 · 红标注",
+    file: "黑底",
+    chip: ["#000000", "#E5484D"],
+    component: BlackSample,
+  },
   {
     id: "TauLawNeon",
     label: "深色霓虹",
@@ -269,7 +278,7 @@ const App: React.FC = () => {
         Tau Law · Style Lab
       </div>
       <h1 style={{ fontSize: 30, margin: "0 0 10px", letterSpacing: 1 }}>
-        韬（τ）定律 · 11 秒样片｜五种风格
+        韬（τ）定律 · 11 秒样片｜六种风格
       </h1>
       <p style={{ color: "rgba(255,255,255,.58)", margin: "0 0 22px", lineHeight: 1.75 }}>
         同一个镜头、同一条 47 条字幕时间轴，只换视觉语言。点开对比，选一个我就按它做完整片。

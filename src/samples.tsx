@@ -8,17 +8,20 @@ import { CaptionPaper } from "./components/CaptionPaper";
 import { BlueprintBackdrop } from "./components/BlueprintBackdrop";
 import { WarmBackdrop } from "./components/WarmBackdrop";
 import { SwissBackdrop } from "./components/SwissBackdrop";
+import { BlackBackdrop } from "./components/BlackBackdrop";
 import { S1 } from "./scenes/S1";
 import { S1Paper } from "./scenes/S1Paper";
 import { S1Blueprint } from "./scenes/S1Blueprint";
 import { S1Warm } from "./scenes/S1Warm";
 import { S1Swiss } from "./scenes/S1Swiss";
+import { S1Black } from "./scenes/S1Black";
 import { SCORE_SRC } from "./score";
 import { FONT as NEON_FONT } from "./theme";
 import { FONT as PAPER_FONT, PAPER } from "./paper";
 import { FONT as BLUE_FONT, PAPER as BLUE_PAPER } from "./looks/blueprint";
 import { FONT as WARM_FONT, PAPER as WARM_PAPER } from "./looks/warm";
 import { FONT as SWISS_FONT } from "./looks/swiss";
+import { FONT as BLACK_FONT, INK as BLACK_INK } from "./looks/black";
 
 const Shell: React.FC<{ bg: string; font: string; children: React.ReactNode }> = ({
   bg,
@@ -87,6 +90,18 @@ export const SwissSample: React.FC = () => {
       <SwissBackdrop />
       <S1Swiss frame={frame} />
       <CaptionPaper />
+    </Shell>
+  );
+};
+
+/** 06 纯黑底 */
+export const BlackSample: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <Shell bg="#000000" font={BLACK_FONT}>
+      <BlackBackdrop />
+      <S1Black frame={frame} />
+      <CaptionPaper color={BLACK_INK} scrim="0,0,0" />
     </Shell>
   );
 };
