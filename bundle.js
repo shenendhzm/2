@@ -55056,64 +55056,147 @@ var Video = ({
 };
 Internals.addSequenceStackTraces(Video);
 
-// src/theme.ts
-var BG = "#060A12";
-var CYAN = "#2BE3C9";
-var RED = "#E5484D";
-var AMBER = "#F2B33D";
-var TEXT = "#E9F0FA";
-var MUTED = "#7F93AD";
-var FONT = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif';
-var MONO = '"DIN Alternate", "JetBrains Mono", "Roboto Mono", monospace';
+// src/looks/tau.ts
+var CJK = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
+var MONO = '"JetBrains Mono", "Roboto Mono", "SF Mono", monospace';
+var SERIF = 'Georgia, "Noto Serif", "Times New Roman", serif';
+var PLATES = [
+  {
+    id: "TauLawBlack",
+    label: "\u7EAF\u9ED1\u5E95",
+    note: "\u9ED1\u5E95 \xB7 \u7C73\u767D\u5236\u56FE\u7EBF \xB7 \u6731\u7EA2\u5F3A\u8C03",
+    bg: "#000000",
+    ink: "#F4F1EA",
+    accent: "#E5484D",
+    muted: "#8A8578",
+    surface: "grid",
+    header: "TAU \xB7 SCALING LAW",
+    right: "SHOT 01 / 08",
+    chrome: "PLATE 01 \xB7 INK & RULE",
+    font: CJK,
+    mono: MONO,
+    serif: SERIF
+  },
+  {
+    id: "TauLawGold",
+    label: "\u9ED1\u91D1",
+    note: "\u58A8\u9ED1 \xB7 \u7425\u73C0\u91D1 \xB7 \u7EC6\u5236\u56FE\u7EBF",
+    bg: "#0B0906",
+    ink: "#F3E9D2",
+    accent: "#E0A94A",
+    muted: "#9A8767",
+    surface: "grid",
+    header: "TAU \xB7 GOLD",
+    right: "SHOT 01 / 08",
+    chrome: "PLATE 02 \xB7 AMBER EDITION",
+    font: CJK,
+    mono: MONO,
+    serif: SERIF
+  },
+  {
+    id: "TauLawDots",
+    label: "\u9ED1\u70B9\u9635",
+    note: "\u9ED1\u5E95 \xB7 34px \u7EC6\u70B9\u9635 \xB7 \u51B0\u84DD",
+    bg: "#000000",
+    ink: "#F2EDE4",
+    accent: "#8FD8FF",
+    muted: "#8A8272",
+    surface: "dots",
+    header: "TAU \xB7 GRID 34",
+    right: "SHOT 01 / 08",
+    chrome: "PLATE 03 \xB7 DOT MATRIX 34PX",
+    font: CJK,
+    mono: MONO,
+    serif: SERIF
+  },
+  {
+    id: "TauLawGlow",
+    label: "\u9ED1\u5149\u6655",
+    note: "\u9ED1\u5E95 \xB7 \u73AF\u5883\u5149 \xB7 \u7425\u73C0",
+    bg: "#000000",
+    ink: "#F2EDE4",
+    accent: "#E0A94A",
+    muted: "#8A8272",
+    surface: "glow",
+    header: "TAU \xB7 LOW KEY",
+    right: "SHOT 01 / 08",
+    chrome: "PLATE 04 \xB7 AMBIENT GLOW",
+    font: CJK,
+    mono: MONO,
+    serif: SERIF
+  },
+  {
+    id: "TauLawLines",
+    label: "\u9ED1\u6A2A\u7EBF",
+    note: "\u9ED1\u5E95 \xB7 7px \u7EC6\u6A2A\u7EB9 \xB7 \u6731\u7EA2",
+    bg: "#000000",
+    ink: "#F2EDE4",
+    accent: "#FF5A4E",
+    muted: "#8A8272",
+    surface: "lines",
+    header: "TAU \xB7 SCAN",
+    right: "SHOT 01 / 08",
+    chrome: "PLATE 05 \xB7 SCANLINE 7PX",
+    font: CJK,
+    mono: MONO,
+    serif: SERIF
+  },
+  {
+    id: "TauLawCrt",
+    label: "CRT \u7EC8\u7AEF",
+    note: "\u8367\u5149\u7EFF \xB7 \u626B\u63CF\u7EBF \xB7 \u7EC8\u7AEF\u7EFF\u5B57",
+    bg: "#020604",
+    ink: "#8CFFB0",
+    accent: "#FF5C5C",
+    muted: "#3E7A57",
+    surface: "scan",
+    header: "> TAU.SYS \u2014 RUN 01",
+    right: "SHOT 01 / 08",
+    chrome: "PLATE 06 \xB7 PHOSPHOR",
+    font: CJK,
+    mono: MONO,
+    serif: SERIF
+  }
+];
 var CLAMP = {
   extrapolateLeft: "clamp",
   extrapolateRight: "clamp"
 };
 var EASE_OUT = Easing.out(Easing.cubic);
 var EASE_IN_OUT = Easing.inOut(Easing.cubic);
+var ramp = (frame, input, output, easing = EASE_OUT) => interpolate(frame, input, output, { ...CLAMP, easing });
 
-// src/components/Backdrop.tsx
+// src/components/TauBackdrop.tsx
 var import_jsx_runtime63 = __toESM(require_jsx_runtime());
-var PARTICLES = Array.from({ length: 22 }, (_, i) => ({
-  x: 60 + i * 233 % 1800,
-  y: 40 + i * 347 % 1e3,
-  r: 1 + i % 3 * 0.7,
-  drift: 14 + i % 6 * 8,
-  phase: i * 29 % 180
-}));
-var Backdrop = () => {
+var MASK = "radial-gradient(ellipse at 50% 42%, black 6%, rgba(0,0,0,.62) 58%, transparent 92%)";
+var TauBackdrop = ({ plate }) => {
   const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
-  const breath = interpolate(frame % 180, [0, 90, 180], [0.85, 1, 0.85], CLAMP);
-  const gridIn = interpolate(frame, [0, 45], [0.35, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(AbsoluteFill, { style: { backgroundColor: BG }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
-      "div",
+  const { bg, ink, accent, muted, mono, surface } = plate;
+  const surfaceIn = ramp(frame, [6, 46], [0, 1], EASE_OUT);
+  const chromeIn = ramp(frame, [16, 44], [0, 1], EASE_OUT);
+  const drift = interpolate(frame, [0, 240], [1.045, 1], CLAMP);
+  const breathe = interpolate(frame, [0, 96, 208, 240], [0.72, 1, 1, 0.88], CLAMP);
+  const bandY = interpolate(frame % 210, [0, 210], [-220, 1180], CLAMP);
+  const scanY = interpolate(frame % 120, [0, 120], [-80, 1160], CLAMP);
+  const sweepX = interpolate(frame, [40, 130], [-620, 2120], { ...CLAMP, easing: EASE_IN_OUT });
+  const sweepOn = interpolate(frame, [40, 52, 118, 132], [0, 1, 1, 0], {
+    ...CLAMP,
+    easing: EASE_IN_OUT
+  });
+  const hasGrid = surface === "grid" || surface === "scan";
+  const frameLines = surface === "grid";
+  return /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(AbsoluteFill, { style: { backgroundColor: bg }, children: [
+    surface !== "glow" && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      AbsoluteFill,
       {
         style: {
-          position: "absolute",
-          left: -320,
-          top: -380,
-          width: 1500,
-          height: 1500,
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${CYAN}1f 0%, ${CYAN}0a 42%, transparent 70%)`,
-          opacity: breath
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: -520,
-          bottom: -560,
-          width: 1500,
-          height: 1500,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(46,104,255,.15) 0%, rgba(46,104,255,.05) 45%, transparent 72%)",
-          opacity: breath
+          backgroundImage: surface === "dots" ? `radial-gradient(${ink}2b 1.1px, transparent 1.35px)` : surface === "lines" ? `repeating-linear-gradient(0deg, ${ink}0e 0px, ${ink}0e 1px, transparent 1px, transparent 7px)` : `linear-gradient(${ink}0b 1px, transparent 1px), linear-gradient(90deg, ${ink}0b 1px, transparent 1px)`,
+          backgroundSize: surface === "dots" ? "34px 34px" : surface === "lines" ? void 0 : "64px 64px",
+          backgroundPosition: surface === "dots" ? "17px 17px" : void 0,
+          opacity: surfaceIn,
+          transform: `scale(${drift})`,
+          maskImage: MASK,
+          WebkitMaskImage: MASK
         }
       }
     ),
@@ -55121,114 +55204,322 @@ var Backdrop = () => {
       AbsoluteFill,
       {
         style: {
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          opacity: 0.55 * gridIn,
-          maskImage: "radial-gradient(ellipse at 50% 46%, black 6%, rgba(0,0,0,.55) 58%, transparent 88%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 46%, black 6%, rgba(0,0,0,.55) 58%, transparent 88%)"
+          background: `radial-gradient(ellipse at 30% 26%, ${accent}${surface === "glow" ? "24" : "12"} 0%, ${accent}00 60%)`,
+          opacity: breathe
         }
       }
     ),
-    PARTICLES.map((p, i) => {
-      const twinkle = interpolate(
-        (frame + p.phase) % 180,
-        [0, 90, 180],
-        [0.04, 0.34, 0.04],
-        CLAMP
-      );
-      const floatY = interpolate(frame, [0, durationInFrames], [0, -p.drift], CLAMP);
-      return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      AbsoluteFill,
+      {
+        style: {
+          background: `radial-gradient(ellipse at 82% 78%, ${ink}${surface === "glow" ? "12" : "0a"} 0%, ${ink}00 54%)`
+        }
+      }
+    ),
+    surface === "glow" && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 30%, rgba(0,0,0,.66) 100%)"
+        }
+      }
+    ),
+    (surface === "lines" || surface === "scan") && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: bandY,
+          height: 170,
+          background: `linear-gradient(180deg, ${accent}00, ${accent}14, ${accent}00)`,
+          opacity: 0.7 * surfaceIn
+        }
+      }
+    ),
+    surface === "scan" && /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(import_jsx_runtime63.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+        AbsoluteFill,
+        {
+          style: {
+            backgroundImage: "repeating-linear-gradient(0deg, rgba(0,0,0,.38) 0px, rgba(0,0,0,.38) 1px, transparent 1px, transparent 3px)",
+            opacity: 0.75
+          }
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
         "div",
         {
           style: {
             position: "absolute",
-            left: p.x,
-            top: p.y,
-            width: p.r * 2,
-            height: p.r * 2,
-            borderRadius: "50%",
-            backgroundColor: i % 4 === 0 ? MUTED : CYAN,
-            opacity: twinkle,
-            transform: `translateY(${floatY}px)`
+            left: 0,
+            right: 0,
+            top: scanY,
+            height: 90,
+            background: `linear-gradient(180deg, ${ink}00, ${ink}16, ${ink}00)`
           }
+        }
+      )
+    ] }),
+    surface === "grid" && sweepOn > 1e-3 && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: sweepX,
+          top: -80,
+          width: 260,
+          height: 1240,
+          transform: "rotate(14deg)",
+          background: `linear-gradient(90deg, ${ink}00, ${ink}0d, ${ink}00)`,
+          opacity: sweepOn
+        }
+      }
+    ),
+    frameLines && /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)(import_jsx_runtime63.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: 44,
+            top: 44,
+            right: 44,
+            bottom: 44,
+            border: `1px solid ${ink}1e`,
+            opacity: chromeIn
+          }
+        }
+      ),
+      [
+        { left: 44, top: 44, borderLeft: `1.5px solid ${ink}99`, borderTop: `1.5px solid ${ink}99` },
+        { right: 44, top: 44, borderRight: `1.5px solid ${ink}99`, borderTop: `1.5px solid ${ink}99` },
+        { left: 44, bottom: 44, borderLeft: `1.5px solid ${ink}99`, borderBottom: `1.5px solid ${ink}99` },
+        { right: 44, bottom: 44, borderRight: `1.5px solid ${ink}99`, borderBottom: `1.5px solid ${ink}99` }
+      ].map((corner, i) => /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+        "div",
+        {
+          style: { position: "absolute", width: 18, height: 18, opacity: chromeIn, ...corner }
         },
         i
-      );
-    }),
+      ))
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 120,
+          top: 70,
+          fontFamily: mono,
+          fontSize: 15,
+          letterSpacing: 3.4,
+          color: muted,
+          opacity: chromeIn
+        },
+        children: plate.header
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 120,
+          top: 98,
+          fontFamily: mono,
+          fontSize: 12.5,
+          letterSpacing: 2.6,
+          color: `${muted}b0`,
+          opacity: chromeIn
+        },
+        children: plate.chrome
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          right: 120,
+          top: 70,
+          fontFamily: mono,
+          fontSize: 15,
+          letterSpacing: 3.4,
+          color: muted,
+          opacity: chromeIn
+        },
+        children: plate.right
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime63.jsxs)("div", { style: { position: "absolute", right: 120, top: 106, width: 16, height: 16, opacity: chromeIn }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime63.jsx)("div", { style: { position: "absolute", left: 7.5, top: 0, width: 1, height: 16, background: accent } }),
+      /* @__PURE__ */ (0, import_jsx_runtime63.jsx)("div", { style: { position: "absolute", left: 0, top: 7.5, width: 16, height: 1, background: accent } })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 120,
+          right: 120,
+          bottom: 72,
+          height: 1,
+          background: `linear-gradient(90deg, ${ink}00, ${ink}1f, ${ink}00)`,
+          opacity: chromeIn,
+          transform: `scaleX(${surfaceIn})`,
+          transformOrigin: "center"
+        }
+      }
+    ),
+    hasGrid && surface === "scan" && /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
       AbsoluteFill,
       {
         style: {
-          background: "radial-gradient(ellipse at 50% 44%, transparent 36%, rgba(2,4,10,.5) 82%, #02040a 100%)"
+          boxShadow: `inset 0 0 180px rgba(0,0,0,.9), inset 0 0 40px ${ink}0e`
         }
       }
     )
   ] });
 };
 
-// src/captions.ts
-var CAPTIONS = [
-  { start: 0, end: 2.364, text: "\u82AF\u7247\u884C\u4E1A\u6362\u4E86\u4E00\u628A\u5C3A\u5B50\u3002" },
-  { start: 2.484, end: 4.612, text: "\u8FC7\u53BB\u91CF\u7EB3\u7C73\uFF0C\u73B0\u5728\u91CF \u03C4\u3002" },
-  { start: 4.732, end: 8.043, text: "2026 \u5E74 5 \u6708\uFF0C\u534E\u4E3A\u63D0\u51FA\u97EC\u5B9A\u5F8B\u2014\u2014" },
-  { start: 8.163, end: 11, text: "\u4E0D\u628A\u6676\u4F53\u7BA1\u505A\u5C0F\uFF0C\u628A\u65F6\u95F4\u505A\u77ED\u3002" },
-  { start: 11, end: 13.733, text: "\u4E3A\u4EC0\u4E48\u6362\uFF1F\u56E0\u4E3A\u8001\u8DEF\u8D70\u4E0D\u52A8\u4E86\u3002" },
-  { start: 13.853, end: 15.675, text: "\u6469\u5C14\u5B9A\u5F8B\u9760\u4E24\u4EF6\u4E8B\uFF1A" },
-  { start: 15.795, end: 18.072, text: "\u5C3A\u5BF8\u7F29\u5C0F\uFF0C\u7535\u538B\u540C\u6B65\u964D\u4F4E\u3002" },
-  { start: 18.192, end: 20.697, text: "2005 \u5E74\u524D\u540E\uFF0C\u7535\u538B\u5148\u505C\uFF1B" },
-  { start: 20.817, end: 23.55, text: "7 \u7EB3\u7C73\u4E4B\u540E\uFF0C\u7EBF\u8D8A\u7EC6\u7535\u963B\u8D8A\u5927\uFF0C" },
-  { start: 23.67, end: 25.947, text: "\u4E92\u8FDE\u5F00\u59CB\u5403\u6389\u5EF6\u8FDF\u9884\u7B97\uFF1B" },
-  { start: 26.067, end: 29.027, text: "\u518D\u5F80\u524D\uFF0C\u4E00\u9897\u5148\u8FDB\u82AF\u7247\u7684\u8BBE\u8BA1\u8D39" },
-  { start: 29.147, end: 30.514, text: "\u8D85\u8FC7\u5341\u4EBF\u7F8E\u5143\u3002" },
-  { start: 30.634, end: 32, text: "\u505A\u5C0F\uFF0C\u4E0D\u5212\u7B97\u4E86\u3002" },
-  { start: 32, end: 33.956, text: "\u03C4 \u7B49\u4E8E\u7535\u963B\u4E58\u7535\u5BB9\uFF0C" },
-  { start: 34.076, end: 37.253, text: "\u4E5F\u5C31\u662F\u4FE1\u53F7\u8DD1\u5B8C\u4E00\u6BB5\u7EBF\u8981\u591A\u4E45\u3002" },
-  { start: 37.373, end: 39.084, text: "\u4E00\u6761\u5173\u952E\u8DEF\u5F84\u4E0A\uFF0C" },
-  { start: 39.204, end: 42.138, text: "\u5361\u65F6\u95F4\u7684\u5F80\u5F80\u4E0D\u662F\u95E8\uFF0C\u800C\u662F\u7EBF\u3002" },
-  { start: 42.258, end: 45.436, text: "\u6469\u5C14\u5B9A\u5F8B\u8FD9\u516D\u5341\u5E74\u5356\u7ED9\u6211\u4EEC\u7684\uFF0C" },
-  { start: 45.556, end: 48, text: "\u4ECE\u6765\u4E0D\u662F\u66F4\u5C0F\uFF0C\u800C\u662F\u66F4\u5FEB\u3002" },
-  { start: 48, end: 50.242, text: "\u534E\u4E3A\u7684\u505A\u6CD5\u53EB\u903B\u8F91\u6298\u53E0\uFF1A" },
-  { start: 50.362, end: 53.053, text: "\u628A\u5173\u952E\u8DEF\u5F84\u4E0A\u7684\u95E8\u7535\u8DEF\u62C6\u5F00\uFF0C" },
-  { start: 53.173, end: 55.415, text: "\u4E00\u534A\u653E\u4E0A\u5C42\uFF0C\u4E00\u534A\u653E\u4E0B\u5C42\u3002" },
-  { start: 55.535, end: 57.553, text: "\u4E24\u7247\u6676\u5706\u9762\u5BF9\u9762\u952E\u5408\uFF0C" },
-  { start: 57.673, end: 59.018, text: "\u94DC\u5BF9\u94DC\u76F4\u63A5\u8FDE\u3002" },
-  { start: 59.138, end: 61.38, text: "\u4FE1\u53F7\u4E0D\u518D\u6A2A\u7A7F\u6574\u9897\u82AF\u7247\uFF0C" },
-  { start: 61.5, end: 62.845, text: "\u6539\u8D70\u5782\u76F4\u77ED\u8DEF\u3002" },
-  { start: 62.965, end: 64.535, text: "\u7EBF\u77ED\u4E86\uFF0CRC \u5C31\u5C0F\uFF0C" },
-  { start: 64.655, end: 66.448, text: "\u5EF6\u8FDF\u548C\u529F\u8017\u4E00\u8D77\u964D\uFF1B" },
-  { start: 66.568, end: 68.138, text: "\u7701\u51FA\u7684\u65F6\u95F4\u4F59\u91CF\uFF0C" },
-  { start: 68.258, end: 70.276, text: "\u8FD8\u80FD\u6362\u6210\u66F4\u4F4E\u7684\u7535\u538B\u3002" },
-  { start: 70.396, end: 72.862, text: "\u540C\u4E00\u4EE3\u5DE5\u827A\uFF0C\u5BC6\u5EA6\u63D0\u5347 55%\uFF0C" },
-  { start: 72.982, end: 75, text: "\u540C\u7B49\u6027\u80FD\uFF0C\u529F\u8017\u964D 41%\u3002" },
-  { start: 75, end: 76.666, text: "\u8FD9\u4E0D\u662F\u5355\u70B9\u6280\u5DE7\uFF0C" },
-  { start: 76.786, end: 78.69, text: "\u800C\u662F\u4E00\u5957\u56DB\u5C42\u8D26\u672C\uFF1A" },
-  { start: 78.81, end: 80.714, text: "\u5668\u4EF6\u5C42\u538B\u7535\u963B\u7535\u5BB9\uFF0C" },
-  { start: 80.834, end: 82.024, text: "\u7535\u8DEF\u5C42\u6298\u53E0\uFF0C" },
-  { start: 82.144, end: 84.048, text: "\u82AF\u7247\u5C42\u505A\u8F6F\u786C\u534F\u540C\uFF0C" },
-  { start: 84.168, end: 87.5, text: "\u7CFB\u7EDF\u5C42\u7528\u7075\u8862\u603B\u7EBF\u7EDF\u4E00\u5185\u5B58\u7F16\u5740\u2014\u2014" },
-  { start: 87.62, end: 89.762, text: "\u628A\u53D1\u6D88\u606F\u53D8\u6210\u8BFB\u5185\u5B58\u3002" },
-  { start: 89.882, end: 91.786, text: "\u516D\u5E74\uFF0C381 \u6B3E\u82AF\u7247\uFF1B" },
-  { start: 91.906, end: 95, text: "2031 \u5E74\uFF0C\u5BC6\u5EA6\u7B49\u6548 1.4 \u7EB3\u7C73\u3002" },
-  { start: 95, end: 97.612, text: "\u4F46\u8FD9\u662F\u65F6\u95F4\u8D26\u672C\uFF0C\u4E0D\u662F\u9B54\u6CD5\uFF1A" },
-  { start: 97.733, end: 99.395, text: "\u4E24\u5C42\u7845\uFF0C\u9762\u79EF\u7FFB\u500D\uFF0C" },
-  { start: 99.515, end: 101.177, text: "\u70ED\u548C\u826F\u7387\u90FD\u8981\u8FD8\u3002" },
-  { start: 101.297, end: 102.722, text: "\u5B83\u8FD8\u4E0D\u662F\u5B9A\u5F8B\uFF0C" },
-  { start: 102.843, end: 104.505, text: "\u5374\u662F\u540E\u6469\u5C14\u65F6\u4EE3\uFF0C" },
-  { start: 104.625, end: 107, text: "\u7B2C\u4E00\u4EFD\u5199\u8FDB\u7845\u7247\u7684\u8349\u7A3F\u3002" }
-];
-
-// src/components/Caption.tsx
+// src/scenes/S1Tau.tsx
 var import_jsx_runtime64 = __toESM(require_jsx_runtime());
-var Caption = () => {
+var TAU_VIS_CY = 352;
+var TAU_FONT = 380;
+var TAU_TOP = 79;
+var TAU_BASELINE = 451;
+var TITLE_TOP = 578;
+var S1Tau = ({ plate }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const t = frame / fps;
-  const line = CAPTIONS.find((c2) => t >= c2.start && t < c2.end);
-  if (!line) return null;
-  const inP = interpolate(t, [line.start, line.start + 0.22], [0, 1], CLAMP);
-  const outP = interpolate(t, [line.end - 0.22, line.end], [1, 0], CLAMP);
-  const opacity = Math.min(inP, outP);
-  return /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(AbsoluteFill, { style: { pointerEvents: "none" }, children: [
+  const { ink, accent, muted, font, mono } = plate;
+  const camera = interpolate(frame, [0, 240], [1, 1.035], {
+    ...CLAMP,
+    easing: EASE_IN_OUT
+  });
+  const ringPulse = (start, dur, strength) => {
+    const p = interpolate(frame, [start, start + dur], [0, 1], CLAMP);
+    return {
+      r: interpolate(p, [0, 1], [46, 980]),
+      o: interpolate(p, [0, 0.14, 1], [0, strength, 0], CLAMP)
+    };
+  };
+  const rings = [
+    { ...ringPulse(12, 78, 0.5) },
+    { ...ringPulse(26, 78, 0.36) },
+    { ...ringPulse(40, 78, 0.24) },
+    { ...ringPulse(136, 84, 0.26) },
+    { ...ringPulse(150, 84, 0.18) },
+    { ...ringPulse(164, 84, 0.12) }
+  ];
+  const ruleIn = interpolate(frame, [26, 62], [0, 1], {
+    ...CLAMP,
+    easing: EASE_IN_OUT
+  });
+  const tauIn = spring({
+    frame: Math.max(0, frame - 44),
+    fps,
+    config: { damping: 15, stiffness: 74, mass: 0.95 }
+  });
+  const tauScale = interpolate(tauIn, [0, 1], [0.72, 1], CLAMP);
+  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP);
+  const tauSettle = interpolate(frame, [44, 240], [1.012, 1], CLAMP);
+  const ellipseP = interpolate(frame, [78, 128], [0, 1], {
+    ...CLAMP,
+    easing: EASE_IN_OUT
+  });
+  const titleIn = spring({
+    frame: Math.max(0, frame - 106),
+    fps,
+    config: { damping: 18, stiffness: 86, mass: 0.92 }
+  });
+  const lineIn = interpolate(frame, [132, 168], [0, 1], {
+    ...CLAMP,
+    easing: EASE_IN_OUT
+  });
+  const metaIn = interpolate(frame, [142, 172], [0, 1], {
+    ...CLAMP,
+    easing: EASE_OUT
+  });
+  const dateIn = interpolate(frame, [158, 188], [0, 1], {
+    ...CLAMP,
+    easing: EASE_OUT
+  });
+  const sweepX = interpolate(frame, [166, 208], [-360, 2280], {
+    ...CLAMP,
+    easing: EASE_IN_OUT
+  });
+  const sweepO = interpolate(frame, [162, 172, 202, 212], [0, 1, 1, 0], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 370,
+          top: TAU_BASELINE - 0.75,
+          width: 1180,
+          height: 1.5,
+          background: `${ink}44`,
+          transform: `scaleX(${ruleIn})`,
+          transformOrigin: "center"
+        }
+      }
+    ),
+    [370, 1550].map((x) => /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: x - 1,
+          top: TAU_BASELINE - 9,
+          width: 2,
+          height: 18,
+          background: accent,
+          opacity: ruleIn * 0.9
+        }
+      },
+      x
+    )),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "svg",
+      {
+        width: 1920,
+        height: 1080,
+        style: { position: "absolute", inset: 0, pointerEvents: "none" },
+        children: rings.map((ring, i) => /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+          "circle",
+          {
+            cx: 960,
+            cy: TAU_VIS_CY,
+            r: ring.r,
+            fill: "none",
+            stroke: i < 3 ? ink : accent,
+            strokeWidth: 1.2,
+            opacity: ring.o
+          },
+          i
+        ))
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 960 - 380,
+          top: TAU_VIS_CY - 380,
+          width: 760,
+          height: 760,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${accent}1f 0%, ${accent}00 66%)`,
+          opacity: tauOpacity
+        }
+      }
+    ),
     /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
       "div",
       {
@@ -55236,7087 +55527,236 @@ var Caption = () => {
           position: "absolute",
           left: 0,
           right: 0,
-          bottom: 0,
-          height: 300,
-          background: "linear-gradient(180deg, rgba(2,4,10,0) 0%, rgba(2,4,10,.55) 62%, rgba(2,4,10,.82) 100%)",
-          opacity: opacity * 0.9
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 160,
-          right: 160,
-          bottom: 92,
+          top: TAU_TOP,
+          height: TAU_FONT * 1.2,
           display: "flex",
-          justifyContent: "center"
+          alignItems: "center",
+          justifyContent: "center",
+          opacity: tauOpacity,
+          transform: `scale(${tauScale * tauSettle})`
         },
         children: /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
           "div",
           {
             style: {
-              fontFamily: FONT,
-              fontSize: 44,
-              lineHeight: 1.5,
-              fontWeight: 500,
-              letterSpacing: 1.2,
-              color: TEXT,
-              textAlign: "center",
-              textShadow: "0 2px 14px rgba(0,0,0,.65), 0 0 34px rgba(0,0,0,.4)",
-              opacity,
-              transform: `translateY(${(1 - opacity) * 8}px)`
+              fontFamily: font,
+              fontWeight: 300,
+              fontSize: TAU_FONT,
+              lineHeight: 1,
+              color: ink,
+              textShadow: `0 0 60px ${accent}26`
             },
-            children: line.text
+            children: "\u03C4"
           }
         )
       }
-    )
-  ] });
-};
-
-// src/paper.ts
-var PAPER = "#F3EEE4";
-var INK = "#17140F";
-var RED2 = "#C8402A";
-var MUTED2 = "#6F675C";
-var RULE = "rgba(23,20,15,.16)";
-var FONT2 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif';
-var MONO2 = '"JetBrains Mono", "Roboto Mono", "DIN Alternate", monospace';
-var SERIF = 'Georgia, "Times New Roman", "Noto Serif", serif';
-var CLAMP2 = {
-  extrapolateLeft: "clamp",
-  extrapolateRight: "clamp"
-};
-var EASE_OUT2 = Easing.out(Easing.cubic);
-var EASE_IN_OUT2 = Easing.inOut(Easing.cubic);
-
-// src/components/PaperBackdrop.tsx
-var import_jsx_runtime65 = __toESM(require_jsx_runtime());
-var PaperBackdrop = () => {
-  useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(AbsoluteFill, { style: { backgroundColor: PAPER }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-      AbsoluteFill,
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "svg",
       {
-        style: {
-          background: "radial-gradient(ellipse at 50% 38%, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 68%)"
-        }
+        width: 1920,
+        height: 1080,
+        style: { position: "absolute", inset: 0, pointerEvents: "none", opacity: tauOpacity },
+        children: /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+          "ellipse",
+          {
+            cx: 960,
+            cy: TAU_VIS_CY,
+            rx: 220,
+            ry: 200,
+            fill: "none",
+            stroke: accent,
+            strokeWidth: 2.5,
+            pathLength: 1,
+            strokeDasharray: 1,
+            strokeDashoffset: 1 - ellipseP,
+            transform: `rotate(-7 960 ${TAU_VIS_CY})`
+          }
+        )
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          backgroundImage: "radial-gradient(rgba(23,20,15,.13) 1px, transparent 1px)",
-          backgroundSize: "26px 26px",
-          opacity: 0.5
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 44,
-          top: 44,
-          right: 44,
-          bottom: 44,
-          border: `1px solid ${INK}26`
-        }
-      }
-    ),
-    [
-      { left: 44, top: 44, borderLeft: `1.5px solid ${INK}`, borderTop: `1.5px solid ${INK}` },
-      { right: 44, top: 44, borderRight: `1.5px solid ${INK}`, borderTop: `1.5px solid ${INK}` },
-      { left: 44, bottom: 44, borderLeft: `1.5px solid ${INK}`, borderBottom: `1.5px solid ${INK}` },
-      { right: 44, bottom: 44, borderRight: `1.5px solid ${INK}`, borderBottom: `1.5px solid ${INK}` }
-    ].map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { style: { position: "absolute", width: 18, height: 18, ...c2 } }, i)),
-    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 120,
-          top: 72,
-          fontFamily: MONO2,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: MUTED2
-        },
-        children: "TECH NOTE / 01"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 120,
-          top: 72,
-          fontFamily: MONO2,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: MUTED2
-        },
-        children: "2026.05.25"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 122,
-          top: 108,
-          width: 18,
-          height: 18,
-          opacity: 0.7
-        },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: 8,
-                top: 0,
-                width: 1,
-                height: 18,
-                background: RED2
-              }
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: 0,
-                top: 8,
-                width: 18,
-                height: 1,
-                background: RED2
-              }
-            }
-          )
-        ]
-      }
-    )
-  ] });
-};
-
-// src/components/CaptionPaper.tsx
-var import_jsx_runtime66 = __toESM(require_jsx_runtime());
-var CaptionPaper = ({
-  color = INK,
-  scrim = "243,238,228"
-}) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const t = frame / fps;
-  const line = CAPTIONS.find((c2) => t >= c2.start && t < c2.end);
-  if (!line) return null;
-  const inP = interpolate(t, [line.start, line.start + 0.22], [0, 1], CLAMP2);
-  const outP = interpolate(t, [line.end - 0.22, line.end], [1, 0], CLAMP2);
-  const opacity = Math.min(inP, outP);
-  return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(AbsoluteFill, { style: { pointerEvents: "none" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
       "div",
       {
         style: {
           position: "absolute",
           left: 0,
           right: 0,
-          bottom: 0,
-          height: 240,
-          background: `linear-gradient(180deg, rgba(${scrim},0) 0%, rgba(${scrim},.86) 55%, rgba(${scrim},1) 100%)`,
-          opacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 180,
-          right: 180,
-          bottom: 88,
-          display: "flex",
-          justifyContent: "center"
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: FONT2,
-              fontSize: 42,
-              lineHeight: 1.5,
-              fontWeight: 500,
-              letterSpacing: 1,
-              color,
-              textAlign: "center",
-              opacity,
-              transform: `translateY(${(1 - opacity) * 8}px)`
-            },
-            children: line.text
-          }
-        )
-      }
-    )
-  ] });
-};
-
-// src/looks/blueprint.ts
-var PAPER2 = "#0A2A46";
-var INK2 = "#EAF3FA";
-var RED3 = "#FF7A4D";
-var MUTED3 = "#8FB3CC";
-var RULE2 = "rgba(234,243,250,.16)";
-var FONT3 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO3 = '"JetBrains Mono", "Roboto Mono", monospace';
-var SERIF2 = 'Georgia, "Times New Roman", serif';
-var CLAMP3 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT3 = Easing.out(Easing.cubic);
-var EASE_IN_OUT3 = Easing.inOut(Easing.cubic);
-
-// src/components/BlueprintBackdrop.tsx
-var import_jsx_runtime67 = __toESM(require_jsx_runtime());
-var BlueprintBackdrop = () => {
-  return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(AbsoluteFill, { style: { backgroundColor: PAPER2 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          backgroundImage: "linear-gradient(rgba(234,243,250,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(234,243,250,.055) 1px, transparent 1px)",
-          backgroundSize: "40px 40px"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          backgroundImage: "linear-gradient(rgba(234,243,250,.10) 1px, transparent 1px), linear-gradient(90deg, rgba(234,243,250,.10) 1px, transparent 1px)",
-          backgroundSize: "200px 200px"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 44,
-          top: 44,
-          right: 44,
-          bottom: 44,
-          border: `1px solid ${INK2}55`
-        }
-      }
-    ),
-    [
-      { left: 44, top: 44, borderLeft: `1.5px solid ${INK2}`, borderTop: `1.5px solid ${INK2}` },
-      { right: 44, top: 44, borderRight: `1.5px solid ${INK2}`, borderTop: `1.5px solid ${INK2}` },
-      { left: 44, bottom: 44, borderLeft: `1.5px solid ${INK2}`, borderBottom: `1.5px solid ${INK2}` },
-      { right: 44, bottom: 44, borderRight: `1.5px solid ${INK2}`, borderBottom: `1.5px solid ${INK2}` }
-    ].map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime67.jsx)("div", { style: { position: "absolute", width: 18, height: 18, ...c2 } }, i)),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 120,
-          top: 72,
-          fontFamily: MONO3,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: MUTED3
-        },
-        children: "DWG. TAU-01 / SHEET 1 OF 1"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 120,
-          top: 72,
-          fontFamily: MONO3,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: RED3
-        },
-        children: "SCALE 1:1"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 122,
-          top: 108,
-          width: 18,
-          height: 18,
-          opacity: 0.85
+          top: TITLE_TOP,
+          height: 158,
+          overflow: "hidden"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime67.jsx)("div", { style: { position: "absolute", left: 8, top: 0, width: 1, height: 18, background: RED3 } }),
-          /* @__PURE__ */ (0, import_jsx_runtime67.jsx)("div", { style: { position: "absolute", left: 0, top: 8, width: 18, height: 1, background: RED3 } })
-        ]
-      }
-    )
-  ] });
-};
-
-// src/looks/warm.ts
-var PAPER3 = "#F6E9D6";
-var INK3 = "#243029";
-var RED4 = "#D9542B";
-var MUTED4 = "#7C6A55";
-var RULE3 = "rgba(36,48,41,.16)";
-var FONT4 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO4 = '"JetBrains Mono", "Roboto Mono", monospace';
-var SERIF3 = 'Georgia, "Times New Roman", "Songti SC", serif';
-var CLAMP4 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT4 = Easing.out(Easing.cubic);
-var EASE_IN_OUT4 = Easing.inOut(Easing.cubic);
-
-// src/components/WarmBackdrop.tsx
-var import_jsx_runtime68 = __toESM(require_jsx_runtime());
-var WarmBackdrop = () => {
-  return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
-    AbsoluteFill,
-    {
-      style: {
-        background: `linear-gradient(165deg, #FBF3E6 0%, ${PAPER3} 52%, #EFDAC0 100%)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-          AbsoluteFill,
-          {
-            style: {
-              background: "radial-gradient(ellipse at 22% 18%, rgba(255,255,255,.7) 0%, rgba(255,255,255,0) 55%)"
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-          AbsoluteFill,
-          {
-            style: {
-              background: "radial-gradient(ellipse at 86% 92%, rgba(217,84,43,.10) 0%, rgba(217,84,43,0) 58%)"
-            }
-          }
-        ),
-        [300, 540, 780].map((y) => /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 120,
-              right: 120,
-              top: y,
-              height: 1,
-              background: "rgba(36,48,41,.05)"
-            }
-          },
-          y
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 120,
-              top: 74,
-              fontFamily: MONO4,
-              fontSize: 16,
-              letterSpacing: 3.2,
-              color: MUTED4
-            },
-            children: "TAU / A FIELD NOTE"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              right: 120,
-              top: 74,
-              fontFamily: MONO4,
-              fontSize: 16,
-              letterSpacing: 3.2,
-              color: MUTED4
-            },
-            children: "NO. 01 \u2014 2026"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 120,
-              top: 112,
-              width: 56,
-              height: 6,
-              background: RED4
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              right: 120,
-              bottom: 60,
-              fontFamily: MONO4,
-              fontSize: 14,
-              letterSpacing: 2,
-              color: `${INK3}66`
-            },
-            children: "1920 \xD7 1080 \xB7 30 FPS"
-          }
-        )
-      ]
-    }
-  );
-};
-
-// src/looks/swiss.ts
-var PAPER4 = "#FFFFFF";
-var INK4 = "#0B0B0B";
-var RED5 = "#E30613";
-var MUTED5 = "#6E6E6E";
-var RULE4 = "rgba(11,11,11,.14)";
-var FONT5 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO5 = '"JetBrains Mono", "Roboto Mono", monospace';
-var CLAMP5 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT5 = Easing.out(Easing.cubic);
-var EASE_IN_OUT5 = Easing.inOut(Easing.cubic);
-
-// src/components/SwissBackdrop.tsx
-var import_jsx_runtime69 = __toESM(require_jsx_runtime());
-var SwissBackdrop = () => {
-  return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { backgroundColor: "#FFFFFF" }, children: [
-    [480, 960, 1440].map((x) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: x,
-          top: 0,
-          width: 1,
-          height: 1080,
-          background: "rgba(11,11,11,.06)"
-        }
-      },
-      x
-    )),
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 96,
-          top: 64,
-          fontFamily: MONO5,
-          fontSize: 15,
-          letterSpacing: 4,
-          color: INK4
-        },
-        children: "01 / TAU"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 96,
-          top: 64,
-          fontFamily: MONO5,
-          fontSize: 15,
-          letterSpacing: 4,
-          color: INK4
-        },
-        children: "2026"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 96,
-          top: 92,
-          width: 64,
-          height: 64,
-          background: RED5
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 96,
-          bottom: 56,
-          fontFamily: MONO5,
-          fontSize: 14,
-          letterSpacing: 3,
-          color: "rgba(11,11,11,.45)"
-        },
-        children: "HUAWEI \xB7 IEEE ISCAS 2026"
-      }
-    )
-  ] });
-};
-
-// src/looks/black.ts
-var PAPER5 = "#000000";
-var INK5 = "#F4F1EA";
-var RED6 = "#E5484D";
-var MUTED6 = "#8A8578";
-var RULE5 = "rgba(244,241,234,.14)";
-var FONT6 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO6 = '"JetBrains Mono", "Roboto Mono", monospace';
-var SERIF4 = 'Georgia, "Times New Roman", serif';
-var CLAMP6 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT6 = Easing.out(Easing.cubic);
-var EASE_IN_OUT6 = Easing.inOut(Easing.cubic);
-
-// src/components/BlackBackdrop.tsx
-var import_jsx_runtime70 = __toESM(require_jsx_runtime());
-var BlackBackdrop = () => {
-  return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(AbsoluteFill, { style: { backgroundColor: "#000000" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          background: "radial-gradient(ellipse at 34% 26%, rgba(255,255,255,.05) 0%, rgba(255,255,255,0) 58%)"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          backgroundImage: "linear-gradient(rgba(244,241,234,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(244,241,234,.045) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          maskImage: "radial-gradient(ellipse at 50% 44%, black 8%, rgba(0,0,0,.55) 62%, transparent 92%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 44%, black 8%, rgba(0,0,0,.55) 62%, transparent 92%)"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 44,
-          top: 44,
-          right: 44,
-          bottom: 44,
-          border: `1px solid ${INK5}22`
-        }
-      }
-    ),
-    [
-      { left: 44, top: 44, borderLeft: `1.5px solid ${INK5}aa`, borderTop: `1.5px solid ${INK5}aa` },
-      { right: 44, top: 44, borderRight: `1.5px solid ${INK5}aa`, borderTop: `1.5px solid ${INK5}aa` },
-      { left: 44, bottom: 44, borderLeft: `1.5px solid ${INK5}aa`, borderBottom: `1.5px solid ${INK5}aa` },
-      { right: 44, bottom: 44, borderRight: `1.5px solid ${INK5}aa`, borderBottom: `1.5px solid ${INK5}aa` }
-    ].map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { style: { position: "absolute", width: 18, height: 18, ...c2 } }, i)),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 120,
-          top: 72,
-          fontFamily: MONO6,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: MUTED6
-        },
-        children: "TAU / 01 \u2014 \u6362\u5C3A\u5B50"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 120,
-          top: 72,
-          fontFamily: MONO6,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: MUTED6
-        },
-        children: "2026.05.25"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 122,
-          top: 108,
-          width: 18,
-          height: 18
-        },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { style: { position: "absolute", left: 8, top: 0, width: 1, height: 18, background: RED6 } }),
-          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { style: { position: "absolute", left: 0, top: 8, width: 18, height: 1, background: RED6 } })
-        ]
-      }
-    )
-  ] });
-};
-
-// src/components/ThemeBackdrop.tsx
-var import_jsx_runtime71 = __toESM(require_jsx_runtime());
-var ThemeBackdrop = ({
-  bg,
-  ink,
-  accent,
-  muted,
-  header,
-  right,
-  scanlines
-}) => {
-  const frame = useCurrentFrame();
-  const band = scanlines ? interpolate(frame % 150, [0, 150], [-120, 1200], CLAMP2) : 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(AbsoluteFill, { style: { backgroundColor: bg }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          background: `radial-gradient(ellipse at 34% 24%, ${accent}12 0%, ${accent}00 58%)`
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          backgroundImage: `linear-gradient(${ink}0a 1px, transparent 1px), linear-gradient(90deg, ${ink}0a 1px, transparent 1px)`,
-          backgroundSize: "64px 64px",
-          maskImage: "radial-gradient(ellipse at 50% 44%, black 8%, rgba(0,0,0,.55) 62%, transparent 92%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 44%, black 8%, rgba(0,0,0,.55) 62%, transparent 92%)"
-        }
-      }
-    ),
-    scanlines && /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(import_jsx_runtime71.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-        AbsoluteFill,
-        {
-          style: {
-            backgroundImage: "repeating-linear-gradient(0deg, rgba(0,0,0,.34) 0px, rgba(0,0,0,.34) 1px, transparent 1px, transparent 3px)",
-            opacity: 0.7
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: band,
-            height: 120,
-            background: `linear-gradient(180deg, ${ink}00, ${ink}12, ${ink}00)`
-          }
-        }
-      )
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 44,
-          top: 44,
-          right: 44,
-          bottom: 44,
-          border: `1px solid ${ink}22`
-        }
-      }
-    ),
-    [
-      { left: 44, top: 44, borderLeft: `1.5px solid ${ink}aa`, borderTop: `1.5px solid ${ink}aa` },
-      { right: 44, top: 44, borderRight: `1.5px solid ${ink}aa`, borderTop: `1.5px solid ${ink}aa` },
-      { left: 44, bottom: 44, borderLeft: `1.5px solid ${ink}aa`, borderBottom: `1.5px solid ${ink}aa` },
-      { right: 44, bottom: 44, borderRight: `1.5px solid ${ink}aa`, borderBottom: `1.5px solid ${ink}aa` }
-    ].map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { position: "absolute", width: 18, height: 18, ...c2 } }, i)),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 120,
-          top: 72,
-          fontFamily: MONO2,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: muted
-        },
-        children: header
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 120,
-          top: 72,
-          fontFamily: MONO2,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: muted
-        },
-        children: right
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { position: "absolute", right: 122, top: 108, width: 18, height: 18 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { position: "absolute", left: 8, top: 0, width: 1, height: 18, background: accent } }),
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { position: "absolute", left: 0, top: 8, width: 18, height: 1, background: accent } })
-    ] })
-  ] });
-};
-
-// src/looks/noir.ts
-var PAPER6 = "#000000";
-var INK6 = "#F2EDE4";
-var RED7 = "#E0A94A";
-var MUTED7 = "#8A8272";
-var RULE6 = "rgba(242,237,228,.12)";
-var FONT7 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO7 = '"JetBrains Mono", "Roboto Mono", monospace';
-var SERIF5 = 'Georgia, "Times New Roman", serif';
-var CLAMP7 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT7 = Easing.out(Easing.cubic);
-var EASE_IN_OUT7 = Easing.inOut(Easing.cubic);
-
-// src/components/NoirBackdrop.tsx
-var import_jsx_runtime72 = __toESM(require_jsx_runtime());
-var MASK = "radial-gradient(ellipse at 50% 46%, black 6%, rgba(0,0,0,.58) 60%, transparent 92%)";
-var NoirBackdrop = ({
-  variant,
-  ink,
-  accent,
-  muted,
-  header,
-  right,
-  label: label3
-}) => {
-  const frame = useCurrentFrame();
-  const chromeIn = interpolate(frame, [4, 26], [0, 1], {
-    ...CLAMP7,
-    easing: (t) => 1 - Math.pow(1 - t, 3)
-  });
-  const breathe = interpolate(frame % 300, [0, 150, 300], [0.62, 1, 0.62], CLAMP7);
-  const bandY = interpolate(frame % 240, [0, 240], [-160, 1180], CLAMP7);
-  return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(AbsoluteFill, { style: { backgroundColor: "#000000" }, children: [
-    variant === "dots" && /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(import_jsx_runtime72.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        AbsoluteFill,
-        {
-          style: {
-            backgroundImage: `radial-gradient(${ink}2e 1.15px, transparent 1.35px)`,
-            backgroundSize: "34px 34px",
-            backgroundPosition: "18px 18px",
-            maskImage: MASK,
-            WebkitMaskImage: MASK
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        AbsoluteFill,
-        {
-          style: {
-            background: "radial-gradient(ellipse at 32% 24%, rgba(255,255,255,.045) 0%, rgba(255,255,255,0) 56%)"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 120,
-            right: 120,
-            top: 130,
-            height: 1,
-            background: `${ink}1c`,
-            transform: `scaleX(${chromeIn})`,
-            transformOrigin: "left"
-          }
-        }
-      )
-    ] }),
-    variant === "glow" && /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(import_jsx_runtime72.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        AbsoluteFill,
-        {
-          style: {
-            background: `radial-gradient(ellipse at 30% 30%, ${accent}1f 0%, ${accent}00 58%)`,
-            opacity: breathe
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        AbsoluteFill,
-        {
-          style: {
-            background: `radial-gradient(ellipse at 82% 76%, ${ink}14 0%, ${ink}00 52%)`,
-            opacity: 0.9
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        AbsoluteFill,
-        {
-          style: {
-            background: "radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0) 34%, rgba(0,0,0,.62) 100%)"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 120,
-            right: 120,
-            top: 130,
-            height: 1,
-            background: `linear-gradient(90deg, ${accent}00, ${accent}66, ${accent}00)`,
-            opacity: chromeIn * 0.8
-          }
-        }
-      )
-    ] }),
-    variant === "lines" && /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(import_jsx_runtime72.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        AbsoluteFill,
-        {
-          style: {
-            backgroundImage: `repeating-linear-gradient(0deg, ${ink}0f 0px, ${ink}0f 1px, transparent 1px, transparent 7px)`,
-            maskImage: MASK,
-            WebkitMaskImage: MASK
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        AbsoluteFill,
-        {
-          style: {
-            background: `radial-gradient(ellipse at 50% 12%, ${accent}14 0%, ${accent}00 62%)`,
-            opacity: breathe
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: bandY,
-            height: 160,
-            background: `linear-gradient(180deg, ${accent}00, ${accent}12, ${accent}00)`,
-            opacity: 0.75
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 120,
-            top: 160,
-            width: 1,
-            height: 780,
-            background: `${ink}1e`,
-            transform: `scaleY(${chromeIn})`,
-            transformOrigin: "top"
-          }
-        }
-      )
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 120,
-          top: 72,
-          fontFamily: MONO7,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: muted,
-          opacity: chromeIn
-        },
-        children: header
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          right: 120,
-          top: 72,
-          fontFamily: MONO7,
-          fontSize: 16,
-          letterSpacing: 3.2,
-          color: muted,
-          opacity: chromeIn
-        },
-        children: right
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { position: "absolute", right: 118, top: 108, width: 18, height: 18, opacity: chromeIn }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { position: "absolute", left: 8, top: 0, width: 1, height: 18, background: accent } }),
-      /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { position: "absolute", left: 0, top: 8, width: 18, height: 1, background: accent } })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 120,
-          top: 100,
-          fontFamily: MONO7,
-          fontSize: 13,
-          letterSpacing: 2.4,
-          color: `${muted}`,
-          opacity: 0.75 * chromeIn
-        },
-        children: label3
-      }
-    )
-  ] });
-};
-
-// src/scenes/S1.tsx
-var import_jsx_runtime73 = __toESM(require_jsx_runtime());
-var DIE = { left: 700, top: 280, size: 520 };
-var RAIL_Y = 118;
-var TICKS = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 110, [0, 110], [0, DIE.size], CLAMP);
-  const cells = Array.from({ length: 100 }, (_, i) => i);
-  return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE.left,
-        top: DIE.top,
-        width: DIE.size,
-        height: DIE.size,
-        borderRadius: 22,
-        border: `1px solid ${CYAN}3d`,
-        background: "linear-gradient(155deg, #0C1828 0%, #070E1B 100%)",
-        boxShadow: `0 0 90px rgba(43,227,201,.10), inset 0 0 60px rgba(43,227,201,.05)`,
-        overflow: "hidden"
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 24,
-              display: "grid",
-              gridTemplateColumns: "repeat(10, 1fr)",
-              gap: 4
-            },
-            children: cells.map((i) => {
-              const row = Math.floor(i / 10);
-              const col = i % 10;
-              const hot = (row * 7 + col * 5) % 13 < 4;
-              const amber = (row * 3 + col * 11) % 29 === 0;
-              return /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-                "div",
-                {
-                  style: {
-                    borderRadius: 3,
-                    background: amber ? `${AMBER}2e` : hot ? `${CYAN}26` : "rgba(255,255,255,.035)",
-                    border: `1px solid ${hot ? `${CYAN}33` : "rgba(255,255,255,.04)"}`
-                  }
-                },
-                i
-              );
-            })
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 2,
-              background: `linear-gradient(90deg, transparent, ${CYAN}88 18%, ${CYAN}aa 50%, ${CYAN}88 82%, transparent)`,
-              opacity: 0.55
-            }
-          }
-        ),
-        [
-          { left: 14, top: 14, borderLeft: `2px solid ${CYAN}aa`, borderTop: `2px solid ${CYAN}aa` },
-          { right: 14, top: 14, borderRight: `2px solid ${CYAN}aa`, borderTop: `2px solid ${CYAN}aa` },
-          { left: 14, bottom: 14, borderLeft: `2px solid ${CYAN}aa`, borderBottom: `2px solid ${CYAN}aa` },
-          { right: 14, bottom: 14, borderRight: `2px solid ${CYAN}aa`, borderBottom: `2px solid ${CYAN}aa` }
-        ].map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { position: "absolute", width: 22, height: 22, ...c2 } }, i)),
-        /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              borderRadius: 22,
-              boxShadow: `inset 0 0 70px ${RED}66`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1 = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.035], CLAMP);
-  const lineP = interpolate(frame, [0, 34], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const lineY = 540;
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [96, 664]);
-  const rightX = interpolate(enter, [0, 1], [1790, 1222]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 153, 172, 196], [0, 1, 0.55, 0], CLAMP);
-  const retract = interpolate(frame, [242, 268], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const jawShift = retract * 90;
-  const railOpacity = interpolate(frame, [240, 268], [1, 0], CLAMP);
-  const sceneB = interpolate(frame, [70, 90, 250, 268], [0, 1, 1, 0], CLAMP);
-  const sweepX = interpolate(frame, [208, 256], [-320, 2200], { ...CLAMP, easing: EASE_IN_OUT });
-  const sweepOpacity = interpolate(frame, [206, 214, 250, 258], [0, 1, 1, 0], CLAMP);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 20) / 260));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 13, stiffness: 88, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.62, 1], CLAMP);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP);
-  const tauBlur = interpolate(tauIn, [0, 1], [24, 0], CLAMP);
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const lineIn = interpolate(frame, [292, 312], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const kickerIn = interpolate(frame, [286, 304], [0, 1], CLAMP);
-  const subIn = interpolate(frame, [298, 316], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 260,
-          right: 260,
-          top: lineY,
-          height: 2,
-          background: `linear-gradient(90deg, transparent, ${CYAN}cc, transparent)`,
-          transform: `scaleX(${lineP})`,
-          opacity: 1 - sceneB,
-          boxShadow: `0 0 24px ${CYAN}66`
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP),
-            transform: `scale(${interpolate(frame, [75, 110], [0.94, 1], {
-              ...CLAMP,
-              easing: EASE_OUT
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Die, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { opacity: railOpacity }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 180,
-              width: 1560,
-              top: RAIL_Y,
-              height: 10,
-              borderRadius: 5,
-              background: "linear-gradient(180deg, #46566F 0%, #223047 55%, #151E2E 100%)",
-              boxShadow: "0 2px 14px rgba(0,0,0,.5)"
-            }
-          }
-        ),
-        Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 190 + i * 25,
-              top: RAIL_Y + 10,
-              width: 1,
-              height: i % 5 === 0 ? 14 : 8,
-              backgroundColor: "rgba(255,255,255,.22)"
-            }
-          },
-          i
-        )),
-        TICKS.map((t, i) => {
-          const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP);
-          const isThird = i === 2;
-          const redMix = isThird ? clampPulse : 0;
-          const color = redMix > 0.5 ? RED : lit > 0.5 ? CYAN : MUTED;
-          return /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
             "div",
             {
               style: {
-                position: "absolute",
-                left: t.x - 40,
-                top: RAIL_Y - 48,
-                width: 80,
-                textAlign: "center",
-                fontFamily: MONO,
-                fontSize: 26,
-                letterSpacing: 2,
-                color,
-                opacity: lit * tickErase(t.x),
-                textShadow: lit > 0.5 ? `0 0 18px ${color}66` : "none"
-              },
-              children: t.label
-            },
-            t.label
-          );
-        })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX - jawShift + jitter,
-            top: 162,
-            width: 34,
-            height: 646,
-            borderRadius: 5,
-            background: "linear-gradient(90deg, #4A5A76 0%, #2A3850 48%, #1A2434 100%)",
-            border: "1px solid rgba(255,255,255,.14)",
-            boxShadow: "0 10px 30px rgba(0,0,0,.45)"
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -78,
-                bottom: 0,
-                width: 78,
-                height: 22,
-                background: "linear-gradient(180deg, #3B4A63, #1B2536)",
-                borderTop: "1px solid rgba(255,255,255,.14)"
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX + jawShift - jitter,
-            top: 162,
-            width: 34,
-            height: 646,
-            borderRadius: 5,
-            background: "linear-gradient(270deg, #4A5A76 0%, #2A3850 48%, #1A2434 100%)",
-            border: "1px solid rgba(255,255,255,.14)",
-            boxShadow: "0 10px 30px rgba(0,0,0,.45)"
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -78,
-                bottom: 0,
-                width: 78,
-                height: 22,
-                background: "linear-gradient(180deg, #3B4A63, #1B2536)",
-                borderTop: "1px solid rgba(255,255,255,.14)"
-              }
-            }
-          )
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          top: 60,
-          left: sweepX,
-          width: 260,
-          height: 960,
-          transform: "skewX(-11deg)",
-          background: "linear-gradient(90deg, rgba(43,227,201,0) 0%, rgba(43,227,201,.14) 38%, rgba(255,255,255,.5) 50%, rgba(43,227,201,.14) 62%, rgba(43,227,201,0) 100%)",
-          opacity: sweepOpacity,
-          mixBlendMode: "screen"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 250,
-          top: 130,
-          width: 720,
-          height: 800,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`,
-          filter: `blur(${tauBlur}px)`
-        },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                width: 640,
-                height: 640,
-                borderRadius: "50%",
-                background: `radial-gradient(circle, ${CYAN}2e 0%, ${CYAN}0d 48%, transparent 72%)`
-              }
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-            "div",
-            {
-              style: {
-                fontFamily: FONT,
-                fontSize: 580,
-                fontWeight: 300,
-                lineHeight: 1,
-                color: "#fff",
-                textShadow: `0 0 110px ${CYAN}55, 0 0 32px ${CYAN}44`
-              },
-              children: "\u03C4"
-            }
-          )
-        ]
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1e3,
-          top: 320,
-          width: 780
-        },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-            "div",
-            {
-              style: {
-                fontFamily: MONO,
-                fontSize: 22,
-                letterSpacing: 3.4,
-                color: CYAN,
-                opacity: kickerIn,
-                transform: `translateX(${(1 - kickerIn) * -18}px)`
-              },
-              children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { overflow: "hidden", marginTop: 22 }, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-            "div",
-            {
-              style: {
-                fontFamily: FONT,
-                fontSize: 108,
+                fontFamily: font,
+                fontSize: 120,
                 fontWeight: 800,
-                letterSpacing: 4,
+                letterSpacing: 2,
                 lineHeight: 1.16,
-                color: TEXT,
-                transform: `translateY(${(1 - titleIn) * 100}%)`
+                textAlign: "center",
+                color: ink,
+                transform: `translateY(${(1 - titleIn) * 104}%)`
               },
               children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
             }
-          ) }),
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+          ),
+          sweepO > 1e-3 && /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
             "div",
             {
               style: {
-                marginTop: 30,
-                width: 260,
+                position: "absolute",
+                left: sweepX,
+                top: 0,
+                width: 150,
+                height: 158,
+                transform: "skewX(-14deg)",
+                background: `linear-gradient(90deg, ${ink}00, ${ink}14, ${ink}00)`,
+                opacity: sweepO
+              }
+            }
+          )
+        ]
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 960 - 120,
+          top: 756,
+          width: 240,
+          height: 3,
+          background: accent,
+          transform: `scaleX(${lineIn})`,
+          transformOrigin: "center"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 794,
+          textAlign: "center",
+          fontFamily: mono,
+          fontSize: 18.5,
+          letterSpacing: 5,
+          color: muted,
+          opacity: metaIn,
+          transform: `translateY(${(1 - metaIn) * 14}px)`
+        },
+        children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          right: 120,
+          bottom: 96,
+          textAlign: "right",
+          opacity: dateIn,
+          transform: `translateY(${(1 - dateIn) * 10}px)`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+            "div",
+            {
+              style: {
+                marginLeft: "auto",
+                width: 34,
                 height: 2,
-                background: `linear-gradient(90deg, ${CYAN}, rgba(43,227,201,.15), transparent)`,
-                transform: `scaleX(${lineIn})`,
-                transformOrigin: "left"
+                background: accent,
+                marginBottom: 12
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
             "div",
             {
               style: {
-                marginTop: 26,
-                fontFamily: MONO,
-                fontSize: 24,
-                letterSpacing: 6,
-                color: MUTED,
-                opacity: subIn
+                fontFamily: mono,
+                fontSize: 17,
+                letterSpacing: 3.2,
+                color: muted
               },
               children: "2026.05.25"
             }
           )
         ]
       }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 944,
-          top: 300,
-          width: 1,
-          height: 500,
-          background: `linear-gradient(180deg, transparent, ${CYAN}66, transparent)`,
-          opacity: interpolate(frame, [286, 306], [0, 0.8], CLAMP)
-        }
-      }
     )
   ] });
 };
 
-// src/scenes/S1Paper.tsx
-var import_jsx_runtime74 = __toESM(require_jsx_runtime());
-var DIE2 = { left: 700, top: 300, size: 500 };
-var RAIL_Y2 = 170;
-var TICKS2 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die2 = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE2.size], CLAMP2);
-  return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE2.left,
-        top: DIE2.top,
-        width: DIE2.size,
-        height: DIE2.size,
-        border: `2px solid ${INK}`,
-        background: PAPER,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? RED2 : INK
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO2,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED2
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${RED2}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Paper = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP2);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP2, easing: EASE_IN_OUT2 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP2);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP2);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP2);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP2);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP2, easing: EASE_IN_OUT2 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP2);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP2);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP2, easing: EASE_IN_OUT2 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP2);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP2);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP2);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP2, easing: EASE_IN_OUT2 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP2);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP2, easing: EASE_IN_OUT2 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP2);
-  return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED2,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED2,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP2),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP2,
-              easing: EASE_OUT2
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(Die2, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y2,
-            width: 1520,
-            height: 2,
-            background: INK
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y2 - 8,
-            width: 2,
-            height: 18,
-            background: INK
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y2 - 8,
-            width: 2,
-            height: 18,
-            background: INK
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y2 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK}aa` : `${INK}55`
-          }
-        },
-        i
-      )),
-      TICKS2.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP2);
-        return /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO2,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? RED2 : MUTED2,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK}`,
-            background: PAPER
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK}`,
-                borderLeft: "none",
-                background: PAPER
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK}`,
-            background: PAPER
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK}`,
-                borderRight: "none",
-                background: PAPER
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: RED2,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${RED2}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED2,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED2,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER,
-          borderLeft: `3px solid ${RED2}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: SERIF,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: RED2,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO2,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: RED2,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT2,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: RED2,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO2,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED2,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/scenes/S1Blueprint.tsx
-var import_jsx_runtime75 = __toESM(require_jsx_runtime());
-var DIE3 = { left: 700, top: 300, size: 500 };
-var RAIL_Y3 = 170;
-var TICKS3 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die3 = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE3.size], CLAMP3);
-  return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE3.left,
-        top: DIE3.top,
-        width: DIE3.size,
-        height: DIE3.size,
-        border: `2px solid ${INK2}`,
-        background: PAPER2,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE2} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE2} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK2}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? RED3 : INK2
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK2}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO3,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED3
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${RED3}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Blueprint = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP3);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP3, easing: EASE_IN_OUT3 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP3);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP3);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP3);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP3);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP3, easing: EASE_IN_OUT3 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP3);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP3);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP3, easing: EASE_IN_OUT3 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP3);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP3);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP3);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP3, easing: EASE_IN_OUT3 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP3);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP3, easing: EASE_IN_OUT3 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP3);
-  return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK2,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED3,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED3,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP3),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP3,
-              easing: EASE_OUT3
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Die3, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y3,
-            width: 1520,
-            height: 2,
-            background: INK2
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y3 - 8,
-            width: 2,
-            height: 18,
-            background: INK2
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y3 - 8,
-            width: 2,
-            height: 18,
-            background: INK2
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y3 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK2}aa` : `${INK2}55`
-          }
-        },
-        i
-      )),
-      TICKS3.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP3);
-        return /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO3,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? RED3 : MUTED3,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK2}`,
-            background: PAPER2
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK2}`,
-                borderLeft: "none",
-                background: PAPER2
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK2}`,
-            background: PAPER2
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK2}`,
-                borderRight: "none",
-                background: PAPER2
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: RED3,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${RED3}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED3,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED3,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER2,
-          borderLeft: `3px solid ${RED3}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: SERIF2,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK2
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: RED3,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO3,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: RED3,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT3,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK2,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: RED3,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO3,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED3,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/scenes/S1Warm.tsx
-var import_jsx_runtime76 = __toESM(require_jsx_runtime());
-var DIE4 = { left: 700, top: 300, size: 500 };
-var RAIL_Y4 = 170;
-var TICKS4 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die4 = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE4.size], CLAMP4);
-  return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE4.left,
-        top: DIE4.top,
-        width: DIE4.size,
-        height: DIE4.size,
-        border: `2px solid ${INK3}`,
-        background: PAPER3,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE3} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE3} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK3}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? RED4 : INK3
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK3}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO4,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED4
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${RED4}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Warm = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP4);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP4, easing: EASE_IN_OUT4 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP4);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP4);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP4);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP4);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP4, easing: EASE_IN_OUT4 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP4);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP4);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP4, easing: EASE_IN_OUT4 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP4);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP4);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP4);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP4, easing: EASE_IN_OUT4 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP4);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP4, easing: EASE_IN_OUT4 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP4);
-  return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK3,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED4,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED4,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP4),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP4,
-              easing: EASE_OUT4
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Die4, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y4,
-            width: 1520,
-            height: 2,
-            background: INK3
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y4 - 8,
-            width: 2,
-            height: 18,
-            background: INK3
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y4 - 8,
-            width: 2,
-            height: 18,
-            background: INK3
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y4 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK3}aa` : `${INK3}55`
-          }
-        },
-        i
-      )),
-      TICKS4.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP4);
-        return /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO4,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? RED4 : MUTED4,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK3}`,
-            background: PAPER3
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK3}`,
-                borderLeft: "none",
-                background: PAPER3
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK3}`,
-            background: PAPER3
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK3}`,
-                borderRight: "none",
-                background: PAPER3
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: RED4,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${RED4}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED4,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED4,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER3,
-          borderLeft: `3px solid ${RED4}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: SERIF3,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK3
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: RED4,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO4,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: RED4,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT4,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK3,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: RED4,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO4,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED4,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/scenes/S1Swiss.tsx
-var import_jsx_runtime77 = __toESM(require_jsx_runtime());
-var DIE5 = { left: 700, top: 300, size: 500 };
-var RAIL_Y5 = 170;
-var TICKS5 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die5 = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE5.size], CLAMP5);
-  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE5.left,
-        top: DIE5.top,
-        width: DIE5.size,
-        height: DIE5.size,
-        border: `2px solid ${INK4}`,
-        background: PAPER4,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE4} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE4} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK4}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? RED5 : INK4
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK4}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO5,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED5
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${RED5}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Swiss = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP5);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP5, easing: EASE_IN_OUT5 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP5);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP5);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP5);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP5);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP5, easing: EASE_IN_OUT5 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP5);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP5);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP5, easing: EASE_IN_OUT5 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP5);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP5);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP5);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP5, easing: EASE_IN_OUT5 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP5);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP5, easing: EASE_IN_OUT5 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP5);
-  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK4,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED5,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED5,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP5),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP5,
-              easing: EASE_OUT5
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Die5, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y5,
-            width: 1520,
-            height: 2,
-            background: INK4
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y5 - 8,
-            width: 2,
-            height: 18,
-            background: INK4
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y5 - 8,
-            width: 2,
-            height: 18,
-            background: INK4
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y5 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK4}aa` : `${INK4}55`
-          }
-        },
-        i
-      )),
-      TICKS5.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP5);
-        return /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO5,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? RED5 : MUTED5,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK4}`,
-            background: PAPER4
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK4}`,
-                borderLeft: "none",
-                background: PAPER4
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK4}`,
-            background: PAPER4
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK4}`,
-                borderRight: "none",
-                background: PAPER4
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: RED5,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${RED5}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED5,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED5,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER4,
-          borderLeft: `3px solid ${RED5}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: FONT5,
-              fontSize: 540,
-              lineHeight: 1,
-              color: INK4
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO5,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: RED5,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT5,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK4,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: RED5,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO5,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED5,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/scenes/S1Black.tsx
-var import_jsx_runtime78 = __toESM(require_jsx_runtime());
-var DIE6 = { left: 700, top: 300, size: 500 };
-var RAIL_Y6 = 170;
-var TICKS6 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die6 = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE6.size], CLAMP6);
-  return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE6.left,
-        top: DIE6.top,
-        width: DIE6.size,
-        height: DIE6.size,
-        border: `2px solid ${INK5}`,
-        background: PAPER5,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE5} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE5} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK5}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? RED6 : INK5
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK5}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO6,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED6
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${RED6}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Black = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP6);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP6, easing: EASE_IN_OUT6 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP6);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP6);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP6);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP6);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP6, easing: EASE_IN_OUT6 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP6);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP6);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP6, easing: EASE_IN_OUT6 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP6);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP6);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP6);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP6, easing: EASE_IN_OUT6 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP6);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP6, easing: EASE_IN_OUT6 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP6);
-  return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK5,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED6,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED6,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP6),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP6,
-              easing: EASE_OUT6
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Die6, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y6,
-            width: 1520,
-            height: 2,
-            background: INK5
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y6 - 8,
-            width: 2,
-            height: 18,
-            background: INK5
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y6 - 8,
-            width: 2,
-            height: 18,
-            background: INK5
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y6 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK5}aa` : `${INK5}55`
-          }
-        },
-        i
-      )),
-      TICKS6.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP6);
-        return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO6,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? RED6 : MUTED6,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK5}`,
-            background: PAPER5
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK5}`,
-                borderLeft: "none",
-                background: PAPER5
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK5}`,
-            background: PAPER5
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK5}`,
-                borderRight: "none",
-                background: PAPER5
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: RED6,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${RED6}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED6,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED6,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER5,
-          borderLeft: `3px solid ${RED6}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: SERIF4,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK5
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: RED6,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO6,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: RED6,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT6,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK5,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: RED6,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO6,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED6,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/looks/gold.ts
-var PAPER7 = "#0B0906";
-var INK7 = "#F3E9D2";
-var RED8 = "#E0A94A";
-var MUTED8 = "#9A8767";
-var RULE7 = "rgba(243,233,210,.14)";
-var FONT8 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO8 = '"JetBrains Mono", "Roboto Mono", monospace';
-var SERIF7 = 'Georgia, "Times New Roman", serif';
-var CLAMP8 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT8 = Easing.out(Easing.cubic);
-var EASE_IN_OUT8 = Easing.inOut(Easing.cubic);
-
-// src/scenes/S1Gold.tsx
-var import_jsx_runtime79 = __toESM(require_jsx_runtime());
-var DIE7 = { left: 700, top: 300, size: 500 };
-var RAIL_Y7 = 170;
-var TICKS7 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die7 = ({ frame, clampPulse, accent }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE7.size], CLAMP8);
-  return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE7.left,
-        top: DIE7.top,
-        width: DIE7.size,
-        height: DIE7.size,
-        border: `2px solid ${INK7}`,
-        background: PAPER7,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE7} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE7} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK7}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? accent : INK7
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK7}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO8,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED8
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${accent}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Gold = ({ frame, accent = RED8 }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP8);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP8, easing: EASE_IN_OUT8 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP8);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP8);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP8);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP8);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP8, easing: EASE_IN_OUT8 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP8);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP8);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP8, easing: EASE_IN_OUT8 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP8);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP8);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP8);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP8, easing: EASE_IN_OUT8 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP8);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP8, easing: EASE_IN_OUT8 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP8);
-  return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK7,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: accent,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: accent,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP8),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP8,
-              easing: EASE_OUT8
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Die7, { frame, clampPulse, accent })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y7,
-            width: 1520,
-            height: 2,
-            background: INK7
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y7 - 8,
-            width: 2,
-            height: 18,
-            background: INK7
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y7 - 8,
-            width: 2,
-            height: 18,
-            background: INK7
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y7 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK7}aa` : `${INK7}55`
-          }
-        },
-        i
-      )),
-      TICKS7.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP8);
-        return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO8,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? accent : MUTED8,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK7}`,
-            background: PAPER7
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK7}`,
-                borderLeft: "none",
-                background: PAPER7
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK7}`,
-            background: PAPER7
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK7}`,
-                borderRight: "none",
-                background: PAPER7
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: accent,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${accent}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: accent,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: accent,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER7,
-          borderLeft: `3px solid ${accent}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: SERIF7,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK7
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: accent,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO8,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: accent,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT8,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK7,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: accent,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO8,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED8,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/looks/forest.ts
-var PAPER8 = "#0D231B";
-var INK8 = "#EDE6D4";
-var RED9 = "#D9A05B";
-var MUTED9 = "#8FA79A";
-var RULE8 = "rgba(237,230,212,.14)";
-var FONT9 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO9 = '"JetBrains Mono", "Roboto Mono", monospace';
-var SERIF8 = 'Georgia, "Times New Roman", serif';
-var CLAMP9 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT9 = Easing.out(Easing.cubic);
-var EASE_IN_OUT9 = Easing.inOut(Easing.cubic);
-
-// src/scenes/S1Forest.tsx
-var import_jsx_runtime80 = __toESM(require_jsx_runtime());
-var DIE8 = { left: 700, top: 300, size: 500 };
-var RAIL_Y8 = 170;
-var TICKS8 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die8 = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE8.size], CLAMP9);
-  return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE8.left,
-        top: DIE8.top,
-        width: DIE8.size,
-        height: DIE8.size,
-        border: `2px solid ${INK8}`,
-        background: PAPER8,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE8} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE8} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK8}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? RED9 : INK8
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK8}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO9,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED9
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${RED9}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Forest = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP9);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP9, easing: EASE_IN_OUT9 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP9);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP9);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP9);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP9);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP9, easing: EASE_IN_OUT9 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP9);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP9);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP9, easing: EASE_IN_OUT9 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP9);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP9);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP9);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP9, easing: EASE_IN_OUT9 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP9);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP9, easing: EASE_IN_OUT9 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP9);
-  return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK8,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED9,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED9,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP9),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP9,
-              easing: EASE_OUT9
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(Die8, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y8,
-            width: 1520,
-            height: 2,
-            background: INK8
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y8 - 8,
-            width: 2,
-            height: 18,
-            background: INK8
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y8 - 8,
-            width: 2,
-            height: 18,
-            background: INK8
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y8 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK8}aa` : `${INK8}55`
-          }
-        },
-        i
-      )),
-      TICKS8.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP9);
-        return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO9,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? RED9 : MUTED9,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK8}`,
-            background: PAPER8
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK8}`,
-                borderLeft: "none",
-                background: PAPER8
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK8}`,
-            background: PAPER8
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK8}`,
-                borderRight: "none",
-                background: PAPER8
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: RED9,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${RED9}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED9,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED9,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER8,
-          borderLeft: `3px solid ${RED9}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: SERIF8,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK8
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: RED9,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO9,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: RED9,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT9,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK8,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: RED9,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO9,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED9,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/looks/crt.ts
-var PAPER9 = "#020604";
-var INK9 = "#8CFFB0";
-var RED10 = "#FF5C5C";
-var MUTED10 = "#3E7A57";
-var RULE9 = "rgba(140,255,176,.14)";
-var FONT10 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO10 = '"JetBrains Mono", "Roboto Mono", monospace';
-var CLAMP10 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT10 = Easing.out(Easing.cubic);
-var EASE_IN_OUT10 = Easing.inOut(Easing.cubic);
-
-// src/scenes/S1Crt.tsx
-var import_jsx_runtime81 = __toESM(require_jsx_runtime());
-var DIE9 = { left: 700, top: 300, size: 500 };
-var RAIL_Y9 = 170;
-var TICKS9 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die9 = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE9.size], CLAMP10);
-  return /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE9.left,
-        top: DIE9.top,
-        width: DIE9.size,
-        height: DIE9.size,
-        border: `2px solid ${INK9}`,
-        background: PAPER9,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE9} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE9} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK9}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? RED10 : INK9
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK9}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO10,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED10
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${RED10}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Crt = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP10);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP10, easing: EASE_IN_OUT10 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP10);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP10);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP10);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP10);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP10, easing: EASE_IN_OUT10 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP10);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP10);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP10, easing: EASE_IN_OUT10 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP10);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP10);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP10);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP10, easing: EASE_IN_OUT10 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP10);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP10, easing: EASE_IN_OUT10 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP10);
-  return /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK9,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED10,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED10,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP10),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP10,
-              easing: EASE_OUT10
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(Die9, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y9,
-            width: 1520,
-            height: 2,
-            background: INK9
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y9 - 8,
-            width: 2,
-            height: 18,
-            background: INK9
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y9 - 8,
-            width: 2,
-            height: 18,
-            background: INK9
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y9 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK9}aa` : `${INK9}55`
-          }
-        },
-        i
-      )),
-      TICKS9.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP10);
-        return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO10,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? RED10 : MUTED10,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK9}`,
-            background: PAPER9
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK9}`,
-                borderLeft: "none",
-                background: PAPER9
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK9}`,
-            background: PAPER9
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK9}`,
-                borderRight: "none",
-                background: PAPER9
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: RED10,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${RED10}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED10,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED10,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER9,
-          borderLeft: `3px solid ${RED10}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: MONO10,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK9
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: RED10,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO10,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: RED10,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT10,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK9,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: RED10,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO10,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED10,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/looks/violet.ts
-var PAPER10 = "#130B24";
-var INK10 = "#EFE8FF";
-var RED11 = "#FF8A65";
-var MUTED11 = "#9C93B8";
-var RULE10 = "rgba(239,232,255,.14)";
-var FONT11 = '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", sans-serif';
-var MONO11 = '"JetBrains Mono", "Roboto Mono", monospace';
-var SERIF10 = 'Georgia, "Times New Roman", serif';
-var CLAMP11 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
-var EASE_OUT11 = Easing.out(Easing.cubic);
-var EASE_IN_OUT11 = Easing.inOut(Easing.cubic);
-
-// src/scenes/S1Violet.tsx
-var import_jsx_runtime82 = __toESM(require_jsx_runtime());
-var DIE10 = { left: 700, top: 300, size: 500 };
-var RAIL_Y10 = 170;
-var TICKS10 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die10 = ({ frame, clampPulse }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE10.size], CLAMP11);
-  return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE10.left,
-        top: DIE10.top,
-        width: DIE10.size,
-        height: DIE10.size,
-        border: `2px solid ${INK10}`,
-        background: PAPER10,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE10} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE10} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK10}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? RED11 : INK10
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK10}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO11,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED11
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${RED11}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Violet = ({ frame }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP11);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP11, easing: EASE_IN_OUT11 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP11);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP11);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP11);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP11);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP11, easing: EASE_IN_OUT11 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP11);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP11);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP11, easing: EASE_IN_OUT11 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP11);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP11);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP11);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP11, easing: EASE_IN_OUT11 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP11);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP11, easing: EASE_IN_OUT11 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP11);
-  return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK10,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED11,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: RED11,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP11),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP11,
-              easing: EASE_OUT11
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(Die10, { frame, clampPulse })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y10,
-            width: 1520,
-            height: 2,
-            background: INK10
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y10 - 8,
-            width: 2,
-            height: 18,
-            background: INK10
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y10 - 8,
-            width: 2,
-            height: 18,
-            background: INK10
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y10 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK10}aa` : `${INK10}55`
-          }
-        },
-        i
-      )),
-      TICKS10.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP11);
-        return /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO11,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? RED11 : MUTED11,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK10}`,
-            background: PAPER10
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK10}`,
-                borderLeft: "none",
-                background: PAPER10
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK10}`,
-            background: PAPER10
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK10}`,
-                borderRight: "none",
-                background: PAPER10
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: RED11,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${RED11}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED11,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: RED11,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER10,
-          borderLeft: `3px solid ${RED11}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: SERIF10,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK10
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: RED11,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO11,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: RED11,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT11,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK10,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: RED11,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO11,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED11,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
-// src/scenes/S1Noir.tsx
-var import_jsx_runtime83 = __toESM(require_jsx_runtime());
-var DIE11 = { left: 700, top: 300, size: 500 };
-var RAIL_Y11 = 170;
-var TICKS11 = [
-  { x: 620, label: "7nm" },
-  { x: 960, label: "5nm" },
-  { x: 1300, label: "3nm" }
-];
-var Die11 = ({ frame, clampPulse, accent }) => {
-  const scan = interpolate(frame % 120, [0, 120], [0, DIE11.size], CLAMP7);
-  return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: DIE11.left,
-        top: DIE11.top,
-        width: DIE11.size,
-        height: DIE11.size,
-        border: `2px solid ${INK6}`,
-        background: PAPER6,
-        backgroundImage: `repeating-linear-gradient(0deg, ${RULE6} 0 1px, transparent 1px 50px), repeating-linear-gradient(90deg, ${RULE6} 0 1px, transparent 1px 50px)`
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 22,
-              border: `1px solid ${INK6}55`
-            }
-          }
-        ),
-        [
-          [90, 120],
-          [180, 120],
-          [300, 120],
-          [410, 120],
-          [120, 260],
-          [250, 260],
-          [380, 260],
-          [180, 390],
-          [320, 390]
-        ].map(([x, y], i) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: x,
-              top: y,
-              width: i % 3 === 0 ? 10 : 7,
-              height: i % 3 === 0 ? 10 : 7,
-              background: i % 4 === 0 ? accent : INK6
-            }
-          },
-          i
-        )),
-        /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: scan,
-              height: 1,
-              background: `${INK6}55`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              bottom: 10,
-              fontFamily: MONO7,
-              fontSize: 12,
-              letterSpacing: 2,
-              color: MUTED7
-            },
-            children: "DIE 01"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              boxShadow: `inset 0 0 0 4px ${accent}`,
-              opacity: clampPulse
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-var S1Noir = ({ frame, accent = RED7 }) => {
-  const { fps } = useVideoConfig();
-  const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP7);
-  const ruleP = interpolate(frame, [4, 40], [0, 1], { ...CLAMP7, easing: EASE_IN_OUT7 });
-  const ruleFade = interpolate(frame, [240, 268], [1, 0], CLAMP7);
-  const sceneB = interpolate(frame, [70, 90, 252, 268], [0, 1, 1, 0], CLAMP7);
-  const enter = spring({
-    frame: Math.max(0, frame - 78),
-    fps,
-    config: { damping: 200, stiffness: 58, mass: 0.9 }
-  });
-  const leftX = interpolate(enter, [0, 1], [120, 674]);
-  const rightX = interpolate(enter, [0, 1], [1774, 1226]);
-  const jitterP = interpolate(frame, [150, 152, 162, 168], [0, 1, 1, 0], CLAMP7);
-  const jitter = Math.sin((frame - 150) * 2.4) * 3 * jitterP;
-  const clampPulse = interpolate(frame, [148, 152, 174, 196], [0, 1, 0.6, 0], CLAMP7);
-  const retract = interpolate(frame, [244, 268], [0, 1], { ...CLAMP7, easing: EASE_IN_OUT7 });
-  const jawShift = retract * 90;
-  const stampIn = spring({
-    frame: Math.max(0, frame - 151),
-    fps,
-    config: { damping: 9, stiffness: 210, mass: 0.6 }
-  });
-  const stampScale = interpolate(stampIn, [0, 1], [1.8, 1], CLAMP7);
-  const stampRot = interpolate(stampIn, [0, 1], [-26, -11], CLAMP7);
-  const sweepX = interpolate(frame, [208, 254], [-320, 2140], { ...CLAMP7, easing: EASE_IN_OUT7 });
-  const sweepOpacity = interpolate(frame, [206, 212, 252, 258], [0, 1, 1, 0], CLAMP7);
-  const tickErase = (tickX) => {
-    const p = Math.min(1, Math.max(0, (sweepX - tickX + 10) / 240));
-    return 1 - p;
-  };
-  const tauIn = spring({
-    frame: Math.max(0, frame - 270),
-    fps,
-    config: { damping: 14, stiffness: 90, mass: 0.85 }
-  });
-  const tauScale = interpolate(tauIn, [0, 1], [0.7, 1], CLAMP7);
-  const tauOpacity = interpolate(tauIn, [0, 1], [0, 1], CLAMP7);
-  const ellipseP = interpolate(frame, [282, 318], [0, 1], { ...CLAMP7, easing: EASE_IN_OUT7 });
-  const titleIn = spring({
-    frame: Math.max(0, frame - 278),
-    fps,
-    config: { damping: 16, stiffness: 92, mass: 0.85 }
-  });
-  const kickerIn = interpolate(frame, [288, 306], [0, 1], CLAMP7);
-  const lineIn = interpolate(frame, [294, 314], [0, 1], { ...CLAMP7, easing: EASE_IN_OUT7 });
-  const metaIn = interpolate(frame, [302, 320], [0, 1], CLAMP7);
-  return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { style: { position: "absolute", inset: 0, transform: `scale(${camera})` }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 560,
-          width: 1640,
-          height: 1.5,
-          background: INK6,
-          transform: `scaleX(${ruleP})`,
-          transformOrigin: "left",
-          opacity: ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 140,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: accent,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1778,
-          top: 551,
-          width: 2,
-          height: 20,
-          background: accent,
-          opacity: ruleP * ruleFade
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: sceneB }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            inset: 0,
-            opacity: interpolate(frame, [75, 92], [0, 1], CLAMP7),
-            transform: `scale(${interpolate(frame, [75, 112], [0.96, 1], {
-              ...CLAMP7,
-              easing: EASE_OUT7
-            })})`
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Die11, { frame, clampPulse, accent })
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y11,
-            width: 1520,
-            height: 2,
-            background: INK6
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 200,
-            top: RAIL_Y11 - 8,
-            width: 2,
-            height: 18,
-            background: INK6
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1718,
-            top: RAIL_Y11 - 8,
-            width: 2,
-            height: 18,
-            background: INK6
-          }
-        }
-      ),
-      Array.from({ length: 61 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 210 + i * 25,
-            top: RAIL_Y11 + 2,
-            width: 1,
-            height: i % 5 === 0 ? 15 : 8,
-            background: i % 5 === 0 ? `${INK6}aa` : `${INK6}55`
-          }
-        },
-        i
-      )),
-      TICKS11.map((t, i) => {
-        const lit = interpolate(frame, [100 + i * 22, 108 + i * 22], [0, 1], CLAMP7);
-        return /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: t.x - 45,
-              top: 118,
-              width: 90,
-              textAlign: "center",
-              fontFamily: MONO7,
-              fontSize: 24,
-              letterSpacing: 1.5,
-              color: lit > 0.5 ? accent : MUTED7,
-              opacity: lit * tickErase(t.x)
-            },
-            children: t.label
-          },
-          t.label
-        );
-      }),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: leftX + jitter - jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK6}`,
-            background: PAPER6
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK6}`,
-                borderLeft: "none",
-                background: PAPER6
-              }
-            }
-          )
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: rightX - jitter + jawShift,
-            top: 200,
-            width: 26,
-            height: 620,
-            border: `2px solid ${INK6}`,
-            background: PAPER6
-          },
-          children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: -66,
-                bottom: -2,
-                width: 66,
-                height: 18,
-                border: `2px solid ${INK6}`,
-                borderRight: "none",
-                background: PAPER6
-              }
-            }
-          )
-        }
-      ),
-      [700, 1200].map((x) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: x - 1,
-            top: 320,
-            width: 2,
-            height: 460,
-            background: accent,
-            opacity: clampPulse
-          }
-        },
-        x
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1340,
-            top: 92,
-            width: 54,
-            height: 54,
-            borderRadius: "50%",
-            border: `3px solid ${accent}`,
-            opacity: stampIn,
-            transform: `scale(${stampScale}) rotate(${stampRot}deg)`
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: accent,
-                  transform: "rotate(45deg)"
-                }
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: 24,
-                  top: 8,
-                  width: 3,
-                  height: 32,
-                  background: accent,
-                  transform: "rotate(-45deg)"
-                }
-              }
-            )
-          ]
-        }
-      )
-    ] }),
-    sweepOpacity > 0 && /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: sweepX,
-          top: 60,
-          width: 240,
-          height: 970,
-          background: PAPER6,
-          borderLeft: `3px solid ${accent}`,
-          boxShadow: "18px 0 40px rgba(23,20,15,.16)",
-          opacity: sweepOpacity
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 190,
-          top: 170,
-          width: 720,
-          height: 740,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: tauOpacity,
-          transform: `scale(${tauScale})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-          "div",
-          {
-            style: {
-              fontFamily: SERIF5,
-              fontSize: 560,
-              lineHeight: 1,
-              color: INK6
-            },
-            children: "\u03C4"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-      "svg",
-      {
-        width: 760,
-        height: 760,
-        style: { position: "absolute", left: 170, top: 160, opacity: tauOpacity },
-        children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-          "ellipse",
-          {
-            cx: 380,
-            cy: 380,
-            rx: 238,
-            ry: 286,
-            fill: "none",
-            stroke: accent,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: 1,
-            strokeDashoffset: 1 - ellipseP,
-            transform: "rotate(-7 380 380)"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)("div", { style: { position: "absolute", left: 1030, top: 320, width: 740 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO7,
-            fontSize: 18,
-            letterSpacing: 4,
-            color: accent,
-            opacity: kickerIn,
-            transform: `translateX(${(1 - kickerIn) * -16}px)`
-          },
-          children: "TAU SCALING LAW"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)("div", { style: { overflow: "hidden", marginTop: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: FONT7,
-            fontSize: 104,
-            fontWeight: 800,
-            letterSpacing: 2,
-            lineHeight: 1.18,
-            color: INK6,
-            transform: `translateY(${(1 - titleIn) * 100}%)`
-          },
-          children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            width: 200,
-            height: 3,
-            background: accent,
-            transform: `scaleX(${lineIn})`,
-            transformOrigin: "left"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 24,
-            fontFamily: MONO7,
-            fontSize: 17,
-            letterSpacing: 1.6,
-            lineHeight: 1.8,
-            color: MUTED7,
-            opacity: metaIn
-          },
-          children: "HUAWEI \xB7 IEEE ISCAS 2026 \xB7 SHANGHAI"
-        }
-      )
-    ] })
-  ] });
-};
-
 // src/score.ts
-var SCORE_SRC = typeof document !== "undefined" ? new URL("score-sample.m4a?v=5", document.baseURI).href : staticFile("score-sample.m4a");
+var SCORE_SRC = typeof document !== "undefined" ? new URL("score-title.m4a?v=1", document.baseURI).href : staticFile("score-title.m4a");
 
-// src/samples.tsx
-var import_jsx_runtime84 = __toESM(require_jsx_runtime());
-var Shell = ({
-  bg,
-  font,
-  children
-}) => /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(AbsoluteFill, { style: { backgroundColor: bg, fontFamily: font, overflow: "hidden" }, children: [
-  /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(Audio2, { src: SCORE_SRC }),
-  children
-] });
-var NeonSample = () => {
+// src/plates.tsx
+var import_jsx_runtime65 = __toESM(require_jsx_runtime());
+var PlateShell = ({ plate }) => {
   const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: "#060A12", font: FONT, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(Backdrop, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(Caption, {})
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
+    AbsoluteFill,
+    {
+      style: { backgroundColor: plate.bg, fontFamily: plate.font, overflow: "hidden" },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(Audio2, { src: SCORE_SRC }),
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(TauBackdrop, { plate }),
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(S1Tau, { plate })
+      ]
+    }
+  );
 };
-var PaperSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: PAPER, font: FONT2, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(PaperBackdrop, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Paper, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, {})
-  ] });
+var plateOf = (id) => {
+  const plate = PLATES.find((p) => p.id === id);
+  if (!plate) throw new Error(`unknown plate: ${id}`);
+  return plate;
 };
-var BlueprintSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: PAPER2, font: FONT3, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(BlueprintBackdrop, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Blueprint, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, { color: "#EAF3FA", scrim: "10,42,70" })
-  ] });
-};
-var WarmSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: PAPER3, font: FONT4, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(WarmBackdrop, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Warm, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, {})
-  ] });
-};
-var SwissSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: "#FFFFFF", font: FONT5, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(SwissBackdrop, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Swiss, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, {})
-  ] });
-};
-var BlackSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: "#000000", font: FONT6, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(BlackBackdrop, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Black, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, { color: INK5, scrim: "0,0,0" })
-  ] });
-};
-var GoldSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: PAPER7, font: FONT8, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(ThemeBackdrop, { bg: PAPER7, ink: INK7, accent: RED8, muted: MUTED8, header: "TAU / 01 \u2014 \u6362\u5C3A\u5B50", right: "2026.05.25" }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Gold, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, { color: INK7, scrim: "11,9,6" })
-  ] });
-};
-var ForestSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: PAPER8, font: FONT9, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(ThemeBackdrop, { bg: PAPER8, ink: INK8, accent: RED9, muted: MUTED9, header: "TAU / FIELD NOTE 01", right: "SHANGHAI" }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Forest, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, { color: INK8, scrim: "13,35,27" })
-  ] });
-};
-var CrtSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: PAPER9, font: FONT10, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(ThemeBackdrop, { bg: PAPER9, ink: INK9, accent: RED10, muted: MUTED10, header: "> TAU.SYS / RUN 01", right: "READY_", scanlines: true }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Crt, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, { color: INK9, scrim: "2,6,4" })
-  ] });
-};
-var VioletSample = () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: PAPER10, font: FONT11, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(ThemeBackdrop, { bg: PAPER10, ink: INK10, accent: RED11, muted: MUTED11, header: "TAU / NIGHT SIGNAL 01", right: "2026.05.25" }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Violet, { frame }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, { color: INK10, scrim: "19,11,36" })
-  ] });
-};
-var makeAccentSample = (accent) => () => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(Shell, { bg: PAPER7, font: FONT8, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(ThemeBackdrop, { bg: PAPER7, ink: INK7, accent, muted: MUTED8, header: "TAU / 01 \u2014 \u6362\u5C3A\u5B50", right: "2026.05.25" }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Gold, { frame, accent }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, { color: INK7, scrim: "11,9,6" })
-  ] });
-};
-var CyanAccentSample = makeAccentSample("#35E0D0");
-var CoralAccentSample = makeAccentSample("#FF7A59");
-var VioletAccentSample = makeAccentSample("#A78BFA");
-var SilverAccentSample = makeAccentSample("#C9D1D9");
-var NoirShell = ({ variant, accent, header, right, label: label3 }) => {
-  const frame = useCurrentFrame();
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(AbsoluteFill, { style: { backgroundColor: "#000000", fontFamily: FONT6, overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(Audio2, { src: SCORE_SRC }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
-      NoirBackdrop,
-      {
-        variant,
-        ink: INK6,
-        accent,
-        muted: MUTED7,
-        header,
-        right,
-        label: label3
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(S1Noir, { frame, accent }),
-    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(CaptionPaper, { color: INK6, scrim: "0,0,0" })
-  ] });
-};
-var DotsSample = () => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
-  NoirShell,
-  {
-    variant: "dots",
-    accent: "#8FD8FF",
-    header: "TAU / GRID 34 \u2014 01",
-    right: "2026.05.25",
-    label: "DOT MATRIX \xB7 34PX"
-  }
-);
-var GlowSample = () => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
-  NoirShell,
-  {
-    variant: "glow",
-    accent: "#E0A94A",
-    header: "TAU / LOW KEY 01",
-    right: "2026.05.25",
-    label: "AMBIENT GLOW \xB7 1.4"
-  }
-);
-var LinesSample = () => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
-  NoirShell,
-  {
-    variant: "lines",
-    accent: "#FF5A4E",
-    header: "TAU / SCAN 01",
-    right: "LIVE_",
-    label: "SCANLINE \xB7 7PX"
-  }
-);
+var TauBlackSample = () => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(PlateShell, { plate: plateOf("TauLawBlack") });
+var TauGoldSample = () => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(PlateShell, { plate: plateOf("TauLawGold") });
+var TauDotsSample = () => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(PlateShell, { plate: plateOf("TauLawDots") });
+var TauGlowSample = () => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(PlateShell, { plate: plateOf("TauLawGlow") });
+var TauLinesSample = () => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(PlateShell, { plate: plateOf("TauLawLines") });
+var TauCrtSample = () => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(PlateShell, { plate: plateOf("TauLawCrt") });
 
 // web/main.tsx
-var import_jsx_runtime85 = __toESM(require_jsx_runtime());
+var import_jsx_runtime66 = __toESM(require_jsx_runtime());
 var FPS = 30;
-var DURATION = 330;
+var DURATION = 240;
 var DURATION_SECONDS = DURATION / FPS;
 var STYLES = [
   {
     id: "TauLawBlack",
     label: "\u7EAF\u9ED1\u5E95",
-    note: "\u9ED1\u5E95 \xB7 \u7C73\u767D\u5236\u56FE\u7EBF \xB7 \u7EA2\u6807\u6CE8",
-    file: "\u9ED1\u5E95",
+    note: "\u9ED1\u5E95 \xB7 \u7C73\u767D\u5236\u56FE\u7EBF \xB7 \u6731\u7EA2\u5F3A\u8C03",
+    file: "\u7EAF\u9ED1",
     chip: ["#000000", "#E5484D"],
-    component: BlackSample
-  },
-  {
-    id: "TauLawNeon",
-    label: "\u6DF1\u8272\u9713\u8679",
-    note: "\u53D1\u5E03\u4F1A HUD \xB7 \u9752\u84DD\u53D1\u5149",
-    file: "\u9713\u8679",
-    chip: ["#060A12", "#2BE3C9"],
-    component: NeonSample
-  },
-  {
-    id: "TauLawPaper",
-    label: "\u7EB8\u9762\u5DE5\u7A0B\u56FE",
-    note: "\u7C73\u767D\u56FE\u7EB8 \xB7 \u9ED1\u58A8\u7EA2\u7EBF",
-    file: "\u7EB8\u9762",
-    chip: ["#F3EEE4", "#C8402A"],
-    component: PaperSample
-  },
-  {
-    id: "TauLawBlueprint",
-    label: "\u84DD\u56FE\u5236\u56FE",
-    note: "\u6DF1\u84DD\u5E95 \xB7 \u767D\u8272\u5236\u56FE\u7EBF",
-    file: "\u84DD\u56FE",
-    chip: ["#0A2A46", "#EAF3FA"],
-    component: BlueprintSample
-  },
-  {
-    id: "TauLawWarm",
-    label: "\u6696\u8C03\u6742\u5FD7",
-    note: "\u5976\u6CB9\u5E95 \xB7 \u6DF1\u7EFF\u4E0E\u9676\u571F\u7EA2",
-    file: "\u6696\u8C03",
-    chip: ["#F6E9D6", "#D9542B"],
-    component: WarmSample
-  },
-  {
-    id: "TauLawSwiss",
-    label: "\u745E\u58EB\u6781\u7B80",
-    note: "\u7EAF\u767D \xB7 \u9ED1\u5B57 \xB7 \u5355\u4E00\u7EA2",
-    file: "\u745E\u58EB",
-    chip: ["#FFFFFF", "#E30613"],
-    component: SwissSample
+    component: TauBlackSample
   },
   {
     id: "TauLawGold",
     label: "\u9ED1\u91D1",
-    note: "\u9ED1\u5E95 \xB7 \u7425\u73C0\u91D1 \xB7 \u7EC6\u7EBF",
+    note: "\u58A8\u9ED1 \xB7 \u7425\u73C0\u91D1 \xB7 \u7EC6\u5236\u56FE\u7EBF",
     file: "\u9ED1\u91D1",
     chip: ["#0B0906", "#E0A94A"],
-    component: GoldSample
-  },
-  {
-    id: "TauLawForest",
-    label: "\u58A8\u7EFF",
-    note: "\u6DF1\u7EFF \xB7 \u7C73\u767D \xB7 \u9EC4\u94DC",
-    file: "\u58A8\u7EFF",
-    chip: ["#0D231B", "#D9A05B"],
-    component: ForestSample
-  },
-  {
-    id: "TauLawCrt",
-    label: "CRT \u7EC8\u7AEF",
-    note: "\u8367\u5149\u7EFF \xB7 \u626B\u63CF\u7EBF \xB7 \u7EC8\u7AEF",
-    file: "CRT",
-    chip: ["#020604", "#8CFFB0"],
-    component: CrtSample
-  },
-  {
-    id: "TauLawViolet",
-    label: "\u6DF1\u7D2B\u591C\u5E55",
-    note: "\u591C\u5E55\u7D2B \xB7 \u6D45\u7D2B \xB7 \u73CA\u745A",
-    file: "\u6DF1\u7D2B",
-    chip: ["#130B24", "#FF8A65"],
-    component: VioletSample
-  },
-  {
-    id: "TauLawCyan",
-    label: "\u9ED1\u9752",
-    note: "\u9ED1\u5E95 \xB7 \u9752\u8272\u66FF\u4EE3\u91D1",
-    file: "\u9ED1\u9752",
-    chip: ["#0B0906", "#35E0D0"],
-    component: CyanAccentSample
-  },
-  {
-    id: "TauLawCoral",
-    label: "\u9ED1\u73CA\u745A",
-    note: "\u9ED1\u5E95 \xB7 \u73CA\u745A\u6A59\u66FF\u4EE3\u91D1",
-    file: "\u9ED1\u73CA\u745A",
-    chip: ["#0B0906", "#FF7A59"],
-    component: CoralAccentSample
-  },
-  {
-    id: "TauLawAmethyst",
-    label: "\u9ED1\u7D2B",
-    note: "\u9ED1\u5E95 \xB7 \u7D2B\u7F57\u5170\u66FF\u4EE3\u91D1",
-    file: "\u9ED1\u7D2B",
-    chip: ["#0B0906", "#A78BFA"],
-    component: VioletAccentSample
-  },
-  {
-    id: "TauLawSilver",
-    label: "\u9ED1\u94F6",
-    note: "\u9ED1\u5E95 \xB7 \u94F6\u7070\u66FF\u4EE3\u91D1",
-    file: "\u9ED1\u94F6",
-    chip: ["#0B0906", "#C9D1D9"],
-    component: SilverAccentSample
+    component: TauGoldSample
   },
   {
     id: "TauLawDots",
     label: "\u9ED1\u70B9\u9635",
-    note: "\u9ED1\u5E95 \xB7 \u7EC6\u70B9\u9635 \xB7 \u51B0\u84DD",
+    note: "\u9ED1\u5E95 \xB7 34px \u7EC6\u70B9\u9635 \xB7 \u51B0\u84DD",
     file: "\u9ED1\u70B9\u9635",
     chip: ["#000000", "#8FD8FF"],
-    component: DotsSample
+    component: TauDotsSample
   },
   {
     id: "TauLawGlow",
@@ -62324,15 +55764,23 @@ var STYLES = [
     note: "\u9ED1\u5E95 \xB7 \u73AF\u5883\u5149 \xB7 \u7425\u73C0",
     file: "\u9ED1\u5149\u6655",
     chip: ["#000000", "#E0A94A"],
-    component: GlowSample
+    component: TauGlowSample
   },
   {
     id: "TauLawLines",
     label: "\u9ED1\u6A2A\u7EBF",
-    note: "\u9ED1\u5E95 \xB7 \u7EC6\u6A2A\u7EB9 \xB7 \u6731\u7EA2",
+    note: "\u9ED1\u5E95 \xB7 7px \u7EC6\u6A2A\u7EB9 \xB7 \u6731\u7EA2",
     file: "\u9ED1\u6A2A\u7EBF",
     chip: ["#000000", "#FF5A4E"],
-    component: LinesSample
+    component: TauLinesSample
+  },
+  {
+    id: "TauLawCrt",
+    label: "CRT \u7EC8\u7AEF",
+    note: "\u8367\u5149\u7EFF \xB7 \u626B\u63CF\u7EBF \xB7 \u7EC8\u7AEF\u7EFF\u5B57",
+    file: "CRT",
+    chip: ["#020604", "#8CFFB0"],
+    component: TauCrtSample
   }
 ];
 var PLANS = [
@@ -62463,7 +55911,7 @@ var App = () => {
       setResult({
         url: url2,
         size: blob.size,
-        name: `\u97EC\u5B9A\u5F8B-\u6837\u7247-${style2.file}.${plan.container}`
+        name: `\u97EC\u5B9A\u5F8B-\u7247\u5934-${style2.file}.${plan.container}`
       });
       setProgress(100);
       setStatus("\u5B8C\u6210");
@@ -62484,7 +55932,7 @@ var App = () => {
     if (!isRunning || progress < 3 || elapsed < 1) return null;
     return Math.max(0, elapsed / progress * (100 - progress));
   }, [isRunning, progress, elapsed]);
-  return /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
     "main",
     {
       style: {
@@ -62495,7 +55943,7 @@ var App = () => {
         color: "#fff"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
           "div",
           {
             style: {
@@ -62508,9 +55956,9 @@ var App = () => {
             children: "Tau Law \xB7 Style Lab"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("h1", { style: { fontSize: 30, margin: "0 0 10px", letterSpacing: 1 }, children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B \xB7 11 \u79D2\u6837\u7247\uFF5C\u5341\u4E03\u79CD\u98CE\u683C" }),
-        /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("p", { style: { color: "rgba(255,255,255,.58)", margin: "0 0 22px", lineHeight: 1.75 }, children: "\u540C\u4E00\u4E2A\u955C\u5934\u3001\u540C\u4E00\u6761 47 \u6761\u5B57\u5E55\u65F6\u95F4\u8F74\uFF0C\u53EA\u6362\u89C6\u89C9\u8BED\u8A00\u3002\u70B9\u5F00\u5BF9\u6BD4\uFF0C\u9009\u4E00\u4E2A\u6211\u5C31\u6309\u5B83\u505A\u5B8C\u6574\u7247\u3002" }),
-        /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("h1", { style: { fontSize: 30, margin: "0 0 10px", letterSpacing: 1 }, children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B \xB7 8 \u79D2\u7247\u5934\u6837\u7247\uFF5C\u516D\u79CD\u98CE\u683C" }),
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("p", { style: { color: "rgba(255,255,255,.58)", margin: "0 0 22px", lineHeight: 1.75 }, children: "\u540C\u4E00\u6BB5\u7247\u5934\uFF1A\u540C\u5FC3\u5706\u6655\u5F00\u3001\u5DE8\u578B \u03C4 \u6D6E\u73B0\u3001\u6807\u9898\u5347\u8D77\u3002\u516D\u5957\u8272\u677F\u53EA\u6362\u89C6\u89C9\u8BED\u8A00\uFF0C\u65F6\u95F4\u8F74\u4E00\u5E27\u4E0D\u52A8\u3002\u6311\u4E00\u4E2A\uFF0C\u6211\u6309\u5B83\u628A 8 \u4E2A\u955C\u5934 / 120 \u79D2\u5168\u7247\u505A\u51FA\u6765\u3002" }),
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
           "div",
           {
             style: {
@@ -62521,7 +55969,7 @@ var App = () => {
             },
             children: STYLES.map((s, i) => {
               const active = i === styleIndex;
-              return /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+              return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
                 "button",
                 {
                   onClick: () => {
@@ -62544,7 +55992,7 @@ var App = () => {
                     alignItems: "center"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
                       "span",
                       {
                         style: {
@@ -62558,14 +56006,14 @@ var App = () => {
                           flexDirection: "column"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("span", { style: { flex: 1, background: s.chip[0] } }),
-                          /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("span", { style: { flex: 1, background: s.chip[1] } })
+                          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("span", { style: { flex: 1, background: s.chip[0] } }),
+                          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("span", { style: { flex: 1, background: s.chip[1] } })
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("span", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("span", { style: { display: "block", fontSize: 14, fontWeight: 700 }, children: s.label }),
-                      /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("span", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("span", { style: { display: "block", fontSize: 14, fontWeight: 700 }, children: s.label }),
+                      /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                         "span",
                         {
                           style: {
@@ -62586,8 +56034,8 @@ var App = () => {
             })
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("section", { style: { marginBottom: 24 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("section", { style: { marginBottom: 24 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
             Player,
             {
               component: style2.component,
@@ -62613,7 +56061,7 @@ var App = () => {
             },
             style2.id
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
             "div",
             {
               style: {
@@ -62633,7 +56081,7 @@ var App = () => {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
           "section",
           {
             style: {
@@ -62643,9 +56091,9 @@ var App = () => {
               background: "linear-gradient(180deg, rgba(84,200,255,.06), rgba(255,255,255,.02))"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { fontSize: 13, color: "rgba(255,255,255,.5)", letterSpacing: 1 }, children: "\u5BFC\u51FA\u5F53\u524D\u98CE\u683C" }),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { style: { fontSize: 16, marginTop: 7, lineHeight: 1.6 }, children: planLabel }),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { fontSize: 13, color: "rgba(255,255,255,.5)", letterSpacing: 1 }, children: "\u5BFC\u51FA\u5F53\u524D\u98CE\u683C" }),
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { fontSize: 16, marginTop: 7, lineHeight: 1.6 }, children: planLabel }),
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
                 "label",
                 {
                   style: {
@@ -62658,7 +56106,7 @@ var App = () => {
                     cursor: isRunning ? "not-allowed" : "pointer"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                       "input",
                       {
                         type: "checkbox",
@@ -62673,15 +56121,15 @@ var App = () => {
                         style: { width: 18, height: 18, accentColor: "#54c8ff" }
                       }
                     ),
-                    "\u542B\u539F\u521B\u914D\u4E50\u4E0E\u97F3\u6548\uFF08A \u5C0F\u8C03 / 11 \u79D2\uFF09"
+                    "\u542B\u539F\u521B\u914D\u4E50\uFF08A \u5C0F\u8C03 pad + \u4F4E\u9891\u8109\u51B2 / 8 \u79D2\uFF09"
                   ]
                 }
               ),
-              issues.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("details", { style: { marginTop: 12, fontSize: 13, color: "rgba(255,255,255,.45)" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("summary", { style: { cursor: "pointer" }, children: "\u68C0\u6D4B\u8BE6\u60C5" }),
-                /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("ul", { style: { paddingLeft: 18, lineHeight: 1.65 }, children: issues.map((i) => /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("li", { children: i }, i)) })
+              issues.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("details", { style: { marginTop: 12, fontSize: 13, color: "rgba(255,255,255,.45)" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("summary", { style: { cursor: "pointer" }, children: "\u68C0\u6D4B\u8BE6\u60C5" }),
+                /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("ul", { style: { paddingLeft: 18, lineHeight: 1.65 }, children: issues.map((i) => /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("li", { children: i }, i)) })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                 "button",
                 {
                   onClick: start,
@@ -62703,7 +56151,7 @@ var App = () => {
                   children: isRunning ? "\u6E32\u67D3\u4E2D\u2026" : `\u6E32\u67D3\u300C${style2.label}\u300D${fmt(DURATION_SECONDS)} \u79D2\u6837\u7247`
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
                 "div",
                 {
                   style: {
@@ -62715,15 +56163,15 @@ var App = () => {
                     color: "rgba(255,255,255,.62)"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("span", { children: status }),
-                    /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("span", { style: { fontVariantNumeric: "tabular-nums" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("span", { children: status }),
+                    /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("span", { style: { fontVariantNumeric: "tabular-nums" }, children: [
                       elapsed > 0 ? `\u5DF2\u7528 ${fmt(elapsed)}s` : "",
                       eta !== null ? ` \xB7 \u7EA6\u5269 ${fmt(eta)}s` : ""
                     ] })
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                 "div",
                 {
                   style: {
@@ -62733,7 +56181,7 @@ var App = () => {
                     background: "rgba(255,255,255,.1)",
                     overflow: "hidden"
                   },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+                  children: /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                     "div",
                     {
                       style: {
@@ -62746,7 +56194,7 @@ var App = () => {
                   )
                 }
               ),
-              error2 && /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+              error2 && /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
                 "pre",
                 {
                   style: {
@@ -62765,7 +56213,7 @@ var App = () => {
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
           "p",
           {
             style: {
@@ -62774,11 +56222,11 @@ var App = () => {
               lineHeight: 1.75,
               color: "rgba(255,255,255,.42)"
             },
-            children: "\u6E32\u67D3\u65F6\u8BF7\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u4E0D\u8981\u9501\u5C4F\u300211 \u79D2\u6837\u7247\u5728\u8FD9\u53F0\u624B\u673A\u4E0A\u9884\u8BA1 2\u20135 \u5206\u949F\uFF1B\u82E5\u97F3\u9891\u7F16\u7801\u4E0D\u53EF\u7528\uFF0C\u9875\u9762\u4F1A\u81EA\u52A8\u56DE\u9000\u5230 WebM/Opus\uFF0C\u6216\u53D6\u6D88\u52FE\u9009\u914D\u4E50\u51FA\u65E0\u58F0\u7247\u3002"
+            children: "\u6E32\u67D3\u65F6\u8BF7\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u4E0D\u8981\u9501\u5C4F\u30028 \u79D2\u6837\u7247\u5728\u8FD9\u53F0\u624B\u673A\u4E0A\u9884\u8BA1 2\u20134 \u5206\u949F\uFF1B\u82E5\u97F3\u9891\u7F16\u7801\u4E0D\u53EF\u7528\uFF0C\u9875\u9762\u4F1A\u81EA\u52A8\u56DE\u9000\u5230 WebM/Opus\uFF0C\u6216\u53D6\u6D88\u52FE\u9009\u914D\u4E50\u51FA\u65E0\u58F0\u7247\u3002"
           }
         ),
-        result && /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)("section", { style: { marginTop: 24 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime85.jsx)(
+        result && /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("section", { style: { marginTop: 24 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
             "video",
             {
               src: result.url,
@@ -62787,7 +56235,7 @@ var App = () => {
               style: { width: "100%", borderRadius: 14, background: "#000" }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
             "a",
             {
               href: result.url,
@@ -62808,7 +56256,7 @@ var App = () => {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime85.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
           "div",
           {
             style: {
@@ -62820,9 +56268,9 @@ var App = () => {
               color: "rgba(255,255,255,.38)"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { children: "\u753B\u9762\u6BB5\u843D\uFF1A00:00\u201300:11 \u7B2C 1 \u955C\u300C\u6362\u5C3A\u5B50\u300D\uFF08\u5206\u955C\u8868 S1\uFF0C\u5E27 0\u2013330\uFF09" }),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { children: "\u5B57\u5E55\uFF1A47 \u6761 SRT \u5168\u6587\u5DF2\u5185\u7F6E\uFF0C\u672C\u6B21\u663E\u793A\u524D 4 \u6761\uFF0C\u6587\u672C\u672A\u6539" }),
-              /* @__PURE__ */ (0, import_jsx_runtime85.jsx)("div", { children: "\u97F3\u9891\uFF1Apad + 55Hz \u6B21\u4F4E\u97F3\uFF1B2.45s \u5361\u5C3A\u54AC\u5408 \xB7 6.9s \u626B\u5149 \xB7 9.05s \u03C4 \u843D\u7248" })
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { children: "\u753B\u9762\u6BB5\u843D\uFF1A00:00\u201300:08 \u7B2C 1 \u955C\u300C\u03C4 \u6D6E\u73B0\u300D\uFF08\u5206\u955C\u8868 S1\uFF0C\u5E27 0\u2013240\uFF09" }),
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { children: "\u5B57\u5E55\uFF1A\u811A\u672C\u8BBE\u5B9A\u4E3A\u65E0\u89E3\u8BF4\u3001\u65E0\u5B57\u5E55\uFF0C\u672C\u6BB5\u4E0D\u52A0\u5B57\u5E55\u5C42" }),
+              /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { children: "\u97F3\u9891\uFF1AA \u5C0F\u8C03 pad + 55Hz \u6B21\u4F4E\u97F3 + \u6BCF 2 s \u4E00\u6B21\u4F4E\u9891\u8109\u51B2\uFF0C8.000 s \u6536\u5728\u7436\u97F3\u8FDB\u5165\u4E4B\u524D" })
             ]
           }
         )
@@ -62830,7 +56278,7 @@ var App = () => {
     }
   );
 };
-(0, import_client2.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime85.jsx)(App, {}));
+(0, import_client2.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime66.jsx)(App, {}));
 /*! Bundled license information:
 
 react/cjs/react.production.js:
