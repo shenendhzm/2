@@ -1,29 +1,32 @@
-# Remotion Hello World（已在本机容器内跑通）
+# 韬（τ）定律 · Remotion 视频（横屏 10 秒样片）
 
-用 React 写视频的项目骨架，结构等同 Remotion 官方 `template-helloworld`：
-一个 5 秒、1280×720、30fps 的合成（`HelloWorld`），带弹簧入场、光晕、进度条和帧计数。
+`remotion-helloworld` 现在是「韬（τ）定律」技术解析视频的工程：
+横屏 1920×1080 / 30fps，合成 id `TauLaw`，当前样片 300 帧（10.0 秒），
+画面为片头（τ + 标题）与图表入场，配乐由 `scripts/make-score.py` 用 numpy 合成。
 
 ## 现在就能看
 
 | 用途 | 地址 | 状态 |
 | --- | --- | --- |
-| Remotion Studio（预览 / 拖时间轴 / 改代码热更新） | http://127.0.0.1:3033 | 已启动，已验证返回 200 |
-| 浏览器渲染页（手机上直接出 MP4） | http://127.0.0.1:3034 | 已启动，**已实测出片成功** |
+| Remotion Studio（预览 / 拖时间轴 / 热更新） | http://127.0.0.1:3033 | 已启动 |
+| 浏览器渲染页（手机上直接出 MP4） | http://127.0.0.1:3034 | 已启动 |
+| 公网出片页 | https://shenendhzm.github.io/2/ | GitHub Pages |
 
-Studio 已经在后台跑着，直接在手机浏览器里开 `http://127.0.0.1:3033` 即可。改 `src/HelloWorld.tsx` 后 Studio 会自动热更新。
-
-渲染页打开后点「渲染 5 秒 MP4」，它就是在这台手机的浏览器里用 WebCodecs 逐帧编码，完成后页面里能直接预览并下载（不经过容器里的 Chromium）。**本机已实测通过**：150 帧全部渲染并下载成功，走的是 `MP4 / H.264`（没触发 VP8 兜底）。
+改 `src/HelloWorld.tsx` 后 Studio 会自动热更新。渲染页点「渲染 10 秒样片」，
+在手机浏览器里用 WebCodecs 逐帧编码，完成后直接预览和下载，不经过容器里的 Chromium。
 
 ## 目录
 
 ```
 src/index.ts        registerRoot 入口
-src/Root.tsx        合成注册（id: HelloWorld，150 帧 / 30fps / 1280×720）
-src/HelloWorld.tsx  画面本身，改这里就是改视频
-web/main.tsx        浏览器渲染页（@remotion/web-renderer）
-scripts/fix-network-interfaces.cjs  修 os.networkInterfaces() 在本机报 EACCES
-scripts/serve-web.cjs               挂 dist-web 的极简静态服务器
-dist-web/           渲染页构建产物（index.html + bundle.js）
+src/Root.tsx        合成注册（id: TauLaw，300 帧 / 30fps / 1920×1080）
+src/HelloWorld.tsx  画面：片头 + 图表入场（横屏）
+src/score.ts        配乐地址解析（兼容 Studio / 本地 / gh-pages 子路径）
+public/score-sample.m4a  10 秒原创配乐（AAC 192k）
+scripts/make-score.py    numpy 加法合成配乐
+web/main.tsx        出片页（@remotion/web-renderer + AAC 音频）
+web/index.html      出片页入口（必须指向 ./bundle.js）
+dist-web/           渲染页构建产物（index.html + bundle.js + score-sample.m4a）
 ```
 
 ## 命令
@@ -31,9 +34,10 @@ dist-web/           渲染页构建产物（index.html + bundle.js）
 ```bash
 npm run studio        # 起 Studio（3033），已带网络补丁
 npm run bundle        # 只打包（不需要浏览器），验证工程能否编译
-npm run web:bundle    # 重新构建浏览器渲染页
+npm run web:bundle    # 重新构建浏览器渲染页（含配乐 M4A）
 npm run web:serve     # 起渲染页静态服务（3034）
-npm run render        # 命令行出片 —— 见下方「已知限制」，本机跑不通
+npm run score:sample  # 重新合成 10 秒配乐并编码 M4A
+npm run render        # 命令行出片 TauLaw —— 见下方「已知限制」，本机跑不通
 npm run still         # 导出单帧 —— 同上
 ```
 

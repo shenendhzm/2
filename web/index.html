@@ -3,10 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Remotion 浏览器渲染</title>
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#060b18" />
+    <title>韬（τ）定律 · 10 秒样片出片页</title>
   </head>
-  <body style="margin: 0; background: #0b1020; color: #fff">
-    <div id="root"></div>
-    <script type="module" src="/main.tsx"></script>
+  <body style="margin: 0; background: #060b18; color: #fff">
+    <div id="root">
+      <div
+        style="
+          font-family: system-ui, sans-serif;
+          padding: 40px 24px;
+          color: rgba(255, 255, 255, 0.55);
+        "
+      >
+        出片页加载中…
+      </div>
+    </div>
+    <!-- 相对路径：本地 3034 与 GitHub Pages 的 /2/ 子路径都能加载 -->
+    <script type="module" src="./bundle.js"></script>
   </body>
 </html>

@@ -13,6 +13,8 @@ const types = {
   ".map": "application/json; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".mp4": "video/mp4",
+  ".m4a": "audio/mp4",
+  ".mp3": "audio/mpeg",
   ".webm": "video/webm",
 };
 

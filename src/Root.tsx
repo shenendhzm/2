@@ -5,13 +5,12 @@ export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="HelloWorld"
+        id="TauLaw"
         component={HelloWorld}
-        durationInFrames={150}
+        durationInFrames={300}
         fps={30}
-        width={1280}
-        height={720}
-        defaultProps={{ title: "Remotion 部署成功" }}
+        width={1920}
+        height={1080}
       />
     </>
   );
