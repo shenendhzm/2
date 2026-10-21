@@ -7,5 +7,5 @@ import { staticFile } from "remotion";
  */
 export const SCORE_SRC =
   typeof document !== "undefined"
-    ? new URL("score-sample.m4a?v=5", document.baseURI).href
-    : staticFile("score-sample.m4a");
+    ? new URL("score-title.m4a?v=1", document.baseURI).href
+    : staticFile("score-title.m4a");

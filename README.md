@@ -1,32 +1,39 @@
-# 韬（τ）定律 · Remotion 视频（横屏 10 秒样片）
+# 韬（τ）定律 · Remotion 视频（片头样片 8 秒 × 六风格）
 
-`remotion-helloworld` 现在是「韬（τ）定律」技术解析视频的工程：
-横屏 1920×1080 / 30fps，合成 id `TauLaw`，当前样片 300 帧（10.0 秒），
-画面为片头（τ + 标题）与图表入场，配乐由 `scripts/make-score.py` 用 numpy 合成。
+本工程做完 `华为韬定律-技术解析脚本.md`（120 秒 / 8 个镜头）的**片头 S1**：
+横屏 1920×1080 / 30fps / **240 帧 = 8.000s**，同一段画面配六套色板（纯黑底 / 黑金 / 黑点阵 / 黑光晕 / 黑横线 / CRT），
+用来定全片风格。完整 8 镜分镜表见 `docs/分镜表.md`，确认后再做 S2–S8。
+
+配乐由 `scripts/make-title-score.py` 用 numpy 合成（A 小调 pad + 55Hz 次低音 + 每 2s 一次低频脉冲，8.000s 收在琶音进入前）。
 
 ## 现在就能看
 
 | 用途 | 地址 | 状态 |
 | --- | --- | --- |
-| Remotion Studio（预览 / 拖时间轴 / 热更新） | http://127.0.0.1:3033 | 已启动 |
-| 浏览器渲染页（手机上直接出 MP4） | http://127.0.0.1:3034 | 已启动 |
-| 公网出片页 | https://shenendhzm.github.io/2/ | GitHub Pages |
+| Remotion Studio（预览 / 拖时间轴 / 热更新） | http://127.0.0.1:3033 | 需 `npm run studio` |
+| 浏览器渲染页（手机上直接出 MP4） | http://127.0.0.1:3034 | 需 `npm run web:serve` |
+| 公网出片页 | https://shenendhzm.github.io/2/ | GitHub Pages（永久） |
 
-改 `src/HelloWorld.tsx` 后 Studio 会自动热更新。渲染页点「渲染 10 秒样片」，
-在手机浏览器里用 WebCodecs 逐帧编码，完成后直接预览和下载，不经过容器里的 Chromium。
+出片页里点风格卡片实时预览，点「渲染」在手机浏览器里用 WebCodecs 逐帧编码，
+完成后直接预览和下载，不经过容器里的 Chromium。
 
 ## 目录
 
 ```
 src/index.ts        registerRoot 入口
-src/Root.tsx        合成注册（id: TauLaw，300 帧 / 30fps / 1920×1080）
-src/HelloWorld.tsx  画面：片头 + 图表入场（横屏）
+src/Root.tsx        合成注册：TauLawBlack / Gold / Dots / Glow / Lines / Crt（240 帧 / 30fps / 1920×1080）
+src/looks/tau.ts    六套色板 + 缓动工具
+src/components/TauBackdrop.tsx  片头背景语言（网格 / 点阵 / 光晕 / 横纹 / 扫描线）
+src/scenes/S1Tau.tsx            S1「τ 浮现」镜头（帧 0–240）
+src/plates.tsx      六支片头样片 = 同一镜头 × 六套色板
 src/score.ts        配乐地址解析（兼容 Studio / 本地 / gh-pages 子路径）
-public/score-sample.m4a  10 秒原创配乐（AAC 192k）
-scripts/make-score.py    numpy 加法合成配乐
+public/score-title.m4a  8 秒原创配乐（AAC 192k）
+scripts/make-title-score.py  numpy 加法合成片头配乐
 web/main.tsx        出片页（@remotion/web-renderer + AAC 音频）
 web/index.html      出片页入口（必须指向 ./bundle.js）
-dist-web/           渲染页构建产物（index.html + bundle.js + score-sample.m4a）
+dist-web/           渲染页构建产物（index.html + bundle.js + score-title.m4a）
+docs/分镜表.md       完整 8 镜分镜表 + S1 逐帧时间表
+docs/运维备忘.md     换对话接手必读（部署链路 / 本机坑）
 ```
 
 ## 命令
@@ -36,8 +43,8 @@ npm run studio        # 起 Studio（3033），已带网络补丁
 npm run bundle        # 只打包（不需要浏览器），验证工程能否编译
 npm run web:bundle    # 重新构建浏览器渲染页（含配乐 M4A）
 npm run web:serve     # 起渲染页静态服务（3034）
-npm run score:sample  # 重新合成 10 秒配乐并编码 M4A
-npm run render        # 命令行出片 TauLaw —— 见下方「已知限制」，本机跑不通
+npm run score:title   # 重新合成 8 秒片头配乐并编码 M4A
+npm run render        # 命令行出片 —— 见下方「已知限制」，本机跑不通
 npm run still         # 导出单帧 —— 同上
 ```
 

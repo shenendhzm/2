@@ -1,26 +1,19 @@
 import { Composition } from "remotion";
 import {
-  BlackSample,
-  DotsSample,
-  GlowSample,
-  LinesSample,
-  CoralAccentSample,
-  CyanAccentSample,
-  SilverAccentSample,
-  VioletAccentSample,
-  CrtSample,
-  ForestSample,
-  GoldSample,
-  VioletSample,
-  BlueprintSample,
-  NeonSample,
-  PaperSample,
-  SwissSample,
-  WarmSample,
-} from "./samples";
+  TauBlackSample,
+  TauGoldSample,
+  TauDotsSample,
+  TauGlowSample,
+  TauLinesSample,
+  TauCrtSample,
+} from "./plates";
 
-const BASE = {
-  durationInFrames: 330,
+/**
+ * 片头样片：六种风格，同一镜头。
+ * 画幅 1920×1080 / 30fps / 240 帧 = 8.000s（脚本 S1：00:00–00:08）。
+ */
+const S1 = {
+  durationInFrames: 240,
   fps: 30,
   width: 1920,
   height: 1080,
@@ -29,23 +22,12 @@ const BASE = {
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-      <Composition id="TauLawBlack" component={BlackSample} {...BASE} />
-      <Composition id="TauLawNeon" component={NeonSample} {...BASE} />
-      <Composition id="TauLawPaper" component={PaperSample} {...BASE} />
-      <Composition id="TauLawBlueprint" component={BlueprintSample} {...BASE} />
-      <Composition id="TauLawWarm" component={WarmSample} {...BASE} />
-      <Composition id="TauLawSwiss" component={SwissSample} {...BASE} />
-      <Composition id="TauLawGold" component={GoldSample} {...BASE} />
-      <Composition id="TauLawForest" component={ForestSample} {...BASE} />
-      <Composition id="TauLawCrt" component={CrtSample} {...BASE} />
-      <Composition id="TauLawViolet" component={VioletSample} {...BASE} />
-      <Composition id="TauLawCyan" component={CyanAccentSample} {...BASE} />
-      <Composition id="TauLawCoral" component={CoralAccentSample} {...BASE} />
-      <Composition id="TauLawAmethyst" component={VioletAccentSample} {...BASE} />
-      <Composition id="TauLawSilver" component={SilverAccentSample} {...BASE} />
-      <Composition id="TauLawDots" component={DotsSample} {...BASE} />
-      <Composition id="TauLawGlow" component={GlowSample} {...BASE} />
-      <Composition id="TauLawLines" component={LinesSample} {...BASE} />
+      <Composition id="TauLawBlack" component={TauBlackSample} {...S1} />
+      <Composition id="TauLawGold" component={TauGoldSample} {...S1} />
+      <Composition id="TauLawDots" component={TauDotsSample} {...S1} />
+      <Composition id="TauLawGlow" component={TauGlowSample} {...S1} />
+      <Composition id="TauLawLines" component={TauLinesSample} {...S1} />
+      <Composition id="TauLawCrt" component={TauCrtSample} {...S1} />
     </>
   );
 };

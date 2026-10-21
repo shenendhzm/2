@@ -8,27 +8,16 @@ import type {
   WebRendererVideoCodec,
 } from "@remotion/web-renderer";
 import {
-  BlackSample,
-  DotsSample,
-  GlowSample,
-  LinesSample,
-  CoralAccentSample,
-  CyanAccentSample,
-  SilverAccentSample,
-  VioletAccentSample,
-  CrtSample,
-  ForestSample,
-  GoldSample,
-  VioletSample,
-  BlueprintSample,
-  NeonSample,
-  PaperSample,
-  SwissSample,
-  WarmSample,
-} from "../src/samples";
+  TauBlackSample,
+  TauGoldSample,
+  TauDotsSample,
+  TauGlowSample,
+  TauLinesSample,
+  TauCrtSample,
+} from "../src/plates";
 
 const FPS = 30;
-const DURATION = 330;
+const DURATION = 240;
 const DURATION_SECONDS = DURATION / FPS;
 
 type StyleDef = {
@@ -44,122 +33,26 @@ const STYLES: StyleDef[] = [
   {
     id: "TauLawBlack",
     label: "纯黑底",
-    note: "黑底 · 米白制图线 · 红标注",
-    file: "黑底",
+    note: "黑底 · 米白制图线 · 朱红强调",
+    file: "纯黑",
     chip: ["#000000", "#E5484D"],
-    component: BlackSample,
-  },
-  {
-    id: "TauLawNeon",
-    label: "深色霓虹",
-    note: "发布会 HUD · 青蓝发光",
-    file: "霓虹",
-    chip: ["#060A12", "#2BE3C9"],
-    component: NeonSample,
-  },
-  {
-    id: "TauLawPaper",
-    label: "纸面工程图",
-    note: "米白图纸 · 黑墨红线",
-    file: "纸面",
-    chip: ["#F3EEE4", "#C8402A"],
-    component: PaperSample,
-  },
-  {
-    id: "TauLawBlueprint",
-    label: "蓝图制图",
-    note: "深蓝底 · 白色制图线",
-    file: "蓝图",
-    chip: ["#0A2A46", "#EAF3FA"],
-    component: BlueprintSample,
-  },
-  {
-    id: "TauLawWarm",
-    label: "暖调杂志",
-    note: "奶油底 · 深绿与陶土红",
-    file: "暖调",
-    chip: ["#F6E9D6", "#D9542B"],
-    component: WarmSample,
-  },
-  {
-    id: "TauLawSwiss",
-    label: "瑞士极简",
-    note: "纯白 · 黑字 · 单一红",
-    file: "瑞士",
-    chip: ["#FFFFFF", "#E30613"],
-    component: SwissSample,
+    component: TauBlackSample,
   },
   {
     id: "TauLawGold",
     label: "黑金",
-    note: "黑底 · 琥珀金 · 细线",
+    note: "墨黑 · 琥珀金 · 细制图线",
     file: "黑金",
     chip: ["#0B0906", "#E0A94A"],
-    component: GoldSample,
-  },
-  {
-    id: "TauLawForest",
-    label: "墨绿",
-    note: "深绿 · 米白 · 黄铜",
-    file: "墨绿",
-    chip: ["#0D231B", "#D9A05B"],
-    component: ForestSample,
-  },
-  {
-    id: "TauLawCrt",
-    label: "CRT 终端",
-    note: "荧光绿 · 扫描线 · 终端",
-    file: "CRT",
-    chip: ["#020604", "#8CFFB0"],
-    component: CrtSample,
-  },
-  {
-    id: "TauLawViolet",
-    label: "深紫夜幕",
-    note: "夜幕紫 · 浅紫 · 珊瑚",
-    file: "深紫",
-    chip: ["#130B24", "#FF8A65"],
-    component: VioletSample,
-  },
-  {
-    id: "TauLawCyan",
-    label: "黑青",
-    note: "黑底 · 青色替代金",
-    file: "黑青",
-    chip: ["#0B0906", "#35E0D0"],
-    component: CyanAccentSample,
-  },
-  {
-    id: "TauLawCoral",
-    label: "黑珊瑚",
-    note: "黑底 · 珊瑚橙替代金",
-    file: "黑珊瑚",
-    chip: ["#0B0906", "#FF7A59"],
-    component: CoralAccentSample,
-  },
-  {
-    id: "TauLawAmethyst",
-    label: "黑紫",
-    note: "黑底 · 紫罗兰替代金",
-    file: "黑紫",
-    chip: ["#0B0906", "#A78BFA"],
-    component: VioletAccentSample,
-  },
-  {
-    id: "TauLawSilver",
-    label: "黑银",
-    note: "黑底 · 银灰替代金",
-    file: "黑银",
-    chip: ["#0B0906", "#C9D1D9"],
-    component: SilverAccentSample,
+    component: TauGoldSample,
   },
   {
     id: "TauLawDots",
     label: "黑点阵",
-    note: "黑底 · 细点阵 · 冰蓝",
+    note: "黑底 · 34px 细点阵 · 冰蓝",
     file: "黑点阵",
     chip: ["#000000", "#8FD8FF"],
-    component: DotsSample,
+    component: TauDotsSample,
   },
   {
     id: "TauLawGlow",
@@ -167,15 +60,23 @@ const STYLES: StyleDef[] = [
     note: "黑底 · 环境光 · 琥珀",
     file: "黑光晕",
     chip: ["#000000", "#E0A94A"],
-    component: GlowSample,
+    component: TauGlowSample,
   },
   {
     id: "TauLawLines",
     label: "黑横线",
-    note: "黑底 · 细横纹 · 朱红",
+    note: "黑底 · 7px 细横纹 · 朱红",
     file: "黑横线",
     chip: ["#000000", "#FF5A4E"],
-    component: LinesSample,
+    component: TauLinesSample,
+  },
+  {
+    id: "TauLawCrt",
+    label: "CRT 终端",
+    note: "荧光绿 · 扫描线 · 终端绿字",
+    file: "CRT",
+    chip: ["#020604", "#8CFFB0"],
+    component: TauCrtSample,
   },
 ];
 
@@ -330,7 +231,7 @@ const App: React.FC = () => {
       setResult({
         url,
         size: blob.size,
-        name: `韬定律-样片-${style.file}.${plan.container}`,
+        name: `韬定律-片头-${style.file}.${plan.container}`,
       });
       setProgress(100);
       setStatus("完成");
@@ -377,10 +278,10 @@ const App: React.FC = () => {
         Tau Law · Style Lab
       </div>
       <h1 style={{ fontSize: 30, margin: "0 0 10px", letterSpacing: 1 }}>
-        韬（τ）定律 · 11 秒样片｜十七种风格
+        韬（τ）定律 · 8 秒片头样片｜六种风格
       </h1>
       <p style={{ color: "rgba(255,255,255,.58)", margin: "0 0 22px", lineHeight: 1.75 }}>
-        同一个镜头、同一条 47 条字幕时间轴，只换视觉语言。点开对比，选一个我就按它做完整片。
+        同一段片头：同心圆晕开、巨型 τ 浮现、标题升起。六套色板只换视觉语言，时间轴一帧不动。挑一个，我按它把 8 个镜头 / 120 秒全片做出来。
       </p>
 
       <div
@@ -526,7 +427,7 @@ const App: React.FC = () => {
             }}
             style={{ width: 18, height: 18, accentColor: "#54c8ff" }}
           />
-          含原创配乐与音效（A 小调 / 11 秒）
+          含原创配乐（A 小调 pad + 低频脉冲 / 8 秒）
         </label>
 
         {issues.length > 0 && (
@@ -625,7 +526,7 @@ const App: React.FC = () => {
           color: "rgba(255,255,255,.42)",
         }}
       >
-        渲染时请保持本页在前台、不要锁屏。11 秒样片在这台手机上预计 2–5
+        渲染时请保持本页在前台、不要锁屏。8 秒样片在这台手机上预计 2–4
         分钟；若音频编码不可用，页面会自动回退到 WebM/Opus，或取消勾选配乐出无声片。
       </p>
 
@@ -662,9 +563,9 @@ const App: React.FC = () => {
           color: "rgba(255,255,255,.38)",
         }}
       >
-        <div>画面段落：00:00–00:11 第 1 镜「换尺子」（分镜表 S1，帧 0–330）</div>
-        <div>字幕：47 条 SRT 全文已内置，本次显示前 4 条，文本未改</div>
-        <div>音频：pad + 55Hz 次低音；2.45s 卡尺咬合 · 6.9s 扫光 · 9.05s τ 落版</div>
+        <div>画面段落：00:00–00:08 第 1 镜「τ 浮现」（分镜表 S1，帧 0–240）</div>
+        <div>字幕：脚本设定为无解说、无字幕，本段不加字幕层</div>
+        <div>音频：A 小调 pad + 55Hz 次低音 + 每 2 s 一次低频脉冲，8.000 s 收在琶音进入之前</div>
       </div>
     </main>
   );
