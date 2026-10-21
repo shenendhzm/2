@@ -206,10 +206,10 @@ const App: React.FC = () => {
           marginBottom: 10,
         }}
       >
-        Tau Law · Sample 01 / Shot 01
+        Tau Law · Paper Cut / Shot 01
       </div>
       <h1 style={{ fontSize: 30, margin: "0 0 10px", letterSpacing: 1 }}>
-        韬（τ）定律 · 11 秒样片｜01 换尺子
+        韬（τ）定律 · 11 秒样片｜纸面工程图
       </h1>
       <p style={{ color: "rgba(255,255,255,.58)", margin: "0 0 24px", lineHeight: 1.75 }}>
         1920×1080 · 30fps · {fmt(DURATION_SECONDS)}s（{COMPOSITION.durationInFrames}{" "}
@@ -424,7 +424,7 @@ const App: React.FC = () => {
           color: "rgba(255,255,255,.38)",
         }}
       >
-        <div>画面段落：00:00–00:11 第 1 镜「换尺子」（分镜表 S1，帧 0–330）</div>
+        <div>画面段落：00:00–00:11 第 1 镜「换尺子」· 纸面工程图版（分镜表 S1，帧 0–330）</div>
         <div>音乐段落：pad + 55Hz 次低音 0–11s；2.45s 卡尺咬合 · 6.9s 扫光 · 9.05s τ 落版</div>
       </div>
     </main>
