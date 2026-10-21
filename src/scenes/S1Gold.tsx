@@ -9,7 +9,7 @@ import {
   MONO,
   MUTED,
   PAPER,
-  RED,
+  RED as GOLD_ACCENT,
   RULE,
   SERIF,
 } from "../looks/gold";
@@ -22,7 +22,7 @@ const TICKS = [
   { x: 1300, label: "3nm" },
 ];
 
-const Die: React.FC<{ frame: number; clampPulse: number }> = ({ frame, clampPulse }) => {
+const Die: React.FC<{ frame: number; clampPulse: number; accent: string }> = ({ frame, clampPulse, accent }) => {
   const scan = interpolate(frame % 120, [0, 120], [0, DIE.size], CLAMP);
   return (
     <div
@@ -65,7 +65,7 @@ const Die: React.FC<{ frame: number; clampPulse: number }> = ({ frame, clampPuls
             top: y,
             width: i % 3 === 0 ? 10 : 7,
             height: i % 3 === 0 ? 10 : 7,
-            background: i % 4 === 0 ? RED : INK,
+            background: i % 4 === 0 ? accent : INK,
           }}
         />
       ))}
@@ -100,7 +100,7 @@ const Die: React.FC<{ frame: number; clampPulse: number }> = ({ frame, clampPuls
         style={{
           position: "absolute",
           inset: 0,
-          boxShadow: `inset 0 0 0 4px ${RED}`,
+          boxShadow: `inset 0 0 0 4px ${accent}`,
           opacity: clampPulse,
         }}
       />
@@ -108,7 +108,7 @@ const Die: React.FC<{ frame: number; clampPulse: number }> = ({ frame, clampPuls
   );
 };
 
-export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
+export const S1Gold: React.FC<{ frame: number; accent?: string }> = ({ frame, accent = GOLD_ACCENT }) => {
   const { fps } = useVideoConfig();
 
   const camera = interpolate(frame, [0, 330], [1, 1.02], CLAMP);
@@ -194,7 +194,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
           top: 551,
           width: 2,
           height: 20,
-          background: RED,
+          background: accent,
           opacity: ruleP * ruleFade,
         }}
       />
@@ -205,7 +205,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
           top: 551,
           width: 2,
           height: 20,
-          background: RED,
+          background: accent,
           opacity: ruleP * ruleFade,
         }}
       />
@@ -223,7 +223,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
             })})`,
           }}
         >
-          <Die frame={frame} clampPulse={clampPulse} />
+          <Die frame={frame} clampPulse={clampPulse} accent={accent} />
         </div>
 
         {/* 导轨 */}
@@ -285,7 +285,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
                 fontFamily: MONO,
                 fontSize: 24,
                 letterSpacing: 1.5,
-                color: lit > 0.5 ? RED : MUTED,
+                color: lit > 0.5 ? accent : MUTED,
                 opacity: lit * tickErase(t.x),
               }}
             >
@@ -356,7 +356,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
               top: 320,
               width: 2,
               height: 460,
-              background: RED,
+              background: accent,
               opacity: clampPulse,
             }}
           />
@@ -371,7 +371,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
             width: 54,
             height: 54,
             borderRadius: "50%",
-            border: `3px solid ${RED}`,
+            border: `3px solid ${accent}`,
             opacity: stampIn,
             transform: `scale(${stampScale}) rotate(${stampRot}deg)`,
           }}
@@ -383,7 +383,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
               top: 8,
               width: 3,
               height: 32,
-              background: RED,
+              background: accent,
               transform: "rotate(45deg)",
             }}
           />
@@ -394,7 +394,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
               top: 8,
               width: 3,
               height: 32,
-              background: RED,
+              background: accent,
               transform: "rotate(-45deg)",
             }}
           />
@@ -411,7 +411,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
             width: 240,
             height: 970,
             background: PAPER,
-            borderLeft: `3px solid ${RED}`,
+            borderLeft: `3px solid ${accent}`,
             boxShadow: "18px 0 40px rgba(23,20,15,.16)",
             opacity: sweepOpacity,
           }}
@@ -457,7 +457,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
           rx={238}
           ry={286}
           fill="none"
-          stroke={RED}
+          stroke={accent}
           strokeWidth={3}
           pathLength={1}
           strokeDasharray={1}
@@ -473,7 +473,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
             fontFamily: MONO,
             fontSize: 18,
             letterSpacing: 4,
-            color: RED,
+            color: accent,
             opacity: kickerIn,
             transform: `translateX(${(1 - kickerIn) * -16}px)`,
           }}
@@ -502,7 +502,7 @@ export const S1Gold: React.FC<{ frame: number }> = ({ frame }) => {
             marginTop: 26,
             width: 200,
             height: 3,
-            background: RED,
+            background: accent,
             transform: `scaleX(${lineIn})`,
             transformOrigin: "left",
           }}

@@ -1,6 +1,10 @@
 import { Composition } from "remotion";
 import {
   BlackSample,
+  CoralAccentSample,
+  CyanAccentSample,
+  SilverAccentSample,
+  VioletAccentSample,
   CrtSample,
   ForestSample,
   GoldSample,
@@ -32,6 +36,10 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="TauLawForest" component={ForestSample} {...BASE} />
       <Composition id="TauLawCrt" component={CrtSample} {...BASE} />
       <Composition id="TauLawViolet" component={VioletSample} {...BASE} />
+      <Composition id="TauLawCyan" component={CyanAccentSample} {...BASE} />
+      <Composition id="TauLawCoral" component={CoralAccentSample} {...BASE} />
+      <Composition id="TauLawAmethyst" component={VioletAccentSample} {...BASE} />
+      <Composition id="TauLawSilver" component={SilverAccentSample} {...BASE} />
     </>
   );
 };

@@ -9,6 +9,10 @@ import type {
 } from "@remotion/web-renderer";
 import {
   BlackSample,
+  CoralAccentSample,
+  CyanAccentSample,
+  SilverAccentSample,
+  VioletAccentSample,
   CrtSample,
   ForestSample,
   GoldSample,
@@ -113,6 +117,38 @@ const STYLES: StyleDef[] = [
     file: "深紫",
     chip: ["#130B24", "#FF8A65"],
     component: VioletSample,
+  },
+  {
+    id: "TauLawCyan",
+    label: "黑青",
+    note: "黑底 · 青色替代金",
+    file: "黑青",
+    chip: ["#0B0906", "#35E0D0"],
+    component: CyanAccentSample,
+  },
+  {
+    id: "TauLawCoral",
+    label: "黑珊瑚",
+    note: "黑底 · 珊瑚橙替代金",
+    file: "黑珊瑚",
+    chip: ["#0B0906", "#FF7A59"],
+    component: CoralAccentSample,
+  },
+  {
+    id: "TauLawAmethyst",
+    label: "黑紫",
+    note: "黑底 · 紫罗兰替代金",
+    file: "黑紫",
+    chip: ["#0B0906", "#A78BFA"],
+    component: VioletAccentSample,
+  },
+  {
+    id: "TauLawSilver",
+    label: "黑银",
+    note: "黑底 · 银灰替代金",
+    file: "黑银",
+    chip: ["#0B0906", "#C9D1D9"],
+    component: SilverAccentSample,
   },
 ];
 
@@ -314,7 +350,7 @@ const App: React.FC = () => {
         Tau Law · Style Lab
       </div>
       <h1 style={{ fontSize: 30, margin: "0 0 10px", letterSpacing: 1 }}>
-        韬（τ）定律 · 11 秒样片｜十种风格
+        韬（τ）定律 · 11 秒样片｜十四种风格
       </h1>
       <p style={{ color: "rgba(255,255,255,.58)", margin: "0 0 22px", lineHeight: 1.75 }}>
         同一个镜头、同一条 47 条字幕时间轴，只换视觉语言。点开对比，选一个我就按它做完整片。

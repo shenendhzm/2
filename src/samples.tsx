@@ -162,3 +162,23 @@ export const VioletSample: React.FC = () => {
     </Shell>
   );
 };
+
+const makeAccentSample = (accent: string): React.FC => () => {
+  const frame = useCurrentFrame();
+  return (
+    <Shell bg={GOLD_BG} font={GOLD_FONT}>
+      <ThemeBackdrop bg={GOLD_BG} ink={GOLD_INK} accent={accent} muted={GOLD_MUTED} header="TAU / 01 — 换尺子" right="2026.05.25" />
+      <S1Gold frame={frame} accent={accent} />
+      <CaptionPaper color={GOLD_INK} scrim="11,9,6" />
+    </Shell>
+  );
+};
+
+/** 11 黑青 */
+export const CyanAccentSample = makeAccentSample("#35E0D0");
+/** 12 黑珊瑚 */
+export const CoralAccentSample = makeAccentSample("#FF7A59");
+/** 13 黑紫 */
+export const VioletAccentSample = makeAccentSample("#A78BFA");
+/** 14 黑银 */
+export const SilverAccentSample = makeAccentSample("#C9D1D9");
