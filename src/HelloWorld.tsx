@@ -347,7 +347,7 @@ const Chart: React.FC<{ frame: number }> = ({ frame }) => {
   const scanX = 110 + scanP * 1400;
 
   const yTicks = [80, 212.5, 345, 477.5, 610];
-  const yLabels = ["10K×", "1K×", "100×", "10×", "1×"];
+  const yLabels = ["10Kx", "1Kx", "100x", "10x", "1x"];
   const years = [1990, 2000, 2010, 2015, 2026];
   const yearX = (y: number) => 110 + ((y - 1990) / 36) * 1400;
 
@@ -530,8 +530,8 @@ export const HelloWorld: React.FC = () => {
     >
       <Audio src={SCORE_SRC} />
       <Backdrop frame={frame} />
-      <Intro frame={frame} fps={fps} />
-      <Chart frame={frame} />
+      {frame < 240 && <Intro frame={frame} fps={fps} />}
+      {frame >= 232 && <Chart frame={frame} />}
     </AbsoluteFill>
   );
 };
