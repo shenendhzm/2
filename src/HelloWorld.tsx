@@ -347,6 +347,8 @@ const Chart: React.FC<{ frame: number }> = ({ frame }) => {
   const scanX = 110 + scanP * 1400;
 
   const yTicks = [80, 212.5, 345, 477.5, 610];
+  // 注意：web-renderer 用 btoa 把 SVG 序列化成 data URL，SVG 内文本必须是 ASCII。
+  // 这里用 10Kx 而不是 10K×（U+00D7），否则会生成非法 UTF-8，报 "Failed to convert SVG to image"。
   const yLabels = ["10Kx", "1Kx", "100x", "10x", "1x"];
   const years = [1990, 2000, 2010, 2015, 2026];
   const yearX = (y: number) => 110 + ((y - 1990) / 36) * 1400;
