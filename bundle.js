@@ -56318,12 +56318,13 @@ var Shot06 = () => {
 
 // src/film/scenes/Shot07.tsx
 var import_jsx_runtime73 = __toESM(require_jsx_runtime());
+var MONO_F = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
 var CHARGE = (() => {
   const pts = [];
   for (let i = 0; i <= 40; i++) {
     const u = i / 40;
-    const x = 60 + u * 660;
-    const y = 210 - (1 - Math.exp(-u * 3.4)) * 160;
+    const x = 40 + u * 480;
+    const y = 185 - (1 - Math.exp(-u * 3.2)) * 140;
     pts.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`);
   }
   return pts.join(" ");
@@ -56343,7 +56344,7 @@ var Shot07 = () => {
         style: {
           position: "absolute",
           left: 240,
-          top: 398,
+          top: 378,
           width: 760 * wire,
           height: 4,
           background: "linear-gradient(90deg, rgba(47,227,255,.25), rgba(47,227,255,.75))",
@@ -56357,8 +56358,8 @@ var Shot07 = () => {
         style: {
           position: "absolute",
           left: 1e3,
-          top: 398,
-          width: 640 * wire,
+          top: 378,
+          width: 680 * wire,
           height: 4,
           background: "linear-gradient(90deg, rgba(47,227,255,.75), rgba(47,227,255,.2))",
           boxShadow: "0 0 18px rgba(47,227,255,.35)"
@@ -56369,55 +56370,25 @@ var Shot07 = () => {
       /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
         "path",
         {
-          d: "M560 400 L590 400 L604 372 L632 428 L660 372 L688 428 L716 372 L744 400 L770 400",
+          d: "M560 380 L590 380 L604 352 L632 408 L660 352 L688 408 L716 352 L744 380 L770 380",
           fill: "none",
           stroke: "#E9F3FF",
           strokeWidth: 3,
           opacity: 0.9 * wire
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("line", { x1: 1010, y1: 352, x2: 1010, y2: 448, stroke: "#E9F3FF", strokeWidth: 4, opacity: 0.9 * wire }),
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("line", { x1: 1036, y1: 352, x2: 1036, y2: 448, stroke: "#E9F3FF", strokeWidth: 4, opacity: 0.9 * wire })
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("line", { x1: 1010, y1: 332, x2: 1010, y2: 428, stroke: "#E9F3FF", strokeWidth: 4, opacity: 0.9 * wire }),
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("line", { x1: 1036, y1: 332, x2: 1036, y2: 428, stroke: "#E9F3FF", strokeWidth: 4, opacity: 0.9 * wire })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 640,
-          top: 300,
-          fontFamily: MONO_FALLBACK,
-          fontSize: 30,
-          color: CYAN,
-          opacity: wire * 0.9,
-          letterSpacing: 2
-        },
-        children: "R"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1010,
-          top: 300,
-          fontFamily: MONO_FALLBACK,
-          fontSize: 30,
-          color: CYAN,
-          opacity: wire * 0.9,
-          letterSpacing: 2
-        },
-        children: "C"
-      }
-    ),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { position: "absolute", left: 640, top: 288, fontFamily: MONO_F, fontSize: 28, color: CYAN, opacity: wire * 0.9 }, children: "R" }),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { position: "absolute", left: 1014, top: 288, fontFamily: MONO_F, fontSize: 28, color: CYAN, opacity: wire * 0.9 }, children: "C" }),
     /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
       "div",
       {
         style: {
           position: "absolute",
           left: pulse,
-          top: 382,
+          top: 362,
           width: 36,
           height: 36,
           borderRadius: 18,
@@ -56427,13 +56398,13 @@ var Shot07 = () => {
         }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", left: 240, top: 500, display: "flex", alignItems: "baseline" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", left: 240, top: 520, display: "flex", alignItems: "baseline" }, children: [
       FORMULA.map((ch, i) => /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
         "span",
         {
           style: {
-            fontFamily: MONO_FALLBACK,
-            fontSize: ch === " = " || ch === " \xD7 " ? 86 : 118,
+            fontFamily: MONO_F,
+            fontSize: ch === " = " || ch === " \xD7 " ? 80 : 112,
             fontWeight: 700,
             color: ch === "\u03C4" ? CYAN : TEXT,
             opacity: interpolate(formula, [i * 0.16, i * 0.16 + 0.3], [0, 1], CLAMP),
@@ -56447,8 +56418,8 @@ var Shot07 = () => {
         "span",
         {
           style: {
-            fontFamily: MONO_FALLBACK,
-            fontSize: 44,
+            fontFamily: MONO_F,
+            fontSize: 42,
             color: MUTED,
             marginLeft: 22,
             opacity: interpolate(formula, [0.8, 1], [0, 1], CLAMP)
@@ -56458,18 +56429,14 @@ var Shot07 = () => {
       )
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
+      Label,
       {
-        style: {
-          position: "absolute",
-          left: 244,
-          top: 650,
-          fontSize: 30,
-          color: MUTED,
-          letterSpacing: 1,
-          opacity: interpolate(frame, [80, 100], [0, 1], CLAMP)
-        },
-        children: "\u4FE1\u53F7\u4ECE\u8DF3\u53D8\u5230\u7A33\u5B9A\uFF0C\u6240\u9700\u7684\u65F6\u95F4"
+        text: "\u4FE1\u53F7\u4ECE\u8DF3\u53D8\u5230\u7A33\u5B9A\uFF0C\u6240\u9700\u7684\u65F6\u95F4",
+        x: 244,
+        y: 676,
+        size: 28,
+        color: "rgba(233,243,255,.55)",
+        opacity: interpolate(frame, [80, 100], [0, 1], CLAMP)
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
@@ -56477,16 +56444,16 @@ var Shot07 = () => {
       {
         style: {
           position: "absolute",
-          left: 240,
-          top: 720,
-          width: 760,
-          height: 260,
-          border: "1px solid rgba(47,227,255,.22)",
-          background: "linear-gradient(rgba(47,227,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.06) 1px, transparent 1px)",
-          backgroundSize: "38px 38px",
+          left: 1140,
+          top: 556,
+          width: 560,
+          height: 230,
+          border: "1px solid rgba(47,227,255,.2)",
+          background: "linear-gradient(rgba(47,227,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.05) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
           opacity: interpolate(frame, [60, 80], [0, 1], CLAMP)
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("svg", { width: 760, height: 260, style: { position: "absolute", inset: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("svg", { width: 560, height: 230, style: { position: "absolute", inset: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
           "path",
           {
             d: CHARGE,
@@ -56495,31 +56462,15 @@ var Shot07 = () => {
             strokeWidth: 3,
             pathLength: 1,
             strokeDasharray: "1 1",
-            strokeDashoffset: 1 - charge
+            strokeDashoffset: 1 - charge,
+            style: { filter: "drop-shadow(0 0 10px rgba(47,227,255,.5))" }
           }
         ) })
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Eyebrow, { text: "RC DELAY / TIME CONSTANT", x: 1140, y: 720, opacity: 0.7 }),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1140,
-          top: 756,
-          width: 520,
-          fontSize: 30,
-          lineHeight: 1.7,
-          color: "rgba(233,243,255,.66)",
-          opacity: interpolate(frame, [140, 160], [0, 1], CLAMP)
-        },
-        children: "\u7535\u963B\u4E58\u7535\u5BB9\uFF0C\u5C31\u662F\u8FD9\u6761\u66F2\u7EBF\u722C\u5B8C\u7684\u65F6\u95F4\u5E38\u6570\u3002"
-      }
-    )
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Eyebrow, { text: "RC DELAY / TIME CONSTANT", x: 1140, y: 790, opacity: 0.5 })
   ] });
 };
-var MONO_FALLBACK = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
 
 // src/film/scenes/Shot08.tsx
 var import_jsx_runtime74 = __toESM(require_jsx_runtime());
@@ -56939,7 +56890,7 @@ var Shot10 = () => {
 
 // src/film/scenes/Shot11.tsx
 var import_jsx_runtime77 = __toESM(require_jsx_runtime());
-var MONO_F = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
+var MONO_F2 = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
 var SIZE = 320;
 var Gauge = ({ cx, cy, value, label: label3, unit, accent = CYAN }) => {
   const c2 = SIZE / 2;
@@ -56984,7 +56935,7 @@ var Gauge = ({ cx, cy, value, label: label3, unit, accent = CYAN }) => {
           right: 0,
           top: c2 + 56,
           textAlign: "center",
-          fontFamily: MONO_F,
+          fontFamily: MONO_F2,
           fontSize: 46,
           fontWeight: 700,
           color: accent === RED ? RED : TEXT
@@ -56996,7 +56947,7 @@ var Gauge = ({ cx, cy, value, label: label3, unit, accent = CYAN }) => {
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: c2 + 112, textAlign: "center", fontSize: 24, color: "rgba(233,243,255,.62)" }, children: label3 }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: c2 + 146, textAlign: "center", fontFamily: MONO_F, fontSize: 15, letterSpacing: 2.4, color: MUTED }, children: unit })
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: c2 + 146, textAlign: "center", fontFamily: MONO_F2, fontSize: 15, letterSpacing: 2.4, color: MUTED }, children: unit })
   ] });
 };
 var Shot11 = () => {
@@ -57337,10 +57288,10 @@ var Shot13 = () => {
         style: {
           position: "absolute",
           left: 640,
-          top: 800,
+          top: 744,
           width: 360,
           textAlign: "center",
-          fontSize: 34,
+          fontSize: 30,
           letterSpacing: 2,
           color: CYAN,
           opacity: settle
@@ -57660,6 +57611,34 @@ var TauLaw = () => {
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2805, durationInFrames: 225, name: "\u955C 14 \xB7 \u8BC1\u636E", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot14, {}) }),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 3030, durationInFrames: 180, name: "\u955C 15 \xB7 \u514B\u5236", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot15, {}) }),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 3210, durationInFrames: 210, name: "\u955C 16 \xB7 \u6536\u675F", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot16, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 240,
+          background: "linear-gradient(180deg, transparent, rgba(3,5,9,.86))",
+          pointerEvents: "none"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 240,
+          background: "linear-gradient(180deg, transparent, rgba(3,5,9,.86))",
+          pointerEvents: "none"
+        }
+      }
+    ),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Subtitles, {}),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
   ] });
@@ -57671,6 +57650,20 @@ var TauLawSample = () => {
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: SCORE_SRC, volume: (f) => interpolate(f, [284, 300], [1, 0], CLAMP) }),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: IMPACT_SRC, volume: 0.95 }),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 0, durationInFrames: 345, name: "\u955C 1\u20132", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Opening, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 240,
+          background: "linear-gradient(180deg, transparent, rgba(3,5,9,.86))",
+          pointerEvents: "none"
+        }
+      }
+    ),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Subtitles, {}),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
   ] });
