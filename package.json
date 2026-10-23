@@ -6,7 +6,7 @@
   "scripts": {
     "studio": "NODE_OPTIONS=--require=./scripts/fix-network-interfaces.cjs remotion studio --port 3033 --no-open",
     "bundle": "NODE_OPTIONS=--require=./scripts/fix-network-interfaces.cjs remotion bundle src/index.ts",
-    "web:bundle": "esbuild web/main.tsx --bundle --outfile=dist-web/bundle.js --format=esm --jsx=automatic --define:process.env.NODE_ENV='\"production\"' --target=es2022 --log-level=warning && cp web/index.html dist-web/index.html && cp public/score-sample.m4a public/impact-open.wav dist-web/",
+    "web:bundle": "esbuild web/main.tsx --bundle --outfile=dist-web/bundle.js --format=esm --jsx=automatic --define:process.env.NODE_ENV='\"production\"' --target=es2022 --log-level=warning && cp web/index.html dist-web/index.html && cp public/score-sample.m4a public/impact-open.wav public/score-bed.wav dist-web/",
     "web:serve": "node scripts/serve-web.cjs 3034",
     "render": "remotion render TauLaw out/video.mp4",
     "still": "remotion still TauLaw out/frame.png --frame=60",

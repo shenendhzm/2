@@ -7,21 +7,31 @@ import type {
   WebRendererContainer,
   WebRendererVideoCodec,
 } from "@remotion/web-renderer";
-import { TauLawSample } from "../src/HelloWorld";
+import { TauLaw, TauLawSample } from "../src/HelloWorld";
 import { FPS, SAMPLE_FRAMES, SHOTS, TOTAL_FRAMES } from "../src/film/data";
 
 /* ------------------------------------------------------------------ *
- * 出片页常量（与 src/Root.tsx 的合成参数保持一致）
+ * 出片页常量（与 src/Root.tsx 的合成参数一致）
  * ------------------------------------------------------------------ */
-const COMPOSITION = {
+const FILM = {
+  id: "TauLaw",
+  label: "整片",
+  component: TauLaw,
+  width: 1920,
+  height: 1080,
+  fps: FPS,
+  durationInFrames: TOTAL_FRAMES, // 3420 = 114.000s
+};
+const SAMPLE = {
   id: "TauLawSample",
+  label: "片头样片",
   component: TauLawSample,
   width: 1920,
   height: 1080,
   fps: FPS,
-  durationInFrames: SAMPLE_FRAMES, // 300 帧 = 10.000s
+  durationInFrames: SAMPLE_FRAMES, // 300 = 10.000s
 };
-const DURATION_SECONDS = COMPOSITION.durationInFrames / COMPOSITION.fps;
+const COMPS = [FILM, SAMPLE];
 
 type Plan = {
   container: WebRendererContainer;
@@ -31,23 +41,20 @@ type Plan = {
 };
 
 const PLANS: Plan[] = [
-  {
-    container: "mp4",
-    videoCodec: "h264",
-    audioCodec: "aac",
-    note: "MP4 / H.264（推荐，手机相册可直接播）",
-  },
-  {
-    container: "webm",
-    videoCodec: "vp8",
-    audioCodec: "opus",
-    note: "WebM / VP8（H.264 不可用时的兜底）",
-  },
+  { container: "mp4", videoCodec: "h264", audioCodec: "aac", note: "MP4 / H.264 + AAC（推荐）" },
+  { container: "webm", videoCodec: "vp8", audioCodec: "opus", note: "WebM / VP8 + Opus（兜底）" },
 ];
 
 const fmt = (n: number) => (n >= 10 ? Math.round(n) : Math.round(n * 10) / 10);
+const mmss = (frames: number, fps: number) => {
+  const s = Math.round(frames / fps);
+  return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+};
 
 const App: React.FC = () => {
+  const [compIndex, setCompIndex] = useState(0);
+  const comp = COMPS[compIndex];
+
   const [plan, setPlan] = useState<Plan | null>(null);
   const [checked, setChecked] = useState(false);
   const [issues, setIssues] = useState<string[]>([]);
@@ -63,29 +70,31 @@ const App: React.FC = () => {
 
   const composition = useMemo(
     () => ({
-      id: COMPOSITION.id,
-      component: COMPOSITION.component,
-      durationInFrames: COMPOSITION.durationInFrames,
-      fps: COMPOSITION.fps,
-      width: COMPOSITION.width,
-      height: COMPOSITION.height,
+      id: comp.id,
+      component: comp.component,
+      durationInFrames: comp.durationInFrames,
+      fps: comp.fps,
+      width: comp.width,
+      height: comp.height,
     }),
-    [],
+    [comp],
   );
 
-  /* 开机探测：这台浏览器能不能编码 */
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
+        setChecked(false);
+        setPlan(null);
+        setIssues([]);
         const collected: string[] = [];
         for (const candidate of PLANS) {
           const check = await canRenderMediaOnWeb({
             container: candidate.container,
             videoCodec: candidate.videoCodec,
             audioCodec: candidate.audioCodec,
-            width: COMPOSITION.width,
-            height: COMPOSITION.height,
+            width: comp.width,
+            height: comp.height,
             muted: false,
             videoBitrate: "medium",
             audioBitrate: "medium",
@@ -113,7 +122,7 @@ const App: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [comp.width, comp.height]);
 
   useEffect(() => {
     if (!isRunning) return;
@@ -141,20 +150,21 @@ const App: React.FC = () => {
         videoCodec: plan.videoCodec,
         audioCodec: plan.audioCodec,
         muted: false,
-        videoBitrate: "high",
-        keyframeIntervalInSeconds: 1,
+        videoBitrate: comp.durationInFrames > 600 ? "medium" : "high",
+        keyframeIntervalInSeconds: 2,
         onProgress: ({ renderedFrames, encodedFrames }) => {
-          setProgress(Math.round((renderedFrames / COMPOSITION.durationInFrames) * 100));
-          setStatus(`渲染中 ${renderedFrames}/${COMPOSITION.durationInFrames} 帧 · 已编码 ${encodedFrames}`);
+          setProgress(Math.round((renderedFrames / comp.durationInFrames) * 100));
+          setStatus(
+            `渲染中 ${renderedFrames}/${comp.durationInFrames} 帧 · 已编码 ${encodedFrames}`,
+          );
         },
       });
-
       setStatus("封装文件…");
       const blob = await rendered.getBlob();
       setResult({
         url: URL.createObjectURL(blob),
         size: blob.size,
-        name: `韬定律-片头样片.${plan.container}`,
+        name: `韬定律-${comp.durationInFrames > 600 ? "整片" : "片头样片"}.${plan.container}`,
       });
       setProgress(100);
       setStatus("完成");
@@ -168,7 +178,7 @@ const App: React.FC = () => {
   };
 
   const eta = useMemo(() => {
-    if (!isRunning || progress < 3 || elapsed < 1) return null;
+    if (!isRunning || progress < 2 || elapsed < 1) return null;
     return Math.max(0, (elapsed / progress) * (100 - progress));
   }, [isRunning, progress, elapsed]);
 
@@ -192,74 +202,99 @@ const App: React.FC = () => {
           marginBottom: 10,
         }}
       >
-        Tau Law · Film 01 · Sample
+        Tau Law · Film 01 · 16 shots
       </div>
       <h1 style={{ fontSize: 31, margin: "0 0 10px", letterSpacing: 0.5, lineHeight: 1.3 }}>
-        韬（τ）定律 · 片头样片
+        韬（τ）定律 · 技术讲解片
       </h1>
-      <p style={{ color: "rgba(233,243,255,.58)", margin: "0 0 20px", fontSize: 15, lineHeight: 1.8 }}>
-        镜头 1–2：一把量了六十年的金属尺，把芯片逼到 1nm。
-        <br />
-        尺子还在，时间还没出场——10 秒后，第 3 镜会把尺子折断。
+      <p style={{ color: "rgba(233,243,255,.58)", margin: "0 0 18px", fontSize: 15, lineHeight: 1.8 }}>
+        一把量了六十年的金属尺，在 11.5 秒处折断；此后讲的都是同一件事——把信号等待的时间压短。
       </p>
 
-      <section style={{ marginBottom: 14 }}>
-        <Player
-          component={COMPOSITION.component}
-          durationInFrames={COMPOSITION.durationInFrames}
-          fps={COMPOSITION.fps}
-          compositionWidth={COMPOSITION.width}
-          compositionHeight={COMPOSITION.height}
-          style={{
-            width: "100%",
-            aspectRatio: "16 / 9",
-            borderRadius: 12,
-            overflow: "hidden",
-            background: "#000",
-            border: "1px solid rgba(233,243,255,.12)",
-            boxShadow: "0 24px 60px rgba(0,0,0,.55)",
-          }}
-          controls
-          loop
-          autoPlay
-          clickToPlay
-          doubleClickToFullscreen
-          initiallyMuted
-          acknowledgeRemotionLicense
-        />
-        <div
-          style={{
-            marginTop: 10,
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 8,
-            fontSize: 12.5,
-            color: "rgba(233,243,255,.46)",
-          }}
-        >
-          {[
-            "1920×1080",
-            "16:9",
-            "30 fps",
-            "300 帧 = 10.000s",
-            "Noto Sans CJK",
-            "无配音 · 字幕承载",
-            "含原创配乐",
-          ].map((t) => (
-            <span
-              key={t}
-              style={{
-                padding: "5px 10px",
-                borderRadius: 6,
-                border: "1px solid rgba(233,243,255,.13)",
-                background: "rgba(255,255,255,.025)",
-              }}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-      </section>
+      <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+        {COMPS.map((c, i) => (
+          <button
+            key={c.id}
+            onClick={() => {
+              if (isRunning) return;
+              setCompIndex(i);
+              setResult(null);
+              setProgress(0);
+              setStatus("待渲染");
+            }}
+            style={{
+              padding: "9px 16px",
+              borderRadius: 8,
+              cursor: isRunning ? "not-allowed" : "pointer",
+              border: i === compIndex ? "1px solid #2FE3FF" : "1px solid rgba(255,255,255,.14)",
+              background: i === compIndex ? "rgba(47,227,255,.12)" : "rgba(255,255,255,.03)",
+              color: "#E9F3FF",
+              fontSize: 14,
+            }}
+          >
+            {c.label} · {mmss(c.durationInFrames, c.fps)}
+          </button>
+        ))}
+      </div>
+
+      <Player
+        key={comp.id}
+        component={comp.component}
+        durationInFrames={comp.durationInFrames}
+        fps={comp.fps}
+        compositionWidth={comp.width}
+        compositionHeight={comp.height}
+        style={{
+          width: "100%",
+          aspectRatio: "16 / 9",
+          borderRadius: 12,
+          overflow: "hidden",
+          background: "#000",
+          border: "1px solid rgba(233,243,255,.12)",
+          boxShadow: "0 24px 60px rgba(0,0,0,.55)",
+        }}
+        controls
+        autoPlay
+        loop
+        clickToPlay
+        doubleClickToFullscreen
+        initiallyMuted
+        acknowledgeRemotionLicense
+      />
+
+      <div
+        style={{
+          marginTop: 10,
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 8,
+          fontSize: 12.5,
+          color: "rgba(233,243,255,.46)",
+        }}
+      >
+        {[
+          "1920×1080",
+          "16:9",
+          "30 fps",
+          `${comp.durationInFrames} 帧`,
+          `${(comp.durationInFrames / comp.fps).toFixed(3)}s`,
+          "16 镜",
+          "Noto Sans CJK",
+          "含配乐",
+        ].map((t) => (
+          <span
+            key={t}
+            style={{
+              padding: "5px 10px",
+              borderRadius: 6,
+              border: "1px solid rgba(233,243,255,.13)",
+              background: "rgba(255,255,255,.025)",
+            }}
+          >
+            {t}
+          </span>
+        ))}
+      </div>
 
       <section
         style={{
@@ -267,8 +302,7 @@ const App: React.FC = () => {
           border: "1px solid rgba(47,227,255,.22)",
           borderRadius: 14,
           padding: 18,
-          background:
-            "linear-gradient(180deg, rgba(47,227,255,.07), rgba(255,255,255,.015))",
+          background: "linear-gradient(180deg, rgba(47,227,255,.07), rgba(255,255,255,.015))",
         }}
       >
         <div style={{ fontSize: 12.5, color: "rgba(233,243,255,.5)", letterSpacing: 1.4 }}>
@@ -306,7 +340,9 @@ const App: React.FC = () => {
             cursor: plan && !isRunning ? "pointer" : "not-allowed",
           }}
         >
-          {isRunning ? "渲染中…" : `渲染 ${fmt(DURATION_SECONDS)} 秒样片`}
+          {isRunning
+            ? "渲染中…"
+            : `渲染「${comp.label}」${(comp.durationInFrames / comp.fps).toFixed(0)} 秒`}
         </button>
 
         <div
@@ -382,76 +418,36 @@ const App: React.FC = () => {
       </section>
 
       <section style={{ marginTop: 26 }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            marginBottom: 10,
-          }}
-        >
-          <div style={{ fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)" }}>
-            全片进度 · 16 镜 / {TOTAL_FRAMES} 帧 / {(TOTAL_FRAMES / FPS).toFixed(0)}s
-          </div>
-          <div style={{ fontSize: 12.5, color: "rgba(233,243,255,.36)" }}>2 / 16 已出</div>
+        <div style={{ fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }}>
+          分镜 · 16 镜 / 3420 帧 / 114.000s
         </div>
-
-        {SHOTS.map((s) => {
-          const done = s.id <= 2;
-          return (
-            <div
-              key={s.id}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "34px 118px 1fr 52px",
-                alignItems: "center",
-                gap: 8,
-                padding: "7px 0",
-                borderTop: "1px solid rgba(233,243,255,.07)",
-                fontSize: 13.5,
-                color: done ? "rgba(233,243,255,.9)" : "rgba(233,243,255,.42)",
-              }}
-            >
-              <span style={{ fontFamily: "ui-monospace, monospace", opacity: 0.7 }}>
-                {String(s.id).padStart(2, "0")}
-              </span>
-              <span style={{ fontFamily: "ui-monospace, monospace", opacity: 0.66 }}>{s.tc}</span>
-              <span>{s.title}</span>
-              <span
-                style={{
-                  fontSize: 11.5,
-                  textAlign: "right",
-                  color: done ? "#2FE3FF" : "rgba(233,243,255,.3)",
-                }}
-              >
-                {done ? "已出" : "待做"}
-              </span>
-            </div>
-          );
-        })}
+        {SHOTS.map((s) => (
+          <div
+            key={s.id}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "34px 128px 1fr 44px",
+              alignItems: "center",
+              gap: 8,
+              padding: "7px 0",
+              borderTop: "1px solid rgba(233,243,255,.07)",
+              fontSize: 13.5,
+              color: "rgba(233,243,255,.86)",
+            }}
+          >
+            <span style={{ fontFamily: "ui-monospace, monospace", opacity: 0.66 }}>
+              {String(s.id).padStart(2, "0")}
+            </span>
+            <span style={{ fontFamily: "ui-monospace, monospace", opacity: 0.6 }}>{s.tc}</span>
+            <span>{s.title}</span>
+            <span style={{ fontSize: 11.5, textAlign: "right", color: "#2FE3FF" }}>已出</span>
+          </div>
+        ))}
       </section>
 
-      <p
-        style={{
-          margin: "22px 0 0",
-          fontSize: 12.5,
-          lineHeight: 1.85,
-          color: "rgba(233,243,255,.4)",
-        }}
-      >
-        时间轴按 30fps 严格对齐脚本：镜 1 = 0–180 帧（00:00–00:06），镜 2 = 180–345 帧；
-        样片取 0–300 帧收黑。字幕文本逐字照抄脚本，未做改写。动画只用 interpolate / spring。
-      </p>
-
-      <p
-        style={{
-          margin: "10px 0 0",
-          fontSize: 12.5,
-          lineHeight: 1.85,
-          color: "rgba(233,243,255,.4)",
-        }}
-      >
-        渲染时请保持本页在前台、不要锁屏。10 秒样片在这台手机上预计 2–4 分钟。
+      <p style={{ margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }}>
+        整片渲染请插电、保持本页在前台、别锁屏：1080p / 3420 帧，按这台手机的编码速度大约
+        25–45 分钟；片头 10 秒样片只需 2–4 分钟。中途切后台可能中断，重来即可。
       </p>
     </main>
   );

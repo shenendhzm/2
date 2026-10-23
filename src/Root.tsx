@@ -1,16 +1,24 @@
 import { Composition } from "remotion";
-import { TauLawSample } from "./HelloWorld";
+import { TauLaw, TauLawSample } from "./HelloWorld";
 import { FPS, SAMPLE_FRAMES, TOTAL_FRAMES } from "./film/data";
 import { H, W } from "./film/look";
 
 /**
- * 合成注册。
- * 现在只挂样片（300 帧 = 10.000s）；整片 16 镜做齐后，再把
- * <Composition id="TauLaw" ... durationInFrames={TOTAL_FRAMES} /> 挂上。
+ * 两个合成：
+ * - TauLaw        整片 16 镜 / 3420 帧 / 114.000s
+ * - TauLawSample  片头样片 300 帧 / 10.000s
  */
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="TauLaw"
+        component={TauLaw}
+        durationInFrames={TOTAL_FRAMES}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
       <Composition
         id="TauLawSample"
         component={TauLawSample}
@@ -22,6 +30,3 @@ export const RemotionRoot: React.FC = () => {
     </>
   );
 };
-
-/** 整片规格，供 Studio 与出片页对齐 */
-export const FULL_FILM = { fps: FPS, width: W, height: H, durationInFrames: TOTAL_FRAMES };
