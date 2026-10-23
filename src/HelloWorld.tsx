@@ -112,18 +112,6 @@ export const TauLaw: React.FC = () => {
           pointerEvents: "none",
         }}
       />
-      {/* 全片统一的字幕压暗带，保证任何画面上字幕都读得清 */}
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: 240,
-          background: "linear-gradient(180deg, transparent, rgba(3,5,9,.86))",
-          pointerEvents: "none",
-        }}
-      />
       <Subtitles />
       <AbsoluteFill style={{ background: "#000", opacity: fade, pointerEvents: "none" }} />
     </AbsoluteFill>
