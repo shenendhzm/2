@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { Stage } from "../components/Stage";
-import { Eyebrow, Label } from "../components/ui";
+import { Eyebrow, Grid, Label } from "../components/ui";
 import { CLAMP, CYAN, EASE_IN_OUT, EASE_OUT, MUTED, TEXT } from "../look";
 
 const SLAB = { x: 420, w: 1080, h: 92 };
@@ -44,15 +44,7 @@ export const Shot10: React.FC = () => {
             boxShadow: "0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)",
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              inset: 12,
-              backgroundImage:
-                "linear-gradient(rgba(47,227,255,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.13) 1px, transparent 1px)",
-              backgroundSize: "26px 26px",
-            }}
-          />
+          <Grid inset={12} sizeX={26} sizeY={26} color="rgba(47,227,255,.13)" />
         </div>
 
         {/* 下层 */}
@@ -69,15 +61,7 @@ export const Shot10: React.FC = () => {
             boxShadow: "0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)",
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              inset: 12,
-              backgroundImage:
-                "linear-gradient(rgba(47,227,255,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.13) 1px, transparent 1px)",
-              backgroundSize: "26px 26px",
-            }}
-          />
+          <Grid inset={12} sizeX={26} sizeY={26} color="rgba(47,227,255,.13)" />
         </div>
 
         {/* 垂直互连 */}

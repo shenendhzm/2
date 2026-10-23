@@ -163,3 +163,37 @@ export const StatCard: React.FC<{
     ) : null}
   </div>
 );
+
+/**
+ * 网格：两条单层渐变分别画横线与竖线。
+ * 不能用「一条 background-image 里塞两个 gradient」—— 出片页的栅格化只画第一层，
+ * 结果就是网格只剩横线（或整块填充丢失）。
+ */
+export const Grid: React.FC<{
+  sizeX?: number;
+  sizeY?: number;
+  color: string;
+  inset?: number;
+  style?: React.CSSProperties;
+}> = ({ sizeX = 40, sizeY = 40, color, inset = 0, style }) => (
+  <>
+    <div
+      style={{
+        position: "absolute",
+        inset,
+        backgroundImage: `linear-gradient(${color} 1px, transparent 1px)`,
+        backgroundSize: `100% ${sizeY}px`,
+        ...style,
+      }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        inset,
+        backgroundImage: `linear-gradient(90deg, ${color} 1px, transparent 1px)`,
+        backgroundSize: `${sizeX}px 100%`,
+        ...style,
+      }}
+    />
+  </>
+);

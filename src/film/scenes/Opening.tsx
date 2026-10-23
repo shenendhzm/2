@@ -61,7 +61,7 @@ export const Opening: React.FC = () => {
   );
 
   /* ---------- 尺子 ---------- */
-  const rulerX = interpolate(frame, [0, 3, 6, 10, 73, 180], [1400, 40, 112, 96, -220, -340], {
+  const rulerX = interpolate(frame, [0, 3, 6, 10, 73, 180], [1240, 40, 112, 96, -220, -340], {
     ...CLAMP,
     easing: EASE_IN,
   });
@@ -84,7 +84,7 @@ export const Opening: React.FC = () => {
   const shakeY = HITS.reduce((sum, h) => sum + shakeAt(frame, h.at, h.amp * 0.62), 0);
   const flash = Math.min(
     1,
-    HITS.reduce((sum, h) => sum + flashAt(frame, h.at, h.at === 0 ? 0.42 : 0.34), 0),
+    HITS.reduce((sum, h) => sum + flashAt(frame, h.at, h.at === 0 ? 0.26 : 0.34), 0),
   );
 
   /* ---------- 扫光 ---------- */
@@ -134,7 +134,7 @@ export const Opening: React.FC = () => {
                 : (1.02 + 0.06 * interpolate(frame, [73, 180], [0, 1], CLAMP)) * lockPop)
             }
             blur={compressed ? 12 : focus}
-            opacity={interpolate(frame, [3, 8], [0, 1], CLAMP) * (compressed ? 0.35 : 1)}
+            opacity={interpolate(frame, [0, 6], [0, 1], CLAMP) * (compressed ? 0.35 : 1)}
             glow={compressed ? 0.6 : 1.15 * pulse}
             rotate={compressed ? -4 : interpolate(frame, [0, 180], [-9.5, -5.5], CLAMP)}
           />

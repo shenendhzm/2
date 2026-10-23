@@ -1,41 +1,37 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
 import { BG, CYAN } from "../look";
+import { Grid } from "./ui";
 
 /**
- * 通用舞台：底色 + 冷光 + 48px 细网格 + 暗角。
- * 所有参数都是 0–1 的强度，方便跟着镜头节奏淡入淡出。
+ * 通用舞台：底色 + 冷光 + 细网格 + 暗角。
+ * 注意：网格拆成两条单层渐变（见 ui.tsx 的 Grid），
+ * 因为出片页的栅格化只画 background-image 的第一层。
  */
 export const Stage: React.FC<{
   glow?: number;
   grid?: number;
   vignette?: number;
-  /** 冷光位置 */
   lightX?: number;
   lightY?: number;
 }> = ({ glow = 1, grid = 1, vignette = 1, lightX = 1180, lightY = 430 }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: BG, overflow: "hidden" }}>
-      {/* 冷光 */}
       <AbsoluteFill
         style={{
           opacity: glow,
-          background: `radial-gradient(1100px 760px at ${lightX}px ${lightY}px, rgba(47,227,255,.13), rgba(47,227,255,.04) 46%, transparent 72%)`,
+          background: `radial-gradient(circle at ${lightX}px ${lightY}px, rgba(47,227,255,.13), rgba(47,227,255,.04) 46%, rgba(47,227,255,0) 72%)`,
         }}
       />
-      {/* 细网格 */}
       <AbsoluteFill
         style={{
           opacity: 0.55 * grid,
-          backgroundImage:
-            "linear-gradient(rgba(233,243,255,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(233,243,255,.055) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-          maskImage: "radial-gradient(1200px 720px at 50% 46%, #000 30%, transparent 88%)",
-          WebkitMaskImage:
-            "radial-gradient(1200px 720px at 50% 46%, #000 30%, transparent 88%)",
+          maskImage: "radial-gradient(circle at 50% 46%, #000 30%, transparent 88%)",
+          WebkitMaskImage: "radial-gradient(circle at 50% 46%, #000 30%, transparent 88%)",
         }}
-      />
-      {/* 暗角 */}
+      >
+        <Grid sizeX={48} sizeY={48} color="rgba(233,243,255,.055)" />
+      </AbsoluteFill>
       <AbsoluteFill
         style={{
           opacity: vignette,
@@ -57,7 +53,7 @@ export const LightSweep: React.FC<{ x: number; opacity: number }> = ({ x, opacit
       height: 1500,
       transform: `translateX(${x}px) rotate(14deg)`,
       opacity,
-      background:
+      backgroundImage:
         "linear-gradient(90deg, rgba(47,227,255,0) 0%, rgba(47,227,255,.10) 32%, rgba(233,243,255,.22) 50%, rgba(47,227,255,.10) 68%, rgba(47,227,255,0) 100%)",
       filter: "blur(6px)",
       mixBlendMode: "screen",
@@ -80,7 +76,7 @@ export const CrossMark: React.FC<{ x: number; y: number; size?: number; opacity?
       top: y - 0.5,
       width: size * 2,
       height: 1,
-      background: CYAN,
+      backgroundColor: CYAN,
       opacity,
     }}
   >
@@ -91,7 +87,7 @@ export const CrossMark: React.FC<{ x: number; y: number; size?: number; opacity?
         top: -size + 0.5,
         width: 1,
         height: size * 2,
-        background: CYAN,
+        backgroundColor: CYAN,
       }}
     />
   </div>

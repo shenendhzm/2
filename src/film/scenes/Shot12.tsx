@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { Eyebrow, Label } from "../components/ui";
+import { Eyebrow, Grid, Label } from "../components/ui";
 import { CLAMP, CYAN, EASE_OUT, MUTED, RED, TEXT } from "../look";
 
 const Die: React.FC<{ x: number; y: number; w: number; h: number; opacity: number }> = ({ x, y, w, h, opacity }) => (
@@ -17,15 +17,7 @@ const Die: React.FC<{ x: number; y: number; w: number; h: number; opacity: numbe
       boxShadow: "0 18px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.1)",
     }}
   >
-    <div
-      style={{
-        position: "absolute",
-        inset: 8,
-        backgroundImage:
-          "linear-gradient(rgba(47,227,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.12) 1px, transparent 1px)",
-        backgroundSize: "22px 22px",
-      }}
-    />
+    <Grid inset={8} sizeX={22} sizeY={22} color="rgba(47,227,255,.12)" />
   </div>
 );
 

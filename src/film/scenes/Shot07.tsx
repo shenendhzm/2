@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { Stage } from "../components/Stage";
-import { Eyebrow, Label } from "../components/ui";
+import { Eyebrow, Grid, Label } from "../components/ui";
 import { CLAMP, CYAN, EASE_IN_OUT, EASE_OUT, MUTED, TEXT } from "../look";
 
 const MONO_F = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
@@ -139,12 +139,10 @@ export const Shot07: React.FC = () => {
           width: 560,
           height: 230,
           border: "1px solid rgba(47,227,255,.2)",
-          background:
-            "linear-gradient(rgba(47,227,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.05) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
           opacity: interpolate(frame, [60, 80], [0, 1], CLAMP),
         }}
       >
+        <Grid sizeX={32} sizeY={32} color="rgba(47,227,255,.06)" />
         <svg width={560} height={230} style={{ position: "absolute", inset: 0 }}>
           <path
             d={CHARGE}

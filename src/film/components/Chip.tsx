@@ -1,5 +1,6 @@
 import React from "react";
 import { CYAN } from "../look";
+import { Grid } from "./ui";
 
 /**
  * 裸片（die）：深色硅片 + 布线网格 + 发光核心。
@@ -43,15 +44,7 @@ export const Chip: React.FC<{
         }}
       >
         {/* 布线网格 */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 18,
-            backgroundImage:
-              "repeating-linear-gradient(0deg, rgba(47,227,255,.16) 0 1px, transparent 1px 24px), repeating-linear-gradient(90deg, rgba(47,227,255,.16) 0 1px, transparent 1px 24px)",
-            opacity: 0.75,
-          }}
-        />
+        <Grid inset={18} sizeX={24} sizeY={24} color="rgba(47,227,255,.16)" style={{ opacity: 0.75 }} />
         {/* 更细的亚网格 */}
         <div
           style={{

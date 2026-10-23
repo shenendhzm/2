@@ -1,28 +1,19 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { Stage } from "../components/Stage";
-import { Eyebrow, Label } from "../components/ui";
+import { Eyebrow, Grid, Label } from "../components/ui";
 import { CLAMP, CYAN, EASE_IN_OUT, EASE_OUT, RED, TEXT } from "../look";
 
 const HALF_W = 900;
 const HALF_H = 260;
 
-const Grid: React.FC<{ tint?: string }> = ({ tint = "rgba(47,227,255,.12)" }) => (
-  <div
-    style={{
-      position: "absolute",
-      inset: 0,
-      backgroundImage: `linear-gradient(${tint} 1px, transparent 1px), linear-gradient(90deg, ${tint} 1px, transparent 1px)`,
-      backgroundSize: "45px 45px",
-    }}
-  />
-);
+
 
 /** 镜 9：00:56.5–01:03.5，把路折起来 */
 export const Shot09: React.FC = () => {
   const frame = useCurrentFrame();
 
-  const fold = interpolate(frame, [34, 96], [0, -82], { ...CLAMP, easing: EASE_IN_OUT });
+  const fold = interpolate(frame, [34, 96], [0, -62], { ...CLAMP, easing: EASE_IN_OUT });
   const enter = interpolate(frame, [0, 22], [0, 1], { ...CLAMP, easing: EASE_OUT });
   const glow = interpolate(frame, [90, 110], [0, 1], CLAMP);
   const zoom = interpolate(frame, [0, 210], [1, 1.06], CLAMP);
@@ -53,7 +44,15 @@ export const Shot09: React.FC = () => {
             opacity: enter,
           }}
         >
-          <Grid />
+          <Grid sizeX={45} sizeY={45} color="rgba(47,227,255,.12)" />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: "linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.05))",
+              opacity: Math.min(1, Math.abs(fold) / 62),
+            }}
+          />
           <svg width={HALF_W} height={HALF_H} style={{ position: "absolute", inset: 0 }}>
             <path
               d={`M40 ${HALF_H - 70} H${HALF_W - 40}`}
@@ -84,7 +83,15 @@ export const Shot09: React.FC = () => {
             opacity: enter,
           }}
         >
-          <Grid />
+          <Grid sizeX={45} sizeY={45} color="rgba(47,227,255,.12)" />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: "linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.05))",
+              opacity: Math.min(1, Math.abs(fold) / 62),
+            }}
+          />
           <svg width={HALF_W} height={HALF_H} style={{ position: "absolute", inset: 0 }}>
             <path
               d={`M40 ${HALF_H - 70} H${HALF_W - 40}`}

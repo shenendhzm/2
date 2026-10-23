@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { Stage } from "../components/Stage";
-import { Eyebrow, Label } from "../components/ui";
+import { Eyebrow, Grid, Label } from "../components/ui";
 import { CLAMP, CYAN, EASE_IN_OUT, EASE_OUT, TEXT } from "../look";
 
 const N = 16;
@@ -41,11 +41,9 @@ export const Shot05: React.FC = () => {
             width: 1120,
             height: 1120,
             border: "1px solid rgba(47,227,255,.22)",
-            backgroundImage:
-              "linear-gradient(rgba(47,227,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.1) 1px, transparent 1px)",
-            backgroundSize: "35px 35px",
           }}
         >
+          <Grid sizeX={35} sizeY={35} color="rgba(47,227,255,.1)" />
           {CELLS.map((c, i) => {
             // 每 40 帧一波，从中心向外克隆
             const born = 20 + c.d * 150;

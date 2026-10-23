@@ -7,7 +7,11 @@ const LABELS = ["90", "65", "45", "22", "14", "10", "7", "5", "3"];
 
 /**
  * 金属直尺：全片的「空间」母题。
- * 刻度 90→3nm，越往右越密，为第 3 镜的挤压断裂埋线。
+ *
+ * 注意（渲染坑）：尺身只能用「一层渐变」。出片页栅格化时，
+ * background-image 里塞两层以上只会画第一层——之前金属底就整个丢了，
+ * 只剩一层 5% 白的横向细纹，看起来像"尺子不见了"。
+ * 所以这里：一层金属渐变打底，拉丝纹理 / 高光 / 暗边全部拆成独立子层。
  */
 export const Ruler: React.FC<{
   x: number;
@@ -31,14 +35,27 @@ export const Ruler: React.FC<{
         opacity,
         transform: `rotate(${rotate}deg) scaleX(${scaleX})`,
         transformOrigin: "50% 50%",
-        background:
-          "linear-gradient(180deg,#e3eaf3 0%,#b3c0d0 7%,#7c8a9d 32%,#59667a 50%,#6e7c90 70%,#a3b0c1 90%,#cdd8e6 100%)",
+        backgroundColor: "#9AA8B9",
         backgroundImage:
-          "repeating-linear-gradient(90deg, rgba(255,255,255,.055) 0 1px, transparent 1px 4px), linear-gradient(180deg,#e3eaf3 0%,#b3c0d0 7%,#7c8a9d 32%,#59667a 50%,#6e7c90 70%,#a3b0c1 90%,#cdd8e6 100%)",
-        boxShadow:
-          "0 34px 70px rgba(0,0,0,.62), 0 2px 0 rgba(255,255,255,.10), inset 0 2px 0 rgba(255,255,255,.85), inset 0 -3px 6px rgba(0,0,0,.45), inset 0 0 40px rgba(0,0,0,.18)",
+          "linear-gradient(180deg,#EEF3F9 0%,#C6D1DE 9%,#96A4B6 34%,#7A889B 52%,#8E9CAE 70%,#B8C4D3 90%,#DCE5EF 100%)",
+        boxShadow: "0 30px 60px rgba(0,0,0,.55)",
+        overflow: "hidden",
       }}
     >
+      {/* 拉丝纹理（单层） */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0px, rgba(255,255,255,.07) 1px, rgba(255,255,255,0) 1px, rgba(255,255,255,0) 4px)",
+        }}
+      />
+      {/* 上高光 / 下暗边 */}
+      <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: 2, backgroundColor: "rgba(255,255,255,.85)" }} />
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 4, backgroundColor: "rgba(0,0,0,.35)" }} />
+      <div style={{ position: "absolute", left: 0, right: 0, top: 2, height: 10, backgroundImage: "linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0))" }} />
+
       {/* 上：纳米刻度 */}
       <div style={{ position: "absolute", left: 12, top: 0, right: 0, height: 96 }}>
         {ticks.map((i) => {
@@ -53,8 +70,8 @@ export const Ruler: React.FC<{
                 top: 0,
                 width: major ? 2.5 : 1.5,
                 height: major ? 62 : mid ? 40 : 24,
-                background: "#0C1219",
-                opacity: major ? 0.82 : mid ? 0.5 : 0.32,
+                backgroundColor: "#0C1219",
+                opacity: major ? 0.86 : mid ? 0.55 : 0.36,
               }}
             />
           );
@@ -69,10 +86,10 @@ export const Ruler: React.FC<{
               top: 74,
               fontFamily: MONO,
               fontSize: 31,
-              fontWeight: 600,
+              fontWeight: 700,
               letterSpacing: 0.5,
-              color: "#0B1118",
-              opacity: 0.78,
+              color: "#101820",
+              opacity: 0.86,
             }}
           >
             {label}
@@ -87,8 +104,8 @@ export const Ruler: React.FC<{
             fontFamily: MONO,
             fontSize: 26,
             letterSpacing: 2,
-            color: "#0B1118",
-            opacity: 0.6,
+            color: "#101820",
+            opacity: 0.7,
           }}
         >
           nm
@@ -96,18 +113,9 @@ export const Ruler: React.FC<{
       </div>
 
       {/* 中：分界线 */}
-      <div
-        style={{
-          position: "absolute",
-          left: 10,
-          right: 10,
-          top: 108,
-          height: 1,
-          background: "rgba(11,17,24,.28)",
-        }}
-      />
+      <div style={{ position: "absolute", left: 10, right: 10, top: 108, height: 1, backgroundColor: "rgba(11,17,24,.3)" }} />
 
-      {/* 下：厘米刻度（真实直尺的背面刻度，增加「物件」的可信度） */}
+      {/* 下：厘米刻度 */}
       <div style={{ position: "absolute", left: 12, top: 112, right: 0, bottom: 0 }}>
         {Array.from({ length: 10 }, (_, i) => (
           <div key={i}>
@@ -118,8 +126,8 @@ export const Ruler: React.FC<{
                 top: 0,
                 width: 1.5,
                 height: 26,
-                background: "#0C1219",
-                opacity: 0.28,
+                backgroundColor: "#0C1219",
+                opacity: 0.3,
               }}
             />
             <div
@@ -129,8 +137,9 @@ export const Ruler: React.FC<{
                 top: 40,
                 fontFamily: MONO,
                 fontSize: 19,
-                color: "#0B1118",
-                opacity: 0.42,
+                fontWeight: 500,
+                color: "#101820",
+                opacity: 0.5,
               }}
             >
               {i}
