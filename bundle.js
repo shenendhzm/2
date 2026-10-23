@@ -55198,11 +55198,155 @@ var Subtitles = () => {
   );
 };
 
-// src/film/components/Chip.tsx
+// src/film/components/ui.tsx
 var import_jsx_runtime64 = __toESM(require_jsx_runtime());
+var Eyebrow = ({ text, x, y, size = 22, color = CYAN, opacity = 1, align = "left", width = 900 }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: x,
+      top: y,
+      width,
+      fontFamily: MONO,
+      fontSize: size,
+      letterSpacing: 4.5,
+      color,
+      opacity,
+      textAlign: align,
+      whiteSpace: "nowrap"
+    },
+    children: text
+  }
+);
+var Label = ({ text, x, y, size = 30, color, opacity = 1, align = "left", width = 900, weight = 500 }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: x,
+      top: y,
+      width,
+      fontSize: size,
+      fontWeight: weight,
+      color,
+      opacity,
+      textAlign: align,
+      letterSpacing: 1,
+      whiteSpace: "nowrap"
+    },
+    children: text
+  }
+);
+var TauGlyph = ({ size, progress, color = CYAN, strokeWidth = 7, opacity = 1, glow = 1, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+  "svg",
+  {
+    width: size,
+    height: size,
+    viewBox: "0 0 100 100",
+    style: {
+      opacity,
+      filter: `drop-shadow(0 0 ${18 * glow}px ${color}66)`,
+      overflow: "visible",
+      ...style2
+    },
+    children: [
+      /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+        "path",
+        {
+          d: "M14 20 H86",
+          fill: "none",
+          stroke: color,
+          strokeWidth,
+          strokeLinecap: "round",
+          pathLength: 1,
+          strokeDasharray: "1 1",
+          strokeDashoffset: 1 - Math.min(1, progress * 2)
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+        "path",
+        {
+          d: "M50 20 V58 C50 76 60 86 84 88",
+          fill: "none",
+          stroke: color,
+          strokeWidth,
+          strokeLinecap: "round",
+          pathLength: 1,
+          strokeDasharray: "1 1",
+          strokeDashoffset: 1 - Math.max(0, Math.min(1, (progress - 0.5) * 2))
+        }
+      )
+    ]
+  }
+);
+var StatCard = ({ x, y, w, title, value, note, opacity = 1, accent = CYAN }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: x,
+      top: y,
+      width: w,
+      opacity,
+      padding: "22px 24px",
+      border: `1px solid ${accent}44`,
+      background: "linear-gradient(180deg, rgba(9,16,24,.92), rgba(5,8,12,.92))",
+      borderRadius: 4
+    },
+    children: [
+      /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { fontFamily: MONO, fontSize: 20, letterSpacing: 3, color: accent, opacity: 0.9 }, children: title }),
+      /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+        "div",
+        {
+          style: {
+            fontFamily: MONO,
+            fontSize: 58,
+            fontWeight: 700,
+            color: "#E9F3FF",
+            marginTop: 10,
+            lineHeight: 1.05,
+            whiteSpace: "nowrap"
+          },
+          children: value
+        }
+      ),
+      note ? /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { fontSize: 21, color: "rgba(233,243,255,.5)", marginTop: 8 }, children: note }) : null
+    ]
+  }
+);
+var Grid = ({ sizeX = 40, sizeY = 40, color, inset = 0, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(import_jsx_runtime64.Fragment, { children: [
+  /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+    "div",
+    {
+      style: {
+        position: "absolute",
+        inset,
+        backgroundImage: `linear-gradient(${color} 1px, transparent 1px)`,
+        backgroundSize: `100% ${sizeY}px`,
+        ...style2
+      }
+    }
+  ),
+  /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+    "div",
+    {
+      style: {
+        position: "absolute",
+        inset,
+        backgroundImage: `linear-gradient(90deg, ${color} 1px, transparent 1px)`,
+        backgroundSize: `${sizeX}px 100%`,
+        ...style2
+      }
+    }
+  )
+] });
+
+// src/film/components/Chip.tsx
+var import_jsx_runtime65 = __toESM(require_jsx_runtime());
 var Chip = ({ x, y, size = 330, scale, blur, opacity, glow = 1, rotate: rotate2 = -7 }) => {
   const cells = Array.from({ length: 12 }, (_, i) => i);
-  return /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
     "div",
     {
       style: {
@@ -55217,7 +55361,7 @@ var Chip = ({ x, y, size = 330, scale, blur, opacity, glow = 1, rotate: rotate2 
         transformOrigin: "50% 50%"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
           "div",
           {
             style: {
@@ -55230,18 +55374,8 @@ var Chip = ({ x, y, size = 330, scale, blur, opacity, glow = 1, rotate: rotate2 
               overflow: "hidden"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    inset: 18,
-                    backgroundImage: "repeating-linear-gradient(0deg, rgba(47,227,255,.16) 0 1px, transparent 1px 24px), repeating-linear-gradient(90deg, rgba(47,227,255,.16) 0 1px, transparent 1px 24px)",
-                    opacity: 0.75
-                  }
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(Grid, { inset: 18, sizeX: 24, sizeY: 24, color: "rgba(47,227,255,.16)", style: { opacity: 0.75 } }),
+              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                 "div",
                 {
                   style: {
@@ -55251,7 +55385,7 @@ var Chip = ({ x, y, size = 330, scale, blur, opacity, glow = 1, rotate: rotate2 
                   }
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                 "div",
                 {
                   style: {
@@ -55270,7 +55404,7 @@ var Chip = ({ x, y, size = 330, scale, blur, opacity, glow = 1, rotate: rotate2 
               cells.slice(0, 4).map((i) => {
                 const right = i % 2 === 1;
                 const bottom = i > 1;
-                return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+                return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
                   "div",
                   {
                     style: {
@@ -55292,7 +55426,7 @@ var Chip = ({ x, y, size = 330, scale, blur, opacity, glow = 1, rotate: rotate2 
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
           "div",
           {
             style: {
@@ -55312,13 +55446,13 @@ var Chip = ({ x, y, size = 330, scale, blur, opacity, glow = 1, rotate: rotate2 
 };
 
 // src/film/components/Ruler.tsx
-var import_jsx_runtime65 = __toESM(require_jsx_runtime());
+var import_jsx_runtime66 = __toESM(require_jsx_runtime());
 var TICK_STEP = 36;
 var TICK_COUNT = 46;
 var LABELS = ["90", "65", "45", "22", "14", "10", "7", "5", "3"];
 var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
   const ticks = Array.from({ length: TICK_COUNT }, (_, i) => i);
-  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
     "div",
     {
       style: {
@@ -55331,16 +55465,30 @@ var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
         opacity,
         transform: `rotate(${rotate2}deg) scaleX(${scaleX})`,
         transformOrigin: "50% 50%",
-        background: "linear-gradient(180deg,#e3eaf3 0%,#b3c0d0 7%,#7c8a9d 32%,#59667a 50%,#6e7c90 70%,#a3b0c1 90%,#cdd8e6 100%)",
-        backgroundImage: "repeating-linear-gradient(90deg, rgba(255,255,255,.055) 0 1px, transparent 1px 4px), linear-gradient(180deg,#e3eaf3 0%,#b3c0d0 7%,#7c8a9d 32%,#59667a 50%,#6e7c90 70%,#a3b0c1 90%,#cdd8e6 100%)",
-        boxShadow: "0 34px 70px rgba(0,0,0,.62), 0 2px 0 rgba(255,255,255,.10), inset 0 2px 0 rgba(255,255,255,.85), inset 0 -3px 6px rgba(0,0,0,.45), inset 0 0 40px rgba(0,0,0,.18)"
+        backgroundColor: "#9AA8B9",
+        backgroundImage: "linear-gradient(180deg,#EEF3F9 0%,#C6D1DE 9%,#96A4B6 34%,#7A889B 52%,#8E9CAE 70%,#B8C4D3 90%,#DCE5EF 100%)",
+        boxShadow: "0 30px 60px rgba(0,0,0,.55)",
+        overflow: "hidden"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { style: { position: "absolute", left: 12, top: 0, right: 0, height: 96 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              inset: 0,
+              backgroundImage: "repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0px, rgba(255,255,255,.07) 1px, rgba(255,255,255,0) 1px, rgba(255,255,255,0) 4px)"
+            }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: 0, height: 2, backgroundColor: "rgba(255,255,255,.85)" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 0, right: 0, bottom: 0, height: 4, backgroundColor: "rgba(0,0,0,.35)" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: 2, height: 10, backgroundImage: "linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0))" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("div", { style: { position: "absolute", left: 12, top: 0, right: 0, height: 96 }, children: [
           ticks.map((i) => {
             const major = i % 5 === 0;
             const mid = i % 5 === 2;
-            return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+            return /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
               "div",
               {
                 style: {
@@ -55349,14 +55497,14 @@ var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
                   top: 0,
                   width: major ? 2.5 : 1.5,
                   height: major ? 62 : mid ? 40 : 24,
-                  background: "#0C1219",
-                  opacity: major ? 0.82 : mid ? 0.5 : 0.32
+                  backgroundColor: "#0C1219",
+                  opacity: major ? 0.86 : mid ? 0.55 : 0.36
                 }
               },
               i
             );
           }),
-          LABELS.map((label3, i) => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+          LABELS.map((label3, i) => /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
             "div",
             {
               style: {
@@ -55365,16 +55513,16 @@ var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
                 top: 74,
                 fontFamily: MONO,
                 fontSize: 31,
-                fontWeight: 600,
+                fontWeight: 700,
                 letterSpacing: 0.5,
-                color: "#0B1118",
-                opacity: 0.78
+                color: "#101820",
+                opacity: 0.86
               },
               children: label3
             },
             label3 + i
           )),
-          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
             "div",
             {
               style: {
@@ -55384,28 +55532,16 @@ var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
                 fontFamily: MONO,
                 fontSize: 26,
                 letterSpacing: 2,
-                color: "#0B1118",
-                opacity: 0.6
+                color: "#101820",
+                opacity: 0.7
               },
               children: "nm"
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 10,
-              right: 10,
-              top: 108,
-              height: 1,
-              background: "rgba(11,17,24,.28)"
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("div", { style: { position: "absolute", left: 12, top: 112, right: 0, bottom: 0 }, children: Array.from({ length: 10 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 10, right: 10, top: 108, height: 1, backgroundColor: "rgba(11,17,24,.3)" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 12, top: 112, right: 0, bottom: 0 }, children: Array.from({ length: 10 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
             "div",
             {
               style: {
@@ -55414,12 +55550,12 @@ var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
                 top: 0,
                 width: 1.5,
                 height: 26,
-                background: "#0C1219",
-                opacity: 0.28
+                backgroundColor: "#0C1219",
+                opacity: 0.3
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
             "div",
             {
               style: {
@@ -55428,8 +55564,9 @@ var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
                 top: 40,
                 fontFamily: MONO,
                 fontSize: 19,
-                color: "#0B1118",
-                opacity: 0.42
+                fontWeight: 500,
+                color: "#101820",
+                opacity: 0.5
               },
               children: i
             }
@@ -55441,31 +55578,30 @@ var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
 };
 
 // src/film/components/Stage.tsx
-var import_jsx_runtime66 = __toESM(require_jsx_runtime());
+var import_jsx_runtime67 = __toESM(require_jsx_runtime());
 var Stage = ({ glow = 1, grid = 1, vignette = 1, lightX = 1180, lightY = 430 }) => {
-  return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(AbsoluteFill, { style: { backgroundColor: BG, overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(AbsoluteFill, { style: { backgroundColor: BG, overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
       AbsoluteFill,
       {
         style: {
           opacity: glow,
-          background: `radial-gradient(1100px 760px at ${lightX}px ${lightY}px, rgba(47,227,255,.13), rgba(47,227,255,.04) 46%, transparent 72%)`
+          background: `radial-gradient(circle at ${lightX}px ${lightY}px, rgba(47,227,255,.13), rgba(47,227,255,.04) 46%, rgba(47,227,255,0) 72%)`
         }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
       AbsoluteFill,
       {
         style: {
           opacity: 0.55 * grid,
-          backgroundImage: "linear-gradient(rgba(233,243,255,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(233,243,255,.055) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-          maskImage: "radial-gradient(1200px 720px at 50% 46%, #000 30%, transparent 88%)",
-          WebkitMaskImage: "radial-gradient(1200px 720px at 50% 46%, #000 30%, transparent 88%)"
-        }
+          maskImage: "radial-gradient(circle at 50% 46%, #000 30%, transparent 88%)",
+          WebkitMaskImage: "radial-gradient(circle at 50% 46%, #000 30%, transparent 88%)"
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Grid, { sizeX: 48, sizeY: 48, color: "rgba(233,243,255,.055)" })
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -55476,7 +55612,7 @@ var Stage = ({ glow = 1, grid = 1, vignette = 1, lightX = 1180, lightY = 430 }) 
     )
   ] });
 };
-var LightSweep = ({ x, opacity }) => /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
+var LightSweep = ({ x, opacity }) => /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
   "div",
   {
     style: {
@@ -55487,7 +55623,7 @@ var LightSweep = ({ x, opacity }) => /* @__PURE__ */ (0, import_jsx_runtime66.js
       height: 1500,
       transform: `translateX(${x}px) rotate(14deg)`,
       opacity,
-      background: "linear-gradient(90deg, rgba(47,227,255,0) 0%, rgba(47,227,255,.10) 32%, rgba(233,243,255,.22) 50%, rgba(47,227,255,.10) 68%, rgba(47,227,255,0) 100%)",
+      backgroundImage: "linear-gradient(90deg, rgba(47,227,255,0) 0%, rgba(47,227,255,.10) 32%, rgba(233,243,255,.22) 50%, rgba(47,227,255,.10) 68%, rgba(47,227,255,0) 100%)",
       filter: "blur(6px)",
       mixBlendMode: "screen",
       pointerEvents: "none"
@@ -55496,7 +55632,7 @@ var LightSweep = ({ x, opacity }) => /* @__PURE__ */ (0, import_jsx_runtime66.js
 );
 
 // src/film/scenes/Opening.tsx
-var import_jsx_runtime67 = __toESM(require_jsx_runtime());
+var import_jsx_runtime68 = __toESM(require_jsx_runtime());
 var HITS = [
   { at: 0, amp: 16 },
   { at: 73, amp: 7 },
@@ -55531,7 +55667,7 @@ var Opening = () => {
     [1.52, 1, 1.02, 1.06, 1.1, 1.16, 1.24],
     { ...CLAMP, easing: EASE_OUT }
   );
-  const rulerX = interpolate(frame, [0, 3, 6, 10, 73, 180], [1400, 40, 112, 96, -220, -340], {
+  const rulerX = interpolate(frame, [0, 3, 6, 10, 73, 180], [1240, 40, 112, 96, -220, -340], {
     ...CLAMP,
     easing: EASE_IN
   });
@@ -55549,13 +55685,13 @@ var Opening = () => {
   const shakeY = HITS.reduce((sum, h) => sum + shakeAt(frame, h.at, h.amp * 0.62), 0);
   const flash = Math.min(
     1,
-    HITS.reduce((sum, h) => sum + flashAt(frame, h.at, h.at === 0 ? 0.42 : 0.34), 0)
+    HITS.reduce((sum, h) => sum + flashAt(frame, h.at, h.at === 0 ? 0.26 : 0.34), 0)
   );
   const sweepX = interpolate(frame, [1, 22], [-900, 2500], { ...CLAMP, easing: EASE_OUT });
   const sweepOpacity = interpolate(frame, [1, 6, 18, 26], [0, 1, 1, 0], CLAMP);
   const tail = interpolate(frame, [288, 298], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
       Stage,
       {
         glow: interpolate(frame, [0, 12, 180], [0.5, 1, 1.2], CLAMP),
@@ -55564,8 +55700,8 @@ var Opening = () => {
         lightY: compressed ? 620 : 470
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(AbsoluteFill, { style: { transform: `translate3d(${shakeX}px, ${shakeY}px, 0)` }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { transform: `translate3d(${shakeX}px, ${shakeY}px, 0)` }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
         "div",
         {
           style: {
@@ -55575,7 +55711,7 @@ var Opening = () => {
             transformOrigin: "50% 46%"
           },
           children: [
-            compressed ? /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Ruler, { x: 120, y: 300, rotate: 0, scaleX: 0.5, opacity: 0.3 }) : /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+            compressed ? /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Ruler, { x: 120, y: 300, rotate: 0, scaleX: 0.5, opacity: 0.3 }) : /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
               Ruler,
               {
                 x: rulerX,
@@ -55585,23 +55721,23 @@ var Opening = () => {
                 opacity: 1
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
               Chip,
               {
                 x: compressed ? 1452 : 1316,
                 y: chipY(frame),
                 scale: interpolate(chipIn, [0, 1], [1.42, 1]) * (compressed ? 1.5 : (1.02 + 0.06 * interpolate(frame, [73, 180], [0, 1], CLAMP)) * lockPop),
                 blur: compressed ? 12 : focus,
-                opacity: interpolate(frame, [3, 8], [0, 1], CLAMP) * (compressed ? 0.35 : 1),
+                opacity: interpolate(frame, [0, 6], [0, 1], CLAMP) * (compressed ? 0.35 : 1),
                 glow: compressed ? 0.6 : 1.15 * pulse,
                 rotate: compressed ? -4 : interpolate(frame, [0, 180], [-9.5, -5.5], CLAMP)
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(LightSweep, { x: sweepX, opacity: sweepOpacity * 0.95 })
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(LightSweep, { x: sweepX, opacity: sweepOpacity * 0.95 })
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(AbsoluteFill, { style: { pointerEvents: "none" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { pointerEvents: "none" }, children: [
         DIGITS.map((d, i) => {
           const local = frame - d.at;
           if (local < 0) return null;
@@ -55611,7 +55747,7 @@ var Opening = () => {
             easing: EASE_OUT
           });
           const opacity = next === void 0 ? 1 : local >= next.at - d.at ? 0 : 1;
-          return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+          return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
             "div",
             {
               style: {
@@ -55625,7 +55761,7 @@ var Opening = () => {
                 justifyContent: "center",
                 opacity
               },
-              children: /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
+              children: /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
                 "div",
                 {
                   style: {
@@ -55636,7 +55772,7 @@ var Opening = () => {
                     transformOrigin: "50% 100%"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                       "span",
                       {
                         style: {
@@ -55650,7 +55786,7 @@ var Opening = () => {
                         children: d.v
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
                       "span",
                       {
                         style: {
@@ -55676,7 +55812,7 @@ var Opening = () => {
           if (l < 0 || l > 9) return null;
           const w = interpolate(l, [0, 5], [80, 1280], { ...CLAMP, easing: EASE_OUT });
           const op = interpolate(l, [0, 2, 9], [0.95, 0.55, 0], CLAMP);
-          return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+          return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
             "div",
             {
               style: {
@@ -55694,7 +55830,7 @@ var Opening = () => {
         })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
       "div",
       {
         style: {
@@ -55708,7 +55844,7 @@ var Opening = () => {
         }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
       AbsoluteFill,
       {
         style: {
@@ -55719,12 +55855,12 @@ var Opening = () => {
         }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(AbsoluteFill, { style: { background: "#000", opacity: tail, pointerEvents: "none" } })
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(AbsoluteFill, { style: { background: "#000", opacity: tail, pointerEvents: "none" } })
   ] });
 };
 
 // src/film/scenes/Shot03.tsx
-var import_jsx_runtime68 = __toESM(require_jsx_runtime());
+var import_jsx_runtime69 = __toESM(require_jsx_runtime());
 var SHARDS = [
   { x: 620, y: 300, w: 220, h: 150, dx: -420, dy: -260, rot: -38, clip: "polygon(0 0,100% 0,100% 64%,34% 100%)" },
   { x: 760, y: 240, w: 180, h: 120, dx: 260, dy: -300, rot: 44, clip: "polygon(0 12%,100% 0,86% 100%,0 78%)" },
@@ -55749,10 +55885,10 @@ var Shot03 = () => {
   const flash = interpolate(frame, [76, 78, 82], [0, 1, 0], CLAMP);
   const burst = interpolate(frame, [78, 150], [0, 1], { ...CLAMP, easing: EASE_OUT });
   const fade = interpolate(frame, [150, 186], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Stage, { glow: 0.9 * (1 - fade), grid: 0.5 * (1 - fade), lightX: 960, lightY: 600 }),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { opacity: 1 - fade }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(Stage, { glow: 0.9 * (1 - fade), grid: 0.5 * (1 - fade), lightX: 960, lightY: 600 }),
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { opacity: 1 - fade }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
         Ruler,
         {
           x: 120,
@@ -55762,7 +55898,7 @@ var Shot03 = () => {
           opacity: interpolate(frame, [0, 78], [0.32, 0.5], CLAMP) * (1 - burst)
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
         "div",
         {
           style: {
@@ -55779,7 +55915,7 @@ var Shot03 = () => {
             transformOrigin: "50% 70%"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
               "span",
               {
                 style: {
@@ -55793,12 +55929,12 @@ var Shot03 = () => {
                 children: "1"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)("span", { style: { fontFamily: MONO, fontSize: 78, color: TEXT, opacity: 0.5, marginLeft: 18 }, children: "nm" })
+            /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontFamily: MONO, fontSize: 78, color: TEXT, opacity: 0.5, marginLeft: 18 }, children: "nm" })
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
           "path",
           {
             d: "M300 210 L560 330 L520 430 L760 500 L700 610 L980 660 L950 780 L1240 830 L1600 900",
@@ -55811,7 +55947,7 @@ var Shot03 = () => {
             strokeDashoffset: 1 - crack
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
           "path",
           {
             d: "M760 500 L700 380 L560 340",
@@ -55824,7 +55960,7 @@ var Shot03 = () => {
             strokeDashoffset: 1 - crack
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
           "path",
           {
             d: "M980 660 L1120 600 L1300 640",
@@ -55838,7 +55974,7 @@ var Shot03 = () => {
           }
         )
       ] }),
-      SHARDS.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+      SHARDS.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
         "div",
         {
           style: {
@@ -55857,133 +55993,15 @@ var Shot03 = () => {
         i
       ))
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
       AbsoluteFill,
       {
         style: { background: "#EAF8FF", opacity: flash * 0.85, mixBlendMode: "screen" }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade } })
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade } })
   ] });
 };
-
-// src/film/components/ui.tsx
-var import_jsx_runtime69 = __toESM(require_jsx_runtime());
-var Eyebrow = ({ text, x, y, size = 22, color = CYAN, opacity = 1, align = "left", width = 900 }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-  "div",
-  {
-    style: {
-      position: "absolute",
-      left: x,
-      top: y,
-      width,
-      fontFamily: MONO,
-      fontSize: size,
-      letterSpacing: 4.5,
-      color,
-      opacity,
-      textAlign: align,
-      whiteSpace: "nowrap"
-    },
-    children: text
-  }
-);
-var Label = ({ text, x, y, size = 30, color, opacity = 1, align = "left", width = 900, weight = 500 }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-  "div",
-  {
-    style: {
-      position: "absolute",
-      left: x,
-      top: y,
-      width,
-      fontSize: size,
-      fontWeight: weight,
-      color,
-      opacity,
-      textAlign: align,
-      letterSpacing: 1,
-      whiteSpace: "nowrap"
-    },
-    children: text
-  }
-);
-var TauGlyph = ({ size, progress, color = CYAN, strokeWidth = 7, opacity = 1, glow = 1, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
-  "svg",
-  {
-    width: size,
-    height: size,
-    viewBox: "0 0 100 100",
-    style: {
-      opacity,
-      filter: `drop-shadow(0 0 ${18 * glow}px ${color}66)`,
-      overflow: "visible",
-      ...style2
-    },
-    children: [
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-        "path",
-        {
-          d: "M14 20 H86",
-          fill: "none",
-          stroke: color,
-          strokeWidth,
-          strokeLinecap: "round",
-          pathLength: 1,
-          strokeDasharray: "1 1",
-          strokeDashoffset: 1 - Math.min(1, progress * 2)
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-        "path",
-        {
-          d: "M50 20 V58 C50 76 60 86 84 88",
-          fill: "none",
-          stroke: color,
-          strokeWidth,
-          strokeLinecap: "round",
-          pathLength: 1,
-          strokeDasharray: "1 1",
-          strokeDashoffset: 1 - Math.max(0, Math.min(1, (progress - 0.5) * 2))
-        }
-      )
-    ]
-  }
-);
-var StatCard = ({ x, y, w, title, value, note, opacity = 1, accent = CYAN }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
-  "div",
-  {
-    style: {
-      position: "absolute",
-      left: x,
-      top: y,
-      width: w,
-      opacity,
-      padding: "22px 24px",
-      border: `1px solid ${accent}44`,
-      background: "linear-gradient(180deg, rgba(9,16,24,.92), rgba(5,8,12,.92))",
-      borderRadius: 4
-    },
-    children: [
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { fontFamily: MONO, fontSize: 20, letterSpacing: 3, color: accent, opacity: 0.9 }, children: title }),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-        "div",
-        {
-          style: {
-            fontFamily: MONO,
-            fontSize: 58,
-            fontWeight: 700,
-            color: "#E9F3FF",
-            marginTop: 10,
-            lineHeight: 1.05,
-            whiteSpace: "nowrap"
-          },
-          children: value
-        }
-      ),
-      note ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { fontSize: 21, color: "rgba(233,243,255,.5)", marginTop: 8 }, children: note }) : null
-    ]
-  }
-);
 
 // src/film/scenes/Shot04.tsx
 var import_jsx_runtime70 = __toESM(require_jsx_runtime());
@@ -56119,7 +56137,7 @@ var Shot05 = () => {
           transform: `perspective(2200px) rotateX(${58 + tip}deg) rotateZ(-40deg) scale(${camIn})`,
           transformOrigin: "50% 56%"
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+        children: /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
           "div",
           {
             style: {
@@ -56128,31 +56146,32 @@ var Shot05 = () => {
               top: 560 - 560,
               width: 1120,
               height: 1120,
-              border: "1px solid rgba(47,227,255,.22)",
-              backgroundImage: "linear-gradient(rgba(47,227,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.1) 1px, transparent 1px)",
-              backgroundSize: "35px 35px"
+              border: "1px solid rgba(47,227,255,.22)"
             },
-            children: CELLS.map((c2, i) => {
-              const born = 20 + c2.d * 150;
-              const on = interpolate(frame, [born, born + 12], [0, 1], CLAMP);
-              if (on <= 0) return null;
-              return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    left: c2.cx * 70 + 2,
-                    top: c2.cy * 70 + 2,
-                    width: 8,
-                    height: 8,
-                    background: CYAN,
-                    opacity: on * (0.35 + 0.65 * c2.d),
-                    boxShadow: `0 0 ${6 + 10 * on}px rgba(47,227,255,.55)`
-                  }
-                },
-                i
-              );
-            })
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Grid, { sizeX: 35, sizeY: 35, color: "rgba(47,227,255,.1)" }),
+              CELLS.map((c2, i) => {
+                const born = 20 + c2.d * 150;
+                const on = interpolate(frame, [born, born + 12], [0, 1], CLAMP);
+                if (on <= 0) return null;
+                return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+                  "div",
+                  {
+                    style: {
+                      position: "absolute",
+                      left: c2.cx * 70 + 2,
+                      top: c2.cy * 70 + 2,
+                      width: 8,
+                      height: 8,
+                      background: CYAN,
+                      opacity: on * (0.35 + 0.65 * c2.d),
+                      boxShadow: `0 0 ${6 + 10 * on}px rgba(47,227,255,.55)`
+                    }
+                  },
+                  i
+                );
+              })
+            ]
           }
         )
       }
@@ -56439,7 +56458,7 @@ var Shot07 = () => {
         opacity: interpolate(frame, [80, 100], [0, 1], CLAMP)
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
       "div",
       {
         style: {
@@ -56449,23 +56468,24 @@ var Shot07 = () => {
           width: 560,
           height: 230,
           border: "1px solid rgba(47,227,255,.2)",
-          background: "linear-gradient(rgba(47,227,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.05) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
           opacity: interpolate(frame, [60, 80], [0, 1], CLAMP)
         },
-        children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("svg", { width: 560, height: 230, style: { position: "absolute", inset: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-          "path",
-          {
-            d: CHARGE,
-            fill: "none",
-            stroke: CYAN,
-            strokeWidth: 3,
-            pathLength: 1,
-            strokeDasharray: "1 1",
-            strokeDashoffset: 1 - charge,
-            style: { filter: "drop-shadow(0 0 10px rgba(47,227,255,.5))" }
-          }
-        ) })
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Grid, { sizeX: 32, sizeY: 32, color: "rgba(47,227,255,.06)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("svg", { width: 560, height: 230, style: { position: "absolute", inset: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+            "path",
+            {
+              d: CHARGE,
+              fill: "none",
+              stroke: CYAN,
+              strokeWidth: 3,
+              pathLength: 1,
+              strokeDasharray: "1 1",
+              strokeDashoffset: 1 - charge,
+              style: { filter: "drop-shadow(0 0 10px rgba(47,227,255,.5))" }
+            }
+          ) })
+        ]
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Eyebrow, { text: "RC DELAY / TIME CONSTANT", x: 1140, y: 790, opacity: 0.5 })
@@ -56554,20 +56574,9 @@ var Shot08 = () => {
 var import_jsx_runtime75 = __toESM(require_jsx_runtime());
 var HALF_W = 900;
 var HALF_H = 260;
-var Grid = ({ tint = "rgba(47,227,255,.12)" }) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-  "div",
-  {
-    style: {
-      position: "absolute",
-      inset: 0,
-      backgroundImage: `linear-gradient(${tint} 1px, transparent 1px), linear-gradient(90deg, ${tint} 1px, transparent 1px)`,
-      backgroundSize: "45px 45px"
-    }
-  }
-);
 var Shot09 = () => {
   const frame = useCurrentFrame();
-  const fold = interpolate(frame, [34, 96], [0, -82], { ...CLAMP, easing: EASE_IN_OUT });
+  const fold = interpolate(frame, [34, 96], [0, -62], { ...CLAMP, easing: EASE_IN_OUT });
   const enter = interpolate(frame, [0, 22], [0, 1], { ...CLAMP, easing: EASE_OUT });
   const glow = interpolate(frame, [90, 110], [0, 1], CLAMP);
   const zoom = interpolate(frame, [0, 210], [1, 1.06], CLAMP);
@@ -56598,7 +56607,18 @@ var Shot09 = () => {
                 opacity: enter
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Grid, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Grid, { sizeX: 45, sizeY: 45, color: "rgba(47,227,255,.12)" }),
+                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+                  "div",
+                  {
+                    style: {
+                      position: "absolute",
+                      inset: 0,
+                      backgroundImage: "linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.05))",
+                      opacity: Math.min(1, Math.abs(fold) / 62)
+                    }
+                  }
+                ),
                 /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("svg", { width: HALF_W, height: HALF_H, style: { position: "absolute", inset: 0 }, children: [
                   /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
                     "path",
@@ -56634,7 +56654,18 @@ var Shot09 = () => {
                 opacity: enter
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Grid, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Grid, { sizeX: 45, sizeY: 45, color: "rgba(47,227,255,.12)" }),
+                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+                  "div",
+                  {
+                    style: {
+                      position: "absolute",
+                      inset: 0,
+                      backgroundImage: "linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.05))",
+                      opacity: Math.min(1, Math.abs(fold) / 62)
+                    }
+                  }
+                ),
                 /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("svg", { width: HALF_W, height: HALF_H, style: { position: "absolute", inset: 0 }, children: [
                   /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
                     "path",
@@ -56726,17 +56757,7 @@ var Shot10 = () => {
                 border: `1px solid rgba(47,227,255,.42)`,
                 boxShadow: "0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)"
               },
-              children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    inset: 12,
-                    backgroundImage: "linear-gradient(rgba(47,227,255,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.13) 1px, transparent 1px)",
-                    backgroundSize: "26px 26px"
-                  }
-                }
-              )
+              children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Grid, { inset: 12, sizeX: 26, sizeY: 26, color: "rgba(47,227,255,.13)" })
             }
           ),
           /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
@@ -56753,17 +56774,7 @@ var Shot10 = () => {
                 border: `1px solid rgba(47,227,255,.42)`,
                 boxShadow: "0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)"
               },
-              children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    inset: 12,
-                    backgroundImage: "linear-gradient(rgba(47,227,255,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.13) 1px, transparent 1px)",
-                    backgroundSize: "26px 26px"
-                  }
-                }
-              )
+              children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Grid, { inset: 12, sizeX: 26, sizeY: 26, color: "rgba(47,227,255,.13)" })
             }
           ),
           PILLARS.map((x, i) => {
@@ -57021,17 +57032,7 @@ var Die = ({ x, y, w, h, opacity }) => /* @__PURE__ */ (0, import_jsx_runtime78.
       border: "1px solid rgba(47,227,255,.55)",
       boxShadow: "0 18px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.1)"
     },
-    children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          inset: 8,
-          backgroundImage: "linear-gradient(rgba(47,227,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.12) 1px, transparent 1px)",
-          backgroundSize: "22px 22px"
-        }
-      }
-    )
+    children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Grid, { inset: 8, sizeX: 22, sizeY: 22, color: "rgba(47,227,255,.12)" })
   }
 );
 var Shot12 = () => {
