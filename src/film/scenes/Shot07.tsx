@@ -1,16 +1,18 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { Stage } from "../components/Stage";
-import { Eyebrow } from "../components/ui";
-import { CLAMP, CYAN, EASE_IN, EASE_IN_OUT, EASE_OUT, MUTED, TEXT } from "../look";
+import { Eyebrow, Label } from "../components/ui";
+import { CLAMP, CYAN, EASE_IN_OUT, EASE_OUT, MUTED, TEXT } from "../look";
 
-/** 指数充电曲线（几何形状，不是动画） */
+const MONO_F = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
+
+/** 指数充电曲线（示波器面板局部坐标 560×230） */
 const CHARGE = (() => {
   const pts: string[] = [];
   for (let i = 0; i <= 40; i++) {
     const u = i / 40;
-    const x = 60 + u * 660;
-    const y = 210 - (1 - Math.exp(-u * 3.4)) * 160;
+    const x = 40 + u * 480;
+    const y = 185 - (1 - Math.exp(-u * 3.2)) * 140;
     pts.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`);
   }
   return pts.join(" ");
@@ -36,7 +38,7 @@ export const Shot07: React.FC = () => {
         style={{
           position: "absolute",
           left: 240,
-          top: 398,
+          top: 378,
           width: 760 * wire,
           height: 4,
           background: "linear-gradient(90deg, rgba(47,227,255,.25), rgba(47,227,255,.75))",
@@ -47,54 +49,30 @@ export const Shot07: React.FC = () => {
         style={{
           position: "absolute",
           left: 1000,
-          top: 398,
-          width: 640 * wire,
+          top: 378,
+          width: 680 * wire,
           height: 4,
           background: "linear-gradient(90deg, rgba(47,227,255,.75), rgba(47,227,255,.2))",
           boxShadow: "0 0 18px rgba(47,227,255,.35)",
         }}
       />
 
-      {/* 电阻 R */}
       <svg width={1920} height={1080} style={{ position: "absolute", inset: 0 }}>
         <path
-          d="M560 400 L590 400 L604 372 L632 428 L660 372 L688 428 L716 372 L744 400 L770 400"
+          d="M560 380 L590 380 L604 352 L632 408 L660 352 L688 408 L716 352 L744 380 L770 380"
           fill="none"
           stroke="#E9F3FF"
           strokeWidth={3}
           opacity={0.9 * wire}
         />
-        {/* 电容 C */}
-        <line x1={1010} y1={352} x2={1010} y2={448} stroke="#E9F3FF" strokeWidth={4} opacity={0.9 * wire} />
-        <line x1={1036} y1={352} x2={1036} y2={448} stroke="#E9F3FF" strokeWidth={4} opacity={0.9 * wire} />
+        <line x1={1010} y1={332} x2={1010} y2={428} stroke="#E9F3FF" strokeWidth={4} opacity={0.9 * wire} />
+        <line x1={1036} y1={332} x2={1036} y2={428} stroke="#E9F3FF" strokeWidth={4} opacity={0.9 * wire} />
       </svg>
 
-      <div
-        style={{
-          position: "absolute",
-          left: 640,
-          top: 300,
-          fontFamily: MONO_FALLBACK,
-          fontSize: 30,
-          color: CYAN,
-          opacity: wire * 0.9,
-          letterSpacing: 2,
-        }}
-      >
+      <div style={{ position: "absolute", left: 640, top: 288, fontFamily: MONO_F, fontSize: 28, color: CYAN, opacity: wire * 0.9 }}>
         R
       </div>
-      <div
-        style={{
-          position: "absolute",
-          left: 1010,
-          top: 300,
-          fontFamily: MONO_FALLBACK,
-          fontSize: 30,
-          color: CYAN,
-          opacity: wire * 0.9,
-          letterSpacing: 2,
-        }}
-      >
+      <div style={{ position: "absolute", left: 1014, top: 288, fontFamily: MONO_F, fontSize: 28, color: CYAN, opacity: wire * 0.9 }}>
         C
       </div>
 
@@ -103,7 +81,7 @@ export const Shot07: React.FC = () => {
         style={{
           position: "absolute",
           left: pulse,
-          top: 382,
+          top: 362,
           width: 36,
           height: 36,
           borderRadius: 18,
@@ -114,13 +92,13 @@ export const Shot07: React.FC = () => {
       />
 
       {/* 公式 */}
-      <div style={{ position: "absolute", left: 240, top: 500, display: "flex", alignItems: "baseline" }}>
+      <div style={{ position: "absolute", left: 240, top: 520, display: "flex", alignItems: "baseline" }}>
         {FORMULA.map((ch, i) => (
           <span
             key={i}
             style={{
-              fontFamily: MONO_FALLBACK,
-              fontSize: ch === " = " || ch === " × " ? 86 : 118,
+              fontFamily: MONO_F,
+              fontSize: ch === " = " || ch === " × " ? 80 : 112,
               fontWeight: 700,
               color: ch === "τ" ? CYAN : TEXT,
               opacity: interpolate(formula, [i * 0.16, i * 0.16 + 0.3], [0, 1], CLAMP),
@@ -132,8 +110,8 @@ export const Shot07: React.FC = () => {
         ))}
         <span
           style={{
-            fontFamily: MONO_FALLBACK,
-            fontSize: 44,
+            fontFamily: MONO_F,
+            fontSize: 42,
             color: MUTED,
             marginLeft: 22,
             opacity: interpolate(formula, [0.8, 1], [0, 1], CLAMP),
@@ -143,36 +121,31 @@ export const Shot07: React.FC = () => {
         </span>
       </div>
 
-      <div
-        style={{
-          position: "absolute",
-          left: 244,
-          top: 650,
-          fontSize: 30,
-          color: MUTED,
-          letterSpacing: 1,
-          opacity: interpolate(frame, [80, 100], [0, 1], CLAMP),
-        }}
-      >
-        信号从跳变到稳定，所需的时间
-      </div>
+      <Label
+        text="信号从跳变到稳定，所需的时间"
+        x={244}
+        y={676}
+        size={28}
+        color="rgba(233,243,255,.55)"
+        opacity={interpolate(frame, [80, 100], [0, 1], CLAMP)}
+      />
 
       {/* 示波器 */}
       <div
         style={{
           position: "absolute",
-          left: 240,
-          top: 720,
-          width: 760,
-          height: 260,
-          border: "1px solid rgba(47,227,255,.22)",
+          left: 1140,
+          top: 556,
+          width: 560,
+          height: 230,
+          border: "1px solid rgba(47,227,255,.2)",
           background:
-            "linear-gradient(rgba(47,227,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.06) 1px, transparent 1px)",
-          backgroundSize: "38px 38px",
+            "linear-gradient(rgba(47,227,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.05) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
           opacity: interpolate(frame, [60, 80], [0, 1], CLAMP),
         }}
       >
-        <svg width={760} height={260} style={{ position: "absolute", inset: 0 }}>
+        <svg width={560} height={230} style={{ position: "absolute", inset: 0 }}>
           <path
             d={CHARGE}
             fill="none"
@@ -181,27 +154,12 @@ export const Shot07: React.FC = () => {
             pathLength={1}
             strokeDasharray="1 1"
             strokeDashoffset={1 - charge}
+            style={{ filter: "drop-shadow(0 0 10px rgba(47,227,255,.5))" }}
           />
         </svg>
       </div>
 
-      <Eyebrow text="RC DELAY / TIME CONSTANT" x={1140} y={720} opacity={0.7} />
-      <div
-        style={{
-          position: "absolute",
-          left: 1140,
-          top: 756,
-          width: 520,
-          fontSize: 30,
-          lineHeight: 1.7,
-          color: "rgba(233,243,255,.66)",
-          opacity: interpolate(frame, [140, 160], [0, 1], CLAMP),
-        }}
-      >
-        电阻乘电容，就是这条曲线爬完的时间常数。
-      </div>
+      <Eyebrow text="RC DELAY / TIME CONSTANT" x={1140} y={790} opacity={0.5} />
     </AbsoluteFill>
   );
 };
-
-const MONO_FALLBACK = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';

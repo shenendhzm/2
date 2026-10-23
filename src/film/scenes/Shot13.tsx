@@ -105,10 +105,10 @@ export const Shot13: React.FC = () => {
         style={{
           position: "absolute",
           left: 640,
-          top: 800,
+          top: 744,
           width: 360,
           textAlign: "center",
-          fontSize: 34,
+          fontSize: 30,
           letterSpacing: 2,
           color: CYAN,
           opacity: settle,
