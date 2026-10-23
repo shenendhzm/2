@@ -57402,6 +57402,9 @@ var Shot14 = () => {
       "div",
       {
         style: {
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
           transform: `translateY(${(1 - cards[i]) * 46}px)`,
           opacity: interpolate(cards[i], [0, 0.45], [0, 1], CLAMP)
         },
@@ -57431,9 +57434,9 @@ var Shot14 = () => {
 // src/film/scenes/Shot15.tsx
 var import_jsx_runtime81 = __toESM(require_jsx_runtime());
 var RINGS = [
-  { r: 250, label: "EDA \u5DE5\u5177", x: 620, y: 118, speed: 0.22 },
-  { r: 330, label: "\u826F\u7387\u4E0E\u65F6\u5E8F", x: 1046, y: 470, speed: -0.16 },
-  { r: 410, label: "\u8DE8\u5C42 RC \u5F00\u9500", x: 700, y: 812, speed: 0.12 }
+  { r: 200, label: "EDA \u5DE5\u5177", x: 556, y: 96, speed: 0.22 },
+  { r: 260, label: "\u826F\u7387\u4E0E\u65F6\u5E8F", x: 912, y: 418, speed: -0.16 },
+  { r: 320, label: "\u8DE8\u5C42 RC \u5F00\u9500", x: 470, y: 768, speed: 0.12 }
 ];
 var Shot15 = () => {
   const frame = useCurrentFrame();
@@ -57479,8 +57482,7 @@ var Shot15 = () => {
         size: 26,
         color: "rgba(233,243,255,.62)",
         opacity: interpolate(frame, [40 + i * 12, 60 + i * 12], [0, 1], CLAMP),
-        width: 420,
-        align: "center"
+        width: 420
       },
       ring.label
     )),
@@ -57505,8 +57507,8 @@ var Shot15 = () => {
       {
         style: {
           position: "absolute",
-          left: 1080,
-          top: 880,
+          left: 1060,
+          top: 720,
           fontSize: 24,
           color: "rgba(233,243,255,.4)",
           opacity: note,
