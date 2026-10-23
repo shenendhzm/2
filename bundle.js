@@ -55654,20 +55654,20 @@ var Shot02 = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const push = interpolate(frame, [0, 20], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const glide = interpolate(frame, [22, 170], [0, 1], {
+  const glide = interpolate(frame, [26, 160], [0, 1], {
     ...CLAMP,
     easing: Easing.out(Easing.cubic)
   });
-  const settle = interpolate(frame, [170, 174, 182], [0, 1, 0], CLAMP);
+  const settle = interpolate(frame, [160, 164, 172], [0, 1, 0], CLAMP);
   const boxX = 700 + 66 * push + 250 * glide - settle * 3;
   const handIn = spring({ frame, fps, config: { damping: 17, stiffness: 150, mass: 0.8 } });
-  const handOut = interpolate(frame, [24, 44], [0, 1], { ...CLAMP, easing: EASE_IN });
-  const handShift = -300 * (1 - handIn) - 250 * handOut;
+  const handOut = interpolate(frame, [20, 36], [0, 1], { ...CLAMP, easing: EASE_IN });
+  const handShift = -760 * (1 - handIn) - 620 * handOut;
   const handRight = boxX - 8 + handShift;
-  const force = frame < 22 ? 1 : interpolate(frame, [22, 34], [1, 0], { ...CLAMP, easing: EASE_OUT });
-  const speed = frame < 22 ? 1 : interpolate(frame, [22, 170], [1, 0], { ...CLAMP, easing: Easing.out(Easing.quad) });
-  const cap = fadeIn(frame, 162, 12);
-  const cap2 = fadeIn(frame, 176, 12);
+  const force = frame < 22 ? 1 : interpolate(frame, [22, 36], [1, 0], { ...CLAMP, easing: EASE_OUT });
+  const speed = frame < 22 ? 1 : interpolate(frame, [22, 160], [1, 0], { ...CLAMP, easing: Easing.out(Easing.quad) });
+  const cap = fadeIn(frame, 150, 12);
+  const cap2 = fadeIn(frame, 166, 12);
   const fingers = [0, 1, 2, 3];
   return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { backgroundColor: "#080D15", overflow: "hidden" }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
