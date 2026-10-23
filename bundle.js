@@ -55060,6 +55060,8 @@ Internals.addSequenceStackTraces(Video);
 var BG = "#05070C";
 var TEXT = "#E9F3FF";
 var CYAN = "#2FE3FF";
+var RED = "#FF4D3D";
+var MUTED = "#6C7A8C";
 var FONT = '"Noto Sans CJK SC","Noto Sans CJK","Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
 var MONO = '"DIN Alternate","JetBrains Mono","Roboto Mono",ui-monospace,"SF Mono",monospace';
 var CLAMP = {
@@ -55721,55 +55723,1992 @@ var Opening = () => {
   ] });
 };
 
+// src/film/scenes/Shot03.tsx
+var import_jsx_runtime68 = __toESM(require_jsx_runtime());
+var SHARDS = [
+  { x: 620, y: 300, w: 220, h: 150, dx: -420, dy: -260, rot: -38, clip: "polygon(0 0,100% 0,100% 64%,34% 100%)" },
+  { x: 760, y: 240, w: 180, h: 120, dx: 260, dy: -300, rot: 44, clip: "polygon(0 12%,100% 0,86% 100%,0 78%)" },
+  { x: 980, y: 280, w: 240, h: 160, dx: 420, dy: -180, rot: 62, clip: "polygon(0 0,88% 8%,100% 100%,12% 84%)" },
+  { x: 520, y: 520, w: 200, h: 140, dx: -380, dy: 240, rot: 28, clip: "polygon(0 0,100% 22%,74% 100%,0 100%)" },
+  { x: 900, y: 560, w: 260, h: 170, dx: 180, dy: 330, rot: -26, clip: "polygon(6% 0,100% 16%,100% 100%,0 76%)" },
+  { x: 1180, y: 500, w: 190, h: 130, dx: 460, dy: 260, rot: 40, clip: "polygon(0 0,100% 0,72% 100%,0 82%)" },
+  { x: 700, y: 380, w: 150, h: 110, dx: -180, dy: -360, rot: -58, clip: "polygon(0 0,100% 26%,82% 100%,0 68%)" },
+  { x: 1060, y: 400, w: 170, h: 120, dx: 300, dy: -340, rot: 34, clip: "polygon(12% 0,100% 12%,100% 100%,0 88%)" },
+  { x: 840, y: 660, w: 230, h: 150, dx: -300, dy: 380, rot: -34, clip: "polygon(0 0,100% 20%,88% 100%,0 100%)" },
+  { x: 1240, y: 360, w: 160, h: 120, dx: 520, dy: -120, rot: 74, clip: "polygon(0 0,100% 30%,100% 100%,0 74%)" }
+];
+var Shot03 = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const slam = spring({ frame, fps, config: { damping: 13, mass: 0.6, stiffness: 220 } });
+  const scale = interpolate(slam, [0, 1], [1.9, 1]) * interpolate(frame, [16, 40], [1, 1], CLAMP);
+  const squashX = interpolate(frame, [14, 44], [1, 1.34], { ...CLAMP, easing: EASE_IN });
+  const squashY = interpolate(frame, [14, 44], [1, 0.52], { ...CLAMP, easing: EASE_IN });
+  const numOpacity = interpolate(frame, [0, 2, 40, 52], [0, 1, 1, 0], CLAMP);
+  const crack = interpolate(frame, [42, 78], [0, 1], { ...CLAMP, easing: EASE_IN });
+  const flash = interpolate(frame, [76, 78, 82], [0, 1, 0], CLAMP);
+  const burst = interpolate(frame, [78, 150], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const fade = interpolate(frame, [150, 186], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Stage, { glow: 0.9 * (1 - fade), grid: 0.5 * (1 - fade), lightX: 960, lightY: 600 }),
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { opacity: 1 - fade }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+        Ruler,
+        {
+          x: 120,
+          y: 300,
+          rotate: 0,
+          scaleX: interpolate(frame, [0, 78], [0.5, 0.66], CLAMP),
+          opacity: interpolate(frame, [0, 78], [0.32, 0.5], CLAMP) * (1 - burst)
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 250,
+            height: 430,
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "center",
+            opacity: numOpacity * (1 - burst),
+            transform: `scale(${scale}) scale(${squashX}, ${squashY})`,
+            transformOrigin: "50% 70%"
+          },
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+              "span",
+              {
+                style: {
+                  fontFamily: MONO,
+                  fontSize: 470,
+                  lineHeight: 0.9,
+                  fontWeight: 700,
+                  color: TEXT,
+                  textShadow: "0 0 110px rgba(47,227,255,.4)"
+                },
+                children: "1"
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)("span", { style: { fontFamily: MONO, fontSize: 78, color: TEXT, opacity: 0.5, marginLeft: 18 }, children: "nm" })
+          ]
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+          "path",
+          {
+            d: "M300 210 L560 330 L520 430 L760 500 L700 610 L980 660 L950 780 L1240 830 L1600 900",
+            fill: "none",
+            stroke: "#EAF8FF",
+            strokeWidth: 2.5,
+            opacity: 0.9 * crack,
+            pathLength: 1,
+            strokeDasharray: "1 1",
+            strokeDashoffset: 1 - crack
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+          "path",
+          {
+            d: "M760 500 L700 380 L560 340",
+            fill: "none",
+            stroke: "#EAF8FF",
+            strokeWidth: 1.6,
+            opacity: 0.55 * crack,
+            pathLength: 1,
+            strokeDasharray: "1 1",
+            strokeDashoffset: 1 - crack
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+          "path",
+          {
+            d: "M980 660 L1120 600 L1300 640",
+            fill: "none",
+            stroke: "#EAF8FF",
+            strokeWidth: 1.4,
+            opacity: 0.45 * crack,
+            pathLength: 1,
+            strokeDasharray: "1 1",
+            strokeDashoffset: 1 - crack
+          }
+        )
+      ] }),
+      SHARDS.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: s.x + s.dx * burst,
+            top: s.y + s.dy * burst,
+            width: s.w,
+            height: s.h,
+            clipPath: s.clip,
+            transform: `rotate(${s.rot * burst}deg)`,
+            background: "linear-gradient(150deg,#DCE6F2,#8C9BAE 46%,#5A6779 74%,#C4D0DE)",
+            opacity: interpolate(burst, [0, 0.15, 0.85, 1], [0, 0.95, 0.7, 0], CLAMP),
+            boxShadow: "0 20px 60px rgba(0,0,0,.6)"
+          }
+        },
+        i
+      ))
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+      AbsoluteFill,
+      {
+        style: { background: "#EAF8FF", opacity: flash * 0.85, mixBlendMode: "screen" }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade } })
+  ] });
+};
+
+// src/film/components/ui.tsx
+var import_jsx_runtime69 = __toESM(require_jsx_runtime());
+var Eyebrow = ({ text, x, y, size = 22, color = CYAN, opacity = 1, align = "left", width = 900 }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: x,
+      top: y,
+      width,
+      fontFamily: MONO,
+      fontSize: size,
+      letterSpacing: 4.5,
+      color,
+      opacity,
+      textAlign: align,
+      whiteSpace: "nowrap"
+    },
+    children: text
+  }
+);
+var Label = ({ text, x, y, size = 30, color, opacity = 1, align = "left", width = 900, weight = 500 }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: x,
+      top: y,
+      width,
+      fontSize: size,
+      fontWeight: weight,
+      color,
+      opacity,
+      textAlign: align,
+      letterSpacing: 1,
+      whiteSpace: "nowrap"
+    },
+    children: text
+  }
+);
+var TauGlyph = ({ size, progress, color = CYAN, strokeWidth = 7, opacity = 1, glow = 1, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+  "svg",
+  {
+    width: size,
+    height: size,
+    viewBox: "0 0 100 100",
+    style: {
+      opacity,
+      filter: `drop-shadow(0 0 ${18 * glow}px ${color}66)`,
+      overflow: "visible",
+      ...style2
+    },
+    children: [
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+        "path",
+        {
+          d: "M14 20 H86",
+          fill: "none",
+          stroke: color,
+          strokeWidth,
+          strokeLinecap: "round",
+          pathLength: 1,
+          strokeDasharray: "1 1",
+          strokeDashoffset: 1 - Math.min(1, progress * 2)
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+        "path",
+        {
+          d: "M50 20 V58 C50 76 60 86 84 88",
+          fill: "none",
+          stroke: color,
+          strokeWidth,
+          strokeLinecap: "round",
+          pathLength: 1,
+          strokeDasharray: "1 1",
+          strokeDashoffset: 1 - Math.max(0, Math.min(1, (progress - 0.5) * 2))
+        }
+      )
+    ]
+  }
+);
+var StatCard = ({ x, y, w, title, value, note, opacity = 1, accent = CYAN }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: x,
+      top: y,
+      width: w,
+      opacity,
+      padding: "22px 24px",
+      border: `1px solid ${accent}44`,
+      background: "linear-gradient(180deg, rgba(9,16,24,.92), rgba(5,8,12,.92))",
+      borderRadius: 4
+    },
+    children: [
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { fontFamily: MONO, fontSize: 20, letterSpacing: 3, color: accent, opacity: 0.9 }, children: title }),
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+        "div",
+        {
+          style: {
+            fontFamily: MONO,
+            fontSize: 58,
+            fontWeight: 700,
+            color: "#E9F3FF",
+            marginTop: 10,
+            lineHeight: 1.05,
+            whiteSpace: "nowrap"
+          },
+          children: value
+        }
+      ),
+      note ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { fontSize: 21, color: "rgba(233,243,255,.5)", marginTop: 8 }, children: note }) : null
+    ]
+  }
+);
+
+// src/film/scenes/Shot04.tsx
+var import_jsx_runtime70 = __toESM(require_jsx_runtime());
+var Shot04 = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const write = interpolate(frame, [8, 44], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  const bloom = interpolate(frame, [40, 70], [0, 1], CLAMP);
+  const ring = interpolate(frame, [40, 110], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const titleIn = spring({ frame: frame - 52, fps, config: { damping: 18, mass: 0.8, stiffness: 120 } });
+  const subIn = interpolate(frame, [70, 88], [0, 1], CLAMP);
+  const wave2 = interpolate(frame, [88, 150], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  const flash = interpolate(frame, [192, 204, 212], [0, 1, 0], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Stage, { glow: 0.55 + 0.45 * bloom, grid: 0.25 + 0.2 * bloom, lightX: 960, lightY: 420 }),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0, opacity: 0.34 * bloom }, children: [
+      [220, 380, 560, 760].map((r) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+        "circle",
+        {
+          cx: 960,
+          cy: 430,
+          r,
+          fill: "none",
+          stroke: CYAN,
+          strokeWidth: 1,
+          opacity: interpolate(ring, [0, 1], [0, 0.5], CLAMP)
+        },
+        r
+      )),
+      Array.from({ length: 24 }, (_, i) => {
+        const a2 = i / 24 * Math.PI * 2;
+        return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+          "line",
+          {
+            x1: 960 + Math.cos(a2) * 220,
+            y1: 430 + Math.sin(a2) * 220,
+            x2: 960 + Math.cos(a2) * 760,
+            y2: 430 + Math.sin(a2) * 760,
+            stroke: CYAN,
+            strokeWidth: 0.7,
+            opacity: 0.22 * ring
+          },
+          i
+        );
+      })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { style: { position: "absolute", left: 960 - 210, top: 430 - 210 }, children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(TauGlyph, { size: 420, progress: write, color: CYAN, strokeWidth: 6.5, glow: 1 + bloom }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 690,
+          height: 120,
+          overflow: "hidden",
+          opacity: interpolate(titleIn, [0, 0.4], [0, 1], CLAMP)
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+          "div",
+          {
+            style: {
+              transform: `translateY(${(1 - titleIn) * 120}%)`,
+              textAlign: "center",
+              fontSize: 96,
+              fontWeight: 700,
+              letterSpacing: 6,
+              color: TEXT,
+              lineHeight: 1.1
+            },
+            children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
+          }
+        )
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 820,
+          textAlign: "center",
+          fontSize: 32,
+          letterSpacing: 3,
+          color: MUTED,
+          opacity: subIn
+        },
+        children: "\u4EE5\u201C\u65F6\u95F4\u7F29\u5FAE\u201D\u66FF\u4EE3\u201C\u51E0\u4F55\u7F29\u5FAE\u201D"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0, opacity: 0.55 * wave2 }, children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+      "path",
+      {
+        d: "M120 980 L260 980 L300 930 L340 1020 L380 980 L1520 980 L1560 900 L1600 980 L1800 980",
+        fill: "none",
+        stroke: CYAN,
+        strokeWidth: 2,
+        pathLength: 1,
+        strokeDasharray: "1 1",
+        strokeDashoffset: 1 - wave2
+      }
+    ) }),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(AbsoluteFill, { style: { background: "#DFF6FF", opacity: flash * 0.7, mixBlendMode: "screen" } })
+  ] });
+};
+
+// src/film/scenes/Shot05.tsx
+var import_jsx_runtime71 = __toESM(require_jsx_runtime());
+var N = 16;
+var CELLS = Array.from({ length: N * N }, (_, i) => {
+  const cx = i % N;
+  const cy = Math.floor(i / N);
+  const d = Math.hypot(cx - (N - 1) / 2, cy - (N - 1) / 2) / (N * 0.72);
+  return { cx, cy, d };
+});
+var Shot05 = () => {
+  const frame = useCurrentFrame();
+  const camIn = interpolate(frame, [0, 240], [1, 1.07], CLAMP);
+  const tip = interpolate(frame, [0, 20], [-3, 0], { ...CLAMP, easing: EASE_OUT });
+  const curve = interpolate(frame, [30, 150], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  const label3 = interpolate(frame, [150, 170], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Stage, { glow: 1, grid: 0.7, lightX: 1100, lightY: 620 }),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          inset: 0,
+          transform: `perspective(2200px) rotateX(${58 + tip}deg) rotateZ(-40deg) scale(${camIn})`,
+          transformOrigin: "50% 56%"
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: 960 - 560,
+              top: 560 - 560,
+              width: 1120,
+              height: 1120,
+              border: "1px solid rgba(47,227,255,.22)",
+              backgroundImage: "linear-gradient(rgba(47,227,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.1) 1px, transparent 1px)",
+              backgroundSize: "35px 35px"
+            },
+            children: CELLS.map((c2, i) => {
+              const born = 20 + c2.d * 150;
+              const on = interpolate(frame, [born, born + 12], [0, 1], CLAMP);
+              if (on <= 0) return null;
+              return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    left: c2.cx * 70 + 2,
+                    top: c2.cy * 70 + 2,
+                    width: 8,
+                    height: 8,
+                    background: CYAN,
+                    opacity: on * (0.35 + 0.65 * c2.d),
+                    boxShadow: `0 0 ${6 + 10 * on}px rgba(47,227,255,.55)`
+                  }
+                },
+                i
+              );
+            })
+          }
+        )
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+        "path",
+        {
+          d: "M160 420 L160 200 M160 420 L600 420",
+          stroke: "rgba(233,243,255,.28)",
+          strokeWidth: 1.5,
+          fill: "none"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+        "path",
+        {
+          d: "M170 412 C260 404 330 372 380 320 C420 276 450 236 520 214",
+          fill: "none",
+          stroke: CYAN,
+          strokeWidth: 3,
+          pathLength: 1,
+          strokeDasharray: "1 1",
+          strokeDashoffset: 1 - curve
+        }
+      )
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Eyebrow, { text: "MOORE / GEOMETRIC SCALING", x: 120, y: 120, opacity: 0.75 }),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Label, { text: "\u6469\u5C14\u5B9A\u5F8B \xB7 \u51E0\u4F55\u7F29\u5FAE", x: 120, y: 152, size: 44, color: TEXT, weight: 700 }),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      Label,
+      {
+        text: "\u6676\u4F53\u7BA1\u6570\u91CF \xD72 \uFF0F 18\u201324 \u4E2A\u6708",
+        x: 120,
+        y: 470,
+        size: 30,
+        color: "rgba(233,243,255,.66)",
+        opacity: label3
+      }
+    )
+  ] });
+};
+
+// src/film/scenes/Shot06.tsx
+var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+var LATTICE = Array.from({ length: 11 * 6 }, (_, i) => ({
+  x: 260 + i % 11 * 128,
+  y: 300 + Math.floor(i / 11) * 120
+}));
+var Shot06 = () => {
+  const frame = useCurrentFrame();
+  const push = interpolate(frame, [0, 120], [1, 1.22], { ...CLAMP, easing: EASE_OUT });
+  const wall = interpolate(frame, [104, 124], [-700, 0], { ...CLAMP, easing: EASE_IN });
+  const hit = interpolate(frame, [124, 126, 132], [0, 1, 0], CLAMP);
+  const squash = interpolate(frame, [120, 150], [1, 0.42], { ...CLAMP, easing: EASE_IN });
+  const words = [150, 166, 182];
+  return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(Stage, { glow: 0.9, grid: 0.2, lightX: 960, lightY: 520 }),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          inset: 0,
+          transform: `scale(${push})`,
+          transformOrigin: "50% 58%"
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0, opacity: 0.75 }, children: [
+          LATTICE.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("g", { children: [
+            i % 11 !== 10 && /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("line", { x1: p.x, y1: p.y, x2: p.x + 128, y2: p.y, stroke: CYAN, strokeWidth: 1, opacity: 0.16 }),
+            i < 55 && /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("line", { x1: p.x, y1: p.y, x2: p.x, y2: p.y + 120, stroke: CYAN, strokeWidth: 1, opacity: 0.16 }),
+            /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("circle", { cx: p.x, cy: p.y, r: 7, fill: "rgba(47,227,255,.55)" })
+          ] }, i)),
+          [0, 1, 2].map((k) => {
+            const x = interpolate(frame, [0, 120], [300 + k * 90, 1300 + k * 60], CLAMP);
+            const y = 300 + k % 3 * 240;
+            return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("g", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("circle", { cx: x, cy: y, r: 14, fill: "#EAF8FF", opacity: 0.9 }),
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("circle", { cx: x, cy: y, r: 26, fill: "#EAF8FF", opacity: 0.12 })
+            ] }, k);
+          })
+        ] })
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          height: 430,
+          transform: `translateY(${wall}px)`,
+          background: "linear-gradient(180deg, rgba(255,77,61,.42), rgba(255,77,61,.16) 62%, rgba(255,77,61,0))",
+          borderBottom: `2px solid ${RED}`,
+          boxShadow: `0 30px 90px rgba(255,77,61,${0.35 * (1 - Math.abs(wall) / 700)})`
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(AbsoluteFill, { style: { background: RED, opacity: hit * 0.18, mixBlendMode: "screen" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
+      "svg",
+      {
+        width: 1920,
+        height: 1080,
+        style: { position: "absolute", inset: 0, transform: `scaleY(${squash})`, transformOrigin: "50% 470px" },
+        children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
+          "path",
+          {
+            d: "M180 470 C320 460 420 420 520 380 C620 340 700 320 820 310",
+            fill: "none",
+            stroke: CYAN,
+            strokeWidth: 3,
+            opacity: 0.85
+          }
+        )
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(Eyebrow, { text: "ATOMIC SCALE / LIMIT", x: 120, y: 470, opacity: 0.7 }),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(Label, { text: "\u51E0\u4F55\u7F29\u5FAE\u649E\u5899", x: 120, y: 500, size: 40, color: TEXT, weight: 700 }),
+    ["\u7269\u7406\u6781\u9650", "\u6210\u672C", "\u5149\u523B"].map((w, i) => {
+      const o = interpolate(frame, [words[i], words[i] + 12], [0, 1], CLAMP);
+      const y = interpolate(frame, [words[i], words[i] + 12], [16, 0], { ...CLAMP, easing: EASE_OUT });
+      return /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: 1180 + i * 210,
+            top: 520,
+            transform: `translateY(${y}px)`,
+            opacity: o,
+            fontSize: 34,
+            color: TEXT,
+            letterSpacing: 2,
+            padding: "10px 18px",
+            border: "1px solid rgba(255,77,61,.45)",
+            background: "rgba(255,77,61,.08)"
+          },
+          children: w
+        },
+        w
+      );
+    }),
+    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1180,
+          top: 596,
+          fontSize: 20,
+          color: MUTED,
+          opacity: interpolate(frame, [186, 200], [0, 0.8], CLAMP),
+          letterSpacing: 1
+        },
+        children: "\u4E09\u6761\u7EA6\u675F\u540C\u65F6\u6536\u7D27\uFF0C\u7EB3\u7C73\u5C3A\u5B50\u5931\u6548"
+      }
+    )
+  ] });
+};
+
+// src/film/scenes/Shot07.tsx
+var import_jsx_runtime73 = __toESM(require_jsx_runtime());
+var CHARGE = (() => {
+  const pts = [];
+  for (let i = 0; i <= 40; i++) {
+    const u = i / 40;
+    const x = 60 + u * 660;
+    const y = 210 - (1 - Math.exp(-u * 3.4)) * 160;
+    pts.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`);
+  }
+  return pts.join(" ");
+})();
+var FORMULA = ["\u03C4", " = ", "R", " \xD7 ", "C"];
+var Shot07 = () => {
+  const frame = useCurrentFrame();
+  const wire = interpolate(frame, [0, 24], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const pulse = interpolate(frame, [24, 70, 120], [260, 900, 1560], { ...CLAMP, easing: EASE_IN_OUT });
+  const charge = interpolate(frame, [70, 150], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  const formula = interpolate(frame, [40, 90], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Stage, { glow: 0.95, grid: 0.6, lightX: 900, lightY: 430 }),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 240,
+          top: 398,
+          width: 760 * wire,
+          height: 4,
+          background: "linear-gradient(90deg, rgba(47,227,255,.25), rgba(47,227,255,.75))",
+          boxShadow: "0 0 18px rgba(47,227,255,.35)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1e3,
+          top: 398,
+          width: 640 * wire,
+          height: 4,
+          background: "linear-gradient(90deg, rgba(47,227,255,.75), rgba(47,227,255,.2))",
+          boxShadow: "0 0 18px rgba(47,227,255,.35)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+        "path",
+        {
+          d: "M560 400 L590 400 L604 372 L632 428 L660 372 L688 428 L716 372 L744 400 L770 400",
+          fill: "none",
+          stroke: "#E9F3FF",
+          strokeWidth: 3,
+          opacity: 0.9 * wire
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("line", { x1: 1010, y1: 352, x2: 1010, y2: 448, stroke: "#E9F3FF", strokeWidth: 4, opacity: 0.9 * wire }),
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("line", { x1: 1036, y1: 352, x2: 1036, y2: 448, stroke: "#E9F3FF", strokeWidth: 4, opacity: 0.9 * wire })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 640,
+          top: 300,
+          fontFamily: MONO_FALLBACK,
+          fontSize: 30,
+          color: CYAN,
+          opacity: wire * 0.9,
+          letterSpacing: 2
+        },
+        children: "R"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1010,
+          top: 300,
+          fontFamily: MONO_FALLBACK,
+          fontSize: 30,
+          color: CYAN,
+          opacity: wire * 0.9,
+          letterSpacing: 2
+        },
+        children: "C"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: pulse,
+          top: 382,
+          width: 36,
+          height: 36,
+          borderRadius: 18,
+          background: "#EAF8FF",
+          boxShadow: "0 0 40px 12px rgba(47,227,255,.55)",
+          opacity: wire
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", left: 240, top: 500, display: "flex", alignItems: "baseline" }, children: [
+      FORMULA.map((ch, i) => /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+        "span",
+        {
+          style: {
+            fontFamily: MONO_FALLBACK,
+            fontSize: ch === " = " || ch === " \xD7 " ? 86 : 118,
+            fontWeight: 700,
+            color: ch === "\u03C4" ? CYAN : TEXT,
+            opacity: interpolate(formula, [i * 0.16, i * 0.16 + 0.3], [0, 1], CLAMP),
+            textShadow: ch === "\u03C4" ? "0 0 60px rgba(47,227,255,.45)" : void 0
+          },
+          children: ch
+        },
+        i
+      )),
+      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+        "span",
+        {
+          style: {
+            fontFamily: MONO_FALLBACK,
+            fontSize: 44,
+            color: MUTED,
+            marginLeft: 22,
+            opacity: interpolate(formula, [0.8, 1], [0, 1], CLAMP)
+          },
+          children: "[s]"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 244,
+          top: 650,
+          fontSize: 30,
+          color: MUTED,
+          letterSpacing: 1,
+          opacity: interpolate(frame, [80, 100], [0, 1], CLAMP)
+        },
+        children: "\u4FE1\u53F7\u4ECE\u8DF3\u53D8\u5230\u7A33\u5B9A\uFF0C\u6240\u9700\u7684\u65F6\u95F4"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 240,
+          top: 720,
+          width: 760,
+          height: 260,
+          border: "1px solid rgba(47,227,255,.22)",
+          background: "linear-gradient(rgba(47,227,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.06) 1px, transparent 1px)",
+          backgroundSize: "38px 38px",
+          opacity: interpolate(frame, [60, 80], [0, 1], CLAMP)
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("svg", { width: 760, height: 260, style: { position: "absolute", inset: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+          "path",
+          {
+            d: CHARGE,
+            fill: "none",
+            stroke: CYAN,
+            strokeWidth: 3,
+            pathLength: 1,
+            strokeDasharray: "1 1",
+            strokeDashoffset: 1 - charge
+          }
+        ) })
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Eyebrow, { text: "RC DELAY / TIME CONSTANT", x: 1140, y: 720, opacity: 0.7 }),
+    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1140,
+          top: 756,
+          width: 520,
+          fontSize: 30,
+          lineHeight: 1.7,
+          color: "rgba(233,243,255,.66)",
+          opacity: interpolate(frame, [140, 160], [0, 1], CLAMP)
+        },
+        children: "\u7535\u963B\u4E58\u7535\u5BB9\uFF0C\u5C31\u662F\u8FD9\u6761\u66F2\u7EBF\u722C\u5B8C\u7684\u65F6\u95F4\u5E38\u6570\u3002"
+      }
+    )
+  ] });
+};
+var MONO_FALLBACK = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
+
+// src/film/scenes/Shot08.tsx
+var import_jsx_runtime74 = __toESM(require_jsx_runtime());
+var GATES = Array.from({ length: 14 * 8 }, (_, i) => ({
+  x: 520 + i % 14 * 68,
+  y: 320 + Math.floor(i / 14) * 62
+}));
+var PATH = "M440 376 H700 V556 H980 V700 H1240 V432 H1480";
+var Shot08 = () => {
+  const frame = useCurrentFrame();
+  const dieIn = interpolate(frame, [0, 18], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const route = interpolate(frame, [18, 110], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  const dot = interpolate(frame, [104, 214], [1, 0], { ...CLAMP, easing: EASE_IN_OUT });
+  const label3 = interpolate(frame, [120, 145], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(Stage, { glow: 0.85, grid: 0.45, lightX: 960, lightY: 520 }),
+    /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0, opacity: dieIn }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("rect", { x: 340, y: 250, width: 1240, height: 580, fill: "rgba(9,16,24,.72)", stroke: "rgba(47,227,255,.28)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("g", { opacity: 0.5, children: [
+        Array.from({ length: 13 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("line", { x1: 380 + i * 96, y1: 260, x2: 380 + i * 96, y2: 820, stroke: "rgba(47,227,255,.07)" }, "v" + i)),
+        Array.from({ length: 7 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("line", { x1: 345, y1: 300 + i * 80, x2: 1575, y2: 300 + i * 80, stroke: "rgba(47,227,255,.07)" }, "h" + i))
+      ] }),
+      [0, 1, 2, 3].map((i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("g", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("rect", { x: 372, y: 330 + i * 120, width: 70, height: 72, fill: "rgba(47,227,255,.12)", stroke: CYAN, strokeWidth: 1.2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("rect", { x: 1478, y: 330 + i * 120, width: 70, height: 72, fill: "rgba(47,227,255,.12)", stroke: CYAN, strokeWidth: 1.2 })
+      ] }, "L" + i)),
+      GATES.map((g, i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("rect", { x: g.x, y: g.y, width: 22, height: 22, fill: "rgba(233,243,255,.14)", stroke: "rgba(233,243,255,.28)", strokeWidth: 0.8 }, i)),
+      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("path", { d: "M440 496 H860 V376 H1480", fill: "none", stroke: "rgba(233,243,255,.16)", strokeWidth: 2 }),
+      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("path", { d: "M440 736 H1080 V616 H1480", fill: "none", stroke: "rgba(233,243,255,.16)", strokeWidth: 2 }),
+      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+        "path",
+        {
+          d: PATH,
+          fill: "none",
+          stroke: RED,
+          strokeWidth: 4,
+          pathLength: 1,
+          strokeDasharray: "1 1",
+          strokeDashoffset: 1 - route,
+          style: { filter: "drop-shadow(0 0 14px rgba(255,77,61,.55))" }
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+        "path",
+        {
+          d: PATH,
+          fill: "none",
+          stroke: "#FFFFFF",
+          strokeWidth: 9,
+          strokeLinecap: "round",
+          pathLength: 1,
+          strokeDasharray: "0.006 1",
+          strokeDashoffset: dot,
+          opacity: 0.95,
+          style: { filter: "drop-shadow(0 0 18px rgba(255,150,140,.9))" }
+        }
+      )
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(Eyebrow, { text: "CRITICAL PATH", x: 120, y: 120, opacity: 0.72 }),
+    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(Label, { text: "\u6700\u957F\u7684\u90A3\u6761\u8DEF\uFF0C\u51B3\u5B9A\u65F6\u949F\u9891\u7387", x: 120, y: 152, size: 42, color: TEXT, weight: 700 }),
+    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1180,
+          top: 862,
+          fontFamily: '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace',
+          fontSize: 24,
+          letterSpacing: 2,
+          color: RED,
+          opacity: label3
+        },
+        children: "KEY PATH \xB7 DELAY MAX"
+      }
+    )
+  ] });
+};
+
+// src/film/scenes/Shot09.tsx
+var import_jsx_runtime75 = __toESM(require_jsx_runtime());
+var HALF_W = 900;
+var HALF_H = 260;
+var Grid = ({ tint = "rgba(47,227,255,.12)" }) => /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      inset: 0,
+      backgroundImage: `linear-gradient(${tint} 1px, transparent 1px), linear-gradient(90deg, ${tint} 1px, transparent 1px)`,
+      backgroundSize: "45px 45px"
+    }
+  }
+);
+var Shot09 = () => {
+  const frame = useCurrentFrame();
+  const fold = interpolate(frame, [34, 96], [0, -82], { ...CLAMP, easing: EASE_IN_OUT });
+  const enter = interpolate(frame, [0, 22], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const glow = interpolate(frame, [90, 110], [0, 1], CLAMP);
+  const zoom = interpolate(frame, [0, 210], [1, 1.06], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Stage, { glow: 0.9, grid: 0.4, lightX: 960, lightY: 520 }),
+    /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          inset: 0,
+          transform: `scale(${zoom})`,
+          transformOrigin: "50% 55%",
+          perspective: 1500
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 960 - HALF_W / 2,
+                top: 560,
+                width: HALF_W,
+                height: HALF_H,
+                border: `1px solid rgba(47,227,255,${0.45 * enter})`,
+                background: "rgba(8,14,20,.75)",
+                opacity: enter
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Grid, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("svg", { width: HALF_W, height: HALF_H, style: { position: "absolute", inset: 0 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+                    "path",
+                    {
+                      d: `M40 ${HALF_H - 70} H${HALF_W - 40}`,
+                      stroke: RED,
+                      strokeWidth: 5,
+                      fill: "none",
+                      strokeDasharray: "1 1",
+                      pathLength: 1,
+                      strokeDashoffset: 1 - interpolate(frame, [16, 60], [0, 1], CLAMP),
+                      style: { filter: "drop-shadow(0 0 12px rgba(255,77,61,.6))" }
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("circle", { cx: HALF_W - 40, cy: HALF_H - 70, r: 7, fill: RED, opacity: 0.9 })
+                ] })
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 960 - HALF_W / 2,
+                top: 560 - HALF_H,
+                width: HALF_W,
+                height: HALF_H,
+                transformOrigin: "50% 100%",
+                transform: `rotateX(${fold}deg)`,
+                border: `1px solid rgba(47,227,255,${0.45 * enter})`,
+                background: "rgba(8,14,20,.75)",
+                opacity: enter
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Grid, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("svg", { width: HALF_W, height: HALF_H, style: { position: "absolute", inset: 0 }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+                    "path",
+                    {
+                      d: `M40 ${HALF_H - 70} H${HALF_W - 40}`,
+                      stroke: RED,
+                      strokeWidth: 5,
+                      fill: "none",
+                      strokeDasharray: "1 1",
+                      pathLength: 1,
+                      strokeDashoffset: 1 - interpolate(frame, [16, 60], [0, 1], CLAMP),
+                      style: { filter: "drop-shadow(0 0 12px rgba(255,77,61,.6))" }
+                    }
+                  ),
+                  /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("circle", { cx: 40, cy: HALF_H - 70, r: 7, fill: RED, opacity: 0.9 })
+                ] })
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 960 - HALF_W / 2,
+                top: 558,
+                width: HALF_W,
+                height: 3,
+                background: `linear-gradient(90deg, transparent, ${CYAN}, transparent)`,
+                opacity: 0.35 + 0.65 * glow,
+                boxShadow: `0 0 ${40 * glow}px rgba(47,227,255,.6)`
+              }
+            }
+          )
+        ]
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Eyebrow, { text: "LOGIC FOLDING", x: 120, y: 120, opacity: 0.72 }),
+    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Label, { text: "\u903B\u8F91\u6298\u53E0", x: 120, y: 152, size: 44, color: TEXT, weight: 700 }),
+    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+      Label,
+      {
+        text: "\u5173\u952E\u8DEF\u5F84\u4E0A\u7684\u903B\u8F91\u95E8\uFF0C\u5206\u5230\u4E0A\u4E0B\u4E24\u5C42",
+        x: 120,
+        y: 214,
+        size: 26,
+        color: "rgba(233,243,255,.55)",
+        opacity: interpolate(frame, [70, 90], [0, 1], CLAMP)
+      }
+    )
+  ] });
+};
+
+// src/film/scenes/Shot10.tsx
+var import_jsx_runtime76 = __toESM(require_jsx_runtime());
+var SLAB = { x: 420, w: 1080, h: 92 };
+var TOP_Y = 286;
+var BOT_Y = 606;
+var PILLARS = Array.from({ length: 6 }, (_, i) => 486 + i * 196);
+var Shot10 = () => {
+  const frame = useCurrentFrame();
+  const enter = interpolate(frame, [0, 26], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const dive = interpolate(frame, [104, 168], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  const scale = 1 + dive * 0.22;
+  const shiftY = dive * 34;
+  return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Stage, { glow: 0.95, grid: 0.35, lightX: 960, lightY: 470 }),
+    /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          inset: 0,
+          transform: `scale(${scale}) translateY(${shiftY}px)`,
+          transformOrigin: "50% 62%"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: SLAB.x,
+                top: TOP_Y - (1 - enter) * 40,
+                width: SLAB.w,
+                height: SLAB.h,
+                opacity: enter,
+                background: "linear-gradient(180deg,#16232E,#0A121A 62%,#0D1720)",
+                border: `1px solid rgba(47,227,255,.42)`,
+                boxShadow: "0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)"
+              },
+              children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    inset: 12,
+                    backgroundImage: "linear-gradient(rgba(47,227,255,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.13) 1px, transparent 1px)",
+                    backgroundSize: "26px 26px"
+                  }
+                }
+              )
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: SLAB.x,
+                top: BOT_Y + (1 - enter) * 40,
+                width: SLAB.w,
+                height: SLAB.h,
+                opacity: enter,
+                background: "linear-gradient(180deg,#16232E,#0A121A 62%,#0D1720)",
+                border: `1px solid rgba(47,227,255,.42)`,
+                boxShadow: "0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)"
+              },
+              children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    inset: 12,
+                    backgroundImage: "linear-gradient(rgba(47,227,255,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.13) 1px, transparent 1px)",
+                    backgroundSize: "26px 26px"
+                  }
+                }
+              )
+            }
+          ),
+          PILLARS.map((x, i) => {
+            const on = interpolate(frame, [34 + i * 9, 54 + i * 9], [0, 1], { ...CLAMP, easing: EASE_OUT });
+            return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    left: x - 13,
+                    top: TOP_Y + SLAB.h,
+                    width: 26,
+                    height: (BOT_Y - TOP_Y - SLAB.h) * on,
+                    background: `linear-gradient(180deg, ${CYAN}, rgba(47,227,255,.35))`,
+                    boxShadow: "0 0 22px rgba(47,227,255,.55)",
+                    opacity: on
+                  }
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    left: x - 30,
+                    top: TOP_Y + SLAB.h - 8,
+                    width: 60,
+                    height: 10,
+                    background: CYAN,
+                    opacity: 0.55 * on
+                  }
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+                "div",
+                {
+                  style: {
+                    position: "absolute",
+                    left: x - 30,
+                    top: BOT_Y - 2,
+                    width: 60,
+                    height: 10,
+                    background: CYAN,
+                    opacity: 0.55 * on
+                  }
+                }
+              )
+            ] }, x);
+          }),
+          /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 420,
+                top: 468,
+                height: 2,
+                width: 360,
+                background: `linear-gradient(90deg, rgba(255,77,61,.0), rgba(255,77,61,.85))`,
+                opacity: interpolate(frame, [150, 175], [0, 0.9], CLAMP)
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 800,
+                top: 440,
+                fontSize: 24,
+                color: MUTED,
+                letterSpacing: 1,
+                opacity: interpolate(frame, [150, 175], [0, 1], CLAMP)
+              },
+              children: "\u539F\u672C\u8981\u6A2A\u7A7F\u6574\u5C42\u7684\u8D70\u7EBF\uFF0C\u53EA\u5269\u8FD9\u4E00\u5C0F\u6BB5"
+            }
+          )
+        ]
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Eyebrow, { text: "CROSS SECTION / HYBRID BONDING", x: 120, y: 120, opacity: 0.7 }),
+    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Label, { text: "\u5256\u9762\uFF1A\u4E0A\u4E0B\u4E24\u5C42\uFF0C\u5782\u76F4\u76F8\u8FDE", x: 120, y: 152, size: 40, color: TEXT, weight: 700 }),
+    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+      Label,
+      {
+        text: "\u5173\u952E\u8DEF\u5F84\u8D70\u7EBF \u2193",
+        x: 120,
+        y: 330,
+        size: 26,
+        color: "rgba(233,243,255,.55)",
+        opacity: interpolate(frame, [60, 80], [0, 1], CLAMP)
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+      Label,
+      {
+        text: "\u5782\u76F4\u4E92\u8FDE \u2191",
+        x: 1580,
+        y: 520,
+        size: 26,
+        color: CYAN,
+        opacity: interpolate(frame, [70, 90], [0, 1], CLAMP)
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1660,
+          top: 800,
+          fontFamily: '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace',
+          fontSize: 20,
+          letterSpacing: 3,
+          color: "rgba(233,243,255,.3)"
+        },
+        children: "\u793A\u610F\u56FE"
+      }
+    )
+  ] });
+};
+
+// src/film/scenes/Shot11.tsx
+var import_jsx_runtime77 = __toESM(require_jsx_runtime());
+var MONO_F = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
+var SIZE = 320;
+var Gauge = ({ cx, cy, value, label: label3, unit, accent = CYAN }) => {
+  const c2 = SIZE / 2;
+  const r = 118;
+  const start = -220;
+  const end = 40;
+  const angle = interpolate(value, [0, 1], [start, end], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("div", { style: { position: "absolute", left: cx - SIZE / 2, top: cy - SIZE / 2, width: SIZE, height: SIZE }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("svg", { width: SIZE, height: SIZE, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("circle", { cx: c2, cy: c2, r, fill: "none", stroke: "rgba(233,243,255,.1)", strokeWidth: 3 }),
+      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+        "path",
+        {
+          d: `M ${c2 + r * Math.cos(start * Math.PI / 180)} ${c2 + r * Math.sin(start * Math.PI / 180)} A ${r} ${r} 0 1 1 ${c2 + r * Math.cos(end * Math.PI / 180)} ${c2 + r * Math.sin(end * Math.PI / 180)}`,
+          fill: "none",
+          stroke: accent,
+          strokeWidth: 3,
+          opacity: 0.5
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+        "line",
+        {
+          x1: c2,
+          y1: c2,
+          x2: c2 + (r - 14) * Math.cos(angle * Math.PI / 180),
+          y2: c2 + (r - 14) * Math.sin(angle * Math.PI / 180),
+          stroke: TEXT,
+          strokeWidth: 4,
+          strokeLinecap: "round",
+          style: { filter: `drop-shadow(0 0 10px ${accent}88)` }
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("circle", { cx: c2, cy: c2, r: 7, fill: TEXT })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: c2 + 56,
+          textAlign: "center",
+          fontFamily: MONO_F,
+          fontSize: 46,
+          fontWeight: 700,
+          color: accent === RED ? RED : TEXT
+        },
+        children: [
+          Math.round(value * 100),
+          "%"
+        ]
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: c2 + 112, textAlign: "center", fontSize: 24, color: "rgba(233,243,255,.62)" }, children: label3 }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: c2 + 146, textAlign: "center", fontFamily: MONO_F, fontSize: 15, letterSpacing: 2.4, color: MUTED }, children: unit })
+  ] });
+};
+var Shot11 = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const drop = (delay2, to) => interpolate(
+    spring({ frame: frame - delay2, fps, config: { damping: 16, mass: 0.7, stiffness: 90 } }),
+    [0, 1],
+    [1, to],
+    CLAMP
+  );
+  const len = drop(24, 0.38);
+  const rc = drop(36, 0.31);
+  const tau = drop(48, 0.27);
+  const rise = interpolate(frame, [120, 190], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Stage, { glow: 0.9, grid: 0.45, lightX: 900, lightY: 520 }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Gauge, { cx: 360, cy: 430, value: len, label: "\u8D70\u7EBF\u957F\u5EA6", unit: "WIRE LENGTH" }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Gauge, { cx: 720, cy: 430, value: rc, label: "\u5BC4\u751F RC", unit: "RC LOAD" }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Gauge, { cx: 1080, cy: 430, value: tau, label: "\u03C4", unit: "TIME CONSTANT", accent: RED }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("path", { d: "M1380 830 L1820 830 M1380 830 L1380 560", stroke: "rgba(233,243,255,.22)", strokeWidth: 1.4, fill: "none" }),
+      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+        "path",
+        {
+          d: "M1390 820 C1470 790 1530 730 1610 680 C1680 636 1740 600 1806 574",
+          fill: "none",
+          stroke: CYAN,
+          strokeWidth: 3,
+          pathLength: 1,
+          strokeDasharray: "1 1",
+          strokeDashoffset: 1 - rise,
+          style: { filter: "drop-shadow(0 0 16px rgba(47,227,255,.45))" }
+        }
+      )
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Label, { text: "\u9891\u7387 \u2191", x: 1640, y: 500, size: 34, color: CYAN, opacity: interpolate(frame, [130, 150], [0, 1], CLAMP) }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Eyebrow, { text: "\u03C4 DOWN / FREQUENCY UP", x: 120, y: 120, opacity: 0.72 }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Label, { text: "\u540C\u4E00\u5236\u7A0B\uFF0C\u66F4\u9AD8\u7684\u9891\u7387", x: 120, y: 152, size: 40, color: TEXT, weight: 700 }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 120,
+          top: 720,
+          fontSize: 26,
+          color: MUTED,
+          letterSpacing: 1,
+          opacity: interpolate(frame, [90, 115], [0, 1], CLAMP)
+        },
+        children: "\u5BFC\u7EBF\u77ED\u4E86\uFF0C\u7535\u5BB9\u5C0F\u4E86\uFF0C\u03C4 \u5C31\u5C0F\u4E86\u3002"
+      }
+    )
+  ] });
+};
+
+// src/film/scenes/Shot12.tsx
+var import_jsx_runtime78 = __toESM(require_jsx_runtime());
+var Die = ({ x, y, w, h, opacity }) => /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: x,
+      top: y,
+      width: w,
+      height: h,
+      opacity,
+      background: "linear-gradient(160deg,#16232E,#0A121A 60%,#101B24)",
+      border: "1px solid rgba(47,227,255,.55)",
+      boxShadow: "0 18px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.1)"
+    },
+    children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          inset: 8,
+          backgroundImage: "linear-gradient(rgba(47,227,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(47,227,255,.12) 1px, transparent 1px)",
+          backgroundSize: "22px 22px"
+        }
+      }
+    )
+  }
+);
+var Shot12 = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const enter = interpolate(frame, [0, 20], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const x1 = spring({ frame: frame - 92, fps, config: { damping: 14, mass: 0.6, stiffness: 160 } });
+  const ribbon = interpolate(frame, [24, 100], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const eq = interpolate(frame, [110, 130], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "absolute", left: 180, top: 240, width: 700, height: 560, opacity: enter }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Die, { x: 130, y: 40, w: 420, h: 130, opacity: 0.95 }),
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Die, { x: 130, y: 250, w: 420, h: 130, opacity: 0.95 }),
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: 130,
+            top: 178,
+            width: 420,
+            height: 64,
+            borderTop: "1px dashed rgba(233,243,255,.22)",
+            borderBottom: "1px dashed rgba(233,243,255,.22)"
+          }
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("svg", { width: 700, height: 560, style: { position: "absolute", inset: 0 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+          "line",
+          {
+            x1: 280,
+            y1: 160,
+            x2: 280 + 160 * x1,
+            y2: 160 + 160 * x1,
+            stroke: RED,
+            strokeWidth: 10,
+            strokeLinecap: "round",
+            style: { filter: "drop-shadow(0 0 20px rgba(255,77,61,.6))" }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+          "line",
+          {
+            x1: 440,
+            y1: 160,
+            x2: 440 - 160 * x1,
+            y2: 160 + 160 * x1,
+            stroke: RED,
+            strokeWidth: 10,
+            strokeLinecap: "round",
+            style: { filter: "drop-shadow(0 0 20px rgba(255,77,61,.6))" }
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Label, { text: "\u4E24\u9897\u82AF\u7247\uFF0C\u5404\u81EA\u5B8C\u6574", x: 130, y: 430, size: 26, color: "rgba(233,243,255,.5)" })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "absolute", left: 1040, top: 240, width: 760, height: 560, opacity: enter }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("svg", { width: 760, height: 560, style: { position: "absolute", inset: 0 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+          "path",
+          {
+            d: "M80 150 H600 A70 70 0 0 1 600 290 H80",
+            fill: "none",
+            stroke: "#16242F",
+            strokeWidth: 46,
+            strokeLinecap: "round",
+            pathLength: 1,
+            strokeDasharray: "1 1",
+            strokeDashoffset: 1 - ribbon
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+          "path",
+          {
+            d: "M80 150 H600 A70 70 0 0 1 600 290 H80",
+            fill: "none",
+            stroke: CYAN,
+            strokeWidth: 2.4,
+            strokeLinecap: "round",
+            opacity: 0.75,
+            pathLength: 1,
+            strokeDasharray: "1 1",
+            strokeDashoffset: 1 - ribbon,
+            style: { filter: "drop-shadow(0 0 14px rgba(47,227,255,.5))" }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+          "path",
+          {
+            d: "M80 150 H600 A70 70 0 0 1 600 290 H80",
+            fill: "none",
+            stroke: "rgba(47,227,255,.35)",
+            strokeWidth: 1.2,
+            strokeDasharray: "6 10",
+            strokeLinecap: "round",
+            pathLength: 1,
+            strokeDashoffset: 1 - ribbon
+          }
+        )
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Label, { text: "\u4E00\u6B21\u6210\u578B\uFF0C\u4E2D\u95F4\u6CA1\u6709\u63A5\u7F1D", x: 80, y: 430, size: 26, color: "rgba(233,243,255,.5)" })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Eyebrow, { text: "\u2260 3D STACKING / = ONE CONTINUOUS DIE", x: 120, y: 120, opacity: 0.72 }),
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Label, { text: "\u8FD9\u4E0D\u662F\u5806\u53E0\uFF0C\u662F\u6298\u53E0", x: 120, y: 152, size: 42, color: TEXT, weight: 700 }),
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 180,
+          top: 700,
+          width: 700,
+          textAlign: "center",
+          fontSize: 40,
+          fontWeight: 700,
+          color: RED,
+          opacity: eq
+        },
+        children: "\u2260 3D \u5806\u53E0"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1040,
+          top: 700,
+          width: 760,
+          textAlign: "center",
+          fontSize: 40,
+          fontWeight: 700,
+          color: CYAN,
+          opacity: eq
+        },
+        children: "= \u4E00\u9897\u8FDE\u7EED\u7684\u6574\u4F53"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { position: "absolute", left: 920, top: 300, width: 1, height: 260, background: "rgba(233,243,255,.12)" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { position: "absolute", left: 916, top: 300, width: 8, height: 8, borderRadius: 4, background: MUTED, opacity: 0.4 } })
+  ] });
+};
+
+// src/film/scenes/Shot13.tsx
+var import_jsx_runtime79 = __toESM(require_jsx_runtime());
+var LAYERS = [
+  { size: 520, label: "\u6676\u4F53\u7BA1 \xB7 \u76AE\u79D2", unit: "ps", y: 340 },
+  { size: 400, label: "\u7247\u5185\u4E92\u8FDE \xB7 \u7EB3\u79D2", unit: "ns", y: 420 },
+  { size: 288, label: "\u5185\u5B58\u8BBF\u95EE \xB7 \u7EB3\u79D2", unit: "ns", y: 500 },
+  { size: 186, label: "\u96C6\u7FA4\u4E92\u8054 \xB7 \u5FAE\u79D2", unit: "\u03BCs", y: 580 }
+];
+var Shot13 = () => {
+  const frame = useCurrentFrame();
+  const axis = interpolate(frame, [150, 200], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const settle = interpolate(frame, [190, 220], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Stage, { glow: 0.9, grid: 0.4, lightX: 820, lightY: 470 }),
+    LAYERS.map((l, i) => {
+      const on = interpolate(frame, [16 + i * 34, 46 + i * 34], [0, 1], { ...CLAMP, easing: EASE_OUT });
+      const edge = 820 + l.size / 2;
+      return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: 820 - l.size / 2,
+              top: 470 - l.size / 2,
+              width: l.size,
+              height: l.size,
+              border: `1.5px solid rgba(47,227,255,${0.16 + 0.55 * on})`,
+              boxShadow: `0 0 ${50 * on}px rgba(47,227,255,${0.14 * on}) inset`,
+              opacity: 0.35 + 0.65 * on,
+              borderRadius: 6
+            }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: edge,
+              top: l.y + 10,
+              width: 1160 - edge,
+              height: 1,
+              background: `linear-gradient(90deg, rgba(47,227,255,${0.7 * on}), rgba(47,227,255,${0.08 * on}))`
+            }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: 1166,
+              top: l.y - 8,
+              width: 8,
+              height: 8,
+              borderRadius: 4,
+              background: CYAN,
+              opacity: on
+            }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          Label,
+          {
+            text: l.label,
+            x: 1192,
+            y: l.y - 20,
+            size: 30,
+            color: TEXT,
+            opacity: on
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: 1192,
+              top: l.y + 20,
+              fontFamily: '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace',
+              fontSize: 18,
+              letterSpacing: 3,
+              color: MUTED,
+              opacity: on
+            },
+            children: l.unit
+          }
+        )
+      ] }, l.label);
+    }),
+    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 818,
+          top: 470 - 300 * axis,
+          width: 4,
+          height: 600 * axis,
+          background: `linear-gradient(180deg, transparent, ${CYAN}, transparent)`,
+          boxShadow: "0 0 30px rgba(47,227,255,.65)",
+          opacity: axis
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 640,
+          top: 800,
+          width: 360,
+          textAlign: "center",
+          fontSize: 34,
+          letterSpacing: 2,
+          color: CYAN,
+          opacity: settle
+        },
+        children: "\u4E00\u4E2A\u6307\u6807\uFF1A\u03C4"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Eyebrow, { text: "ps \u2192 ns \u2192 \u03BCs", x: 120, y: 120, opacity: 0.75 }),
+    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Label, { text: "\u6BCF\u4E00\u5C42\uFF0C\u90FD\u6709\u81EA\u5DF1\u7684 \u03C4", x: 120, y: 152, size: 40, color: TEXT, weight: 700 })
+  ] });
+};
+
+// src/film/scenes/Shot14.tsx
+var import_jsx_runtime80 = __toESM(require_jsx_runtime());
+var BARS = Array.from({ length: 26 }, (_, i) => i);
+var Shot14 = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const roll = interpolate(frame, [18, 58], [0, 381], { ...CLAMP, easing: EASE_OUT });
+  const cards = [12, 46, 80].map(
+    (d) => spring({ frame: frame - d, fps, config: { damping: 19, mass: 0.8, stiffness: 110 } })
+  );
+  return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(Stage, { glow: 0.8, grid: 0.35, lightX: 1520, lightY: 480 }),
+    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("div", { style: { position: "absolute", left: 1240, top: 170, width: 540, height: 640, opacity: 0.5 }, children: BARS.map((i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: i % 6 * 88,
+          top: Math.floor(i / 6) * 148,
+          width: 62,
+          height: 126,
+          border: "1px solid rgba(47,227,255,.18)",
+          background: "rgba(47,227,255,.03)"
+        },
+        children: [0, 1, 2, 3].map((k) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: 8,
+              right: 8,
+              top: 12 + k * 28,
+              height: 2,
+              background: "rgba(47,227,255,.16)"
+            }
+          },
+          k
+        ))
+      },
+      i
+    )) }),
+    [
+      { x: 120, y: 190, title: "6 YEARS / 381 CHIPS", value: `${Math.round(roll)} \u6B3E`, note: "\u516D\u5E74\u91CF\u4EA7\uFF0C\u8986\u76D6\u5343\u884C\u767E\u4E1A" },
+      { x: 120, y: 418, title: "2026 AUTUMN", value: "\u9E92\u9E9F", note: "\u9996\u53D1\u903B\u8F91\u6298\u53E0" },
+      { x: 120, y: 646, title: "2031", value: "\u22481.4nm", note: "\u6676\u4F53\u7BA1\u5BC6\u5EA6\u7B49\u6548\u6C34\u5E73" }
+    ].map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+      "div",
+      {
+        style: {
+          transform: `translateY(${(1 - cards[i]) * 46}px)`,
+          opacity: interpolate(cards[i], [0, 0.45], [0, 1], CLAMP)
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(StatCard, { x: c2.x, y: c2.y, w: 840, title: c2.title, value: c2.value, note: c2.note })
+      },
+      c2.title
+    )),
+    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(Eyebrow, { text: "EVIDENCE / 2026 \u2192 2031", x: 120, y: 120, opacity: 0.72 }),
+    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1e3,
+          top: 800,
+          fontSize: 20,
+          color: "rgba(233,243,255,.34)",
+          opacity: interpolate(frame, [110, 130], [0, 1], CLAMP),
+          letterSpacing: 1
+        },
+        children: "\u6570\u636E\u53E3\u5F84\uFF1A\u534E\u4E3A\u516C\u5F00\u6F14\u8BB2\u4E0E\u5A92\u4F53\u62AB\u9732"
+      }
+    )
+  ] });
+};
+
+// src/film/scenes/Shot15.tsx
+var import_jsx_runtime81 = __toESM(require_jsx_runtime());
+var RINGS = [
+  { r: 250, label: "EDA \u5DE5\u5177", x: 620, y: 118, speed: 0.22 },
+  { r: 330, label: "\u826F\u7387\u4E0E\u65F6\u5E8F", x: 1046, y: 470, speed: -0.16 },
+  { r: 410, label: "\u8DE8\u5C42 RC \u5F00\u9500", x: 700, y: 812, speed: 0.12 }
+];
+var Shot15 = () => {
+  const frame = useCurrentFrame();
+  const dim = interpolate(frame, [0, 24], [1, 0.42], CLAMP);
+  const note = interpolate(frame, [96, 118], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  return /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(Stage, { glow: 0.5, grid: 0.25, lightX: 620, lightY: 430 }),
+    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)("div", { style: { position: "absolute", left: 620 - 150, top: 430 - 150, opacity: 0.55 }, children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(TauGlyph, { size: 300, progress: 1, color: CYAN, strokeWidth: 5, glow: 0.4 }) }),
+    RINGS.map((ring) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 620 - ring.r,
+          top: 430 - ring.r,
+          width: ring.r * 2,
+          height: ring.r * 2,
+          transform: `rotate(${frame * ring.speed}deg)`,
+          transformOrigin: "50% 50%"
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)("svg", { width: ring.r * 2, height: ring.r * 2, children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+          "circle",
+          {
+            cx: ring.r,
+            cy: ring.r,
+            r: ring.r - 2,
+            fill: "none",
+            stroke: CYAN,
+            strokeWidth: 1.4,
+            strokeDasharray: "10 18",
+            opacity: 0.3
+          }
+        ) })
+      },
+      ring.label
+    )),
+    RINGS.map((ring, i) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+      Label,
+      {
+        text: ring.label,
+        x: ring.x,
+        y: ring.y,
+        size: 26,
+        color: "rgba(233,243,255,.62)",
+        opacity: interpolate(frame, [40 + i * 12, 60 + i * 12], [0, 1], CLAMP),
+        width: 420,
+        align: "center"
+      },
+      ring.label
+    )),
+    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 100,
+          top: 120,
+          fontSize: 22,
+          letterSpacing: 4,
+          color: MUTED,
+          opacity: 0.7
+        },
+        children: "STILL UNPROVEN"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(Label, { text: "\u4E0D\u662F\u7ED3\u8BBA\uFF0C\u662F\u8DEF\u7EBF", x: 100, y: 152, size: 40, color: TEXT, weight: 700, opacity: 0.8 }),
+    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 1080,
+          top: 880,
+          fontSize: 24,
+          color: "rgba(233,243,255,.4)",
+          opacity: note,
+          letterSpacing: 1
+        },
+        children: "\u4E09\u4E2A\u73AF\u90FD\u8FD8\u6CA1\u70B9\u4EAE"
+      }
+    )
+  ] });
+};
+
+// src/film/scenes/Shot16.tsx
+var import_jsx_runtime82 = __toESM(require_jsx_runtime());
+var Shot16 = () => {
+  const frame = useCurrentFrame();
+  const expand = interpolate(frame, [0, 46], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
+  const band = interpolate(frame, [26, 76], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const quote = interpolate(frame, [62, 86], [0, 1], CLAMP);
+  const author = interpolate(frame, [80, 98], [0, 1], CLAMP);
+  const title = interpolate(frame, [112, 140], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const fade = interpolate(frame, [162, 194], [0, 1], CLAMP);
+  const pulse = interpolate(frame, [188, 210], [0.18, 0.55], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 960 - 160,
+          top: 430 - 160,
+          opacity: (1 - expand) * 0.95,
+          filter: `blur(${expand * 18}px)`,
+          transform: `scale(${1 + expand * 1.5})`
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(TauGlyph, { size: 320, progress: 1, color: CYAN, strokeWidth: 5, glow: 1.4 })
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 960 - 760 * band,
+          top: 462,
+          width: 1520 * band,
+          height: 2,
+          background: `linear-gradient(90deg, transparent, ${CYAN}, #EAF8FF, ${CYAN}, transparent)`,
+          boxShadow: "0 0 40px rgba(47,227,255,.55)",
+          opacity: band
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 268,
+          textAlign: "center",
+          fontSize: 44,
+          lineHeight: 1.6,
+          color: TEXT,
+          letterSpacing: 1.5,
+          opacity: quote
+        },
+        children: "\u201C\u03C4\u5B9A\u5F8B\u662F\u534E\u4E3A\u53EF\u4EE5\u9009\u62E9\u7684\u552F\u4E00\u4E00\u6761\u7A81\u56F4\u9053\u8DEF\u3002\u201D"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 348,
+          textAlign: "center",
+          fontSize: 26,
+          letterSpacing: 3,
+          color: MUTED,
+          opacity: author
+        },
+        children: "\u2014\u2014 \u4EFB\u6B63\u975E"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 560,
+          textAlign: "center",
+          fontSize: 92,
+          fontWeight: 700,
+          letterSpacing: 8,
+          color: TEXT,
+          opacity: title
+        },
+        children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade } }),
+    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)("div", { style: { position: "absolute", left: 960 - 22, top: 500, opacity: pulse }, children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(TauGlyph, { size: 44, progress: 1, color: CYAN, strokeWidth: 7, glow: 1.2 }) })
+  ] });
+};
+
 // src/score.ts
-var bust = "?v=2";
+var bust = "?v=3";
 var url2 = (file) => typeof document !== "undefined" ? new URL(file + bust, document.baseURI).href : staticFile(file);
 var SCORE_SRC = url2("score-sample.m4a");
 var IMPACT_SRC = url2("impact-open.wav");
+var BED_SRC = url2("score-bed.wav");
 
 // src/HelloWorld.tsx
-var import_jsx_runtime68 = __toESM(require_jsx_runtime());
+var import_jsx_runtime83 = __toESM(require_jsx_runtime());
+var Soundtrack = () => /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(import_jsx_runtime83.Fragment, { children: [
+  /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: SCORE_SRC, volume: (f) => interpolate(f, [296, 348], [1, 0], CLAMP) }),
+  /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: IMPACT_SRC, volume: 0.9 }),
+  /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 300, durationInFrames: 3120, name: "\u94FA\u5E95", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+    Audio2,
+    {
+      src: BED_SRC,
+      volume: (f) => interpolate(f, [0, 80], [0, 1], CLAMP) * interpolate(f, [2980, 3120], [1, 0], CLAMP)
+    }
+  ) }),
+  [540, 990, 1695, 2805].map((from) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from, durationInFrames: 60, name: "\u8F6C\u573A\u649E\u51FB " + from, children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: IMPACT_SRC, volume: 0.3 }) }, from))
+] });
+var TauLaw = () => {
+  const frame = useCurrentFrame();
+  const fade = interpolate(frame, [3400, 3420], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", fontFamily: FONT, overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Soundtrack, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 0, durationInFrames: 345, name: "\u955C 1\u20132 \xB7 \u5C3A\u5B50\u4E0E\u7EB3\u7C73", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Opening, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 345, durationInFrames: 195, name: "\u955C 3 \xB7 \u65AD\u88C2", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot03, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 540, durationInFrames: 210, name: "\u955C 4 \xB7 \u03C4", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot04, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 750, durationInFrames: 240, name: "\u955C 5 \xB7 \u6469\u5C14", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot05, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 990, durationInFrames: 225, name: "\u955C 6 \xB7 \u7EA2\u5899", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot06, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 1215, durationInFrames: 240, name: "\u955C 7 \xB7 RC", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot07, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 1455, durationInFrames: 240, name: "\u955C 8 \xB7 \u5173\u952E\u8DEF\u5F84", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot08, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 1695, durationInFrames: 210, name: "\u955C 9 \xB7 \u6298\u53E0", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot09, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 1905, durationInFrames: 240, name: "\u955C 10 \xB7 \u5256\u9762", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot10, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2145, durationInFrames: 210, name: "\u955C 11 \xB7 \u6536\u76CA", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot11, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2355, durationInFrames: 210, name: "\u955C 12 \xB7 \u8FA8\u6790", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot12, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2565, durationInFrames: 240, name: "\u955C 13 \xB7 \u56DB\u5C42", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot13, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2805, durationInFrames: 225, name: "\u955C 14 \xB7 \u8BC1\u636E", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot14, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 3030, durationInFrames: 180, name: "\u955C 15 \xB7 \u514B\u5236", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot15, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 3210, durationInFrames: 210, name: "\u955C 16 \xB7 \u6536\u675F", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot16, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Subtitles, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
+  ] });
+};
 var TauLawSample = () => {
   const frame = useCurrentFrame();
   const fade = interpolate(frame, [288, 298], [0, 1], CLAMP);
-  const volume = interpolate(frame, [284, 300], [1, 0], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", fontFamily: FONT, overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Audio2, { src: SCORE_SRC, volume }),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Audio2, { src: IMPACT_SRC, volume: 0.95 }),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Sequence, { from: 0, durationInFrames: 345, name: "\u955C 1\u20132 \xB7 \u5C3A\u5B50\u4E0E\u7EB3\u7C73", children: /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Opening, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Subtitles, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
+  return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", fontFamily: FONT, overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: SCORE_SRC, volume: (f) => interpolate(f, [284, 300], [1, 0], CLAMP) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: IMPACT_SRC, volume: 0.95 }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 0, durationInFrames: 345, name: "\u955C 1\u20132", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Opening, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Subtitles, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
   ] });
 };
 
 // web/main.tsx
-var import_jsx_runtime69 = __toESM(require_jsx_runtime());
-var COMPOSITION = {
+var import_jsx_runtime84 = __toESM(require_jsx_runtime());
+var FILM = {
+  id: "TauLaw",
+  label: "\u6574\u7247",
+  component: TauLaw,
+  width: 1920,
+  height: 1080,
+  fps: FPS,
+  durationInFrames: TOTAL_FRAMES
+  // 3420 = 114.000s
+};
+var SAMPLE = {
   id: "TauLawSample",
+  label: "\u7247\u5934\u6837\u7247",
   component: TauLawSample,
   width: 1920,
   height: 1080,
   fps: FPS,
   durationInFrames: SAMPLE_FRAMES
-  // 300 帧 = 10.000s
+  // 300 = 10.000s
 };
-var DURATION_SECONDS = COMPOSITION.durationInFrames / COMPOSITION.fps;
+var COMPS = [FILM, SAMPLE];
 var PLANS = [
-  {
-    container: "mp4",
-    videoCodec: "h264",
-    audioCodec: "aac",
-    note: "MP4 / H.264\uFF08\u63A8\u8350\uFF0C\u624B\u673A\u76F8\u518C\u53EF\u76F4\u63A5\u64AD\uFF09"
-  },
-  {
-    container: "webm",
-    videoCodec: "vp8",
-    audioCodec: "opus",
-    note: "WebM / VP8\uFF08H.264 \u4E0D\u53EF\u7528\u65F6\u7684\u515C\u5E95\uFF09"
-  }
+  { container: "mp4", videoCodec: "h264", audioCodec: "aac", note: "MP4 / H.264 + AAC\uFF08\u63A8\u8350\uFF09" },
+  { container: "webm", videoCodec: "vp8", audioCodec: "opus", note: "WebM / VP8 + Opus\uFF08\u515C\u5E95\uFF09" }
 ];
 var fmt = (n) => n >= 10 ? Math.round(n) : Math.round(n * 10) / 10;
+var mmss = (frames, fps) => {
+  const s = Math.round(frames / fps);
+  return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+};
 var App = () => {
+  const [compIndex, setCompIndex] = (0, import_react110.useState)(0);
+  const comp = COMPS[compIndex];
   const [plan, setPlan] = (0, import_react110.useState)(null);
   const [checked, setChecked] = (0, import_react110.useState)(false);
   const [issues, setIssues] = (0, import_react110.useState)([]);
@@ -55783,27 +57722,30 @@ var App = () => {
   const startedAt = (0, import_react110.useRef)(0);
   const composition = (0, import_react110.useMemo)(
     () => ({
-      id: COMPOSITION.id,
-      component: COMPOSITION.component,
-      durationInFrames: COMPOSITION.durationInFrames,
-      fps: COMPOSITION.fps,
-      width: COMPOSITION.width,
-      height: COMPOSITION.height
+      id: comp.id,
+      component: comp.component,
+      durationInFrames: comp.durationInFrames,
+      fps: comp.fps,
+      width: comp.width,
+      height: comp.height
     }),
-    []
+    [comp]
   );
   (0, import_react110.useEffect)(() => {
     let cancelled = false;
     (async () => {
       try {
+        setChecked(false);
+        setPlan(null);
+        setIssues([]);
         const collected = [];
         for (const candidate of PLANS) {
           const check = await canRenderMediaOnWeb({
             container: candidate.container,
             videoCodec: candidate.videoCodec,
             audioCodec: candidate.audioCodec,
-            width: COMPOSITION.width,
-            height: COMPOSITION.height,
+            width: comp.width,
+            height: comp.height,
             muted: false,
             videoBitrate: "medium",
             audioBitrate: "medium"
@@ -55830,7 +57772,7 @@ var App = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [comp.width, comp.height]);
   (0, import_react110.useEffect)(() => {
     if (!isRunning) return;
     const id = window.setInterval(() => {
@@ -55855,11 +57797,13 @@ var App = () => {
         videoCodec: plan.videoCodec,
         audioCodec: plan.audioCodec,
         muted: false,
-        videoBitrate: "high",
-        keyframeIntervalInSeconds: 1,
+        videoBitrate: comp.durationInFrames > 600 ? "medium" : "high",
+        keyframeIntervalInSeconds: 2,
         onProgress: ({ renderedFrames, encodedFrames }) => {
-          setProgress(Math.round(renderedFrames / COMPOSITION.durationInFrames * 100));
-          setStatus(`\u6E32\u67D3\u4E2D ${renderedFrames}/${COMPOSITION.durationInFrames} \u5E27 \xB7 \u5DF2\u7F16\u7801 ${encodedFrames}`);
+          setProgress(Math.round(renderedFrames / comp.durationInFrames * 100));
+          setStatus(
+            `\u6E32\u67D3\u4E2D ${renderedFrames}/${comp.durationInFrames} \u5E27 \xB7 \u5DF2\u7F16\u7801 ${encodedFrames}`
+          );
         }
       });
       setStatus("\u5C01\u88C5\u6587\u4EF6\u2026");
@@ -55867,7 +57811,7 @@ var App = () => {
       setResult({
         url: URL.createObjectURL(blob),
         size: blob.size,
-        name: `\u97EC\u5B9A\u5F8B-\u7247\u5934\u6837\u7247.${plan.container}`
+        name: `\u97EC\u5B9A\u5F8B-${comp.durationInFrames > 600 ? "\u6574\u7247" : "\u7247\u5934\u6837\u7247"}.${plan.container}`
       });
       setProgress(100);
       setStatus("\u5B8C\u6210");
@@ -55880,10 +57824,10 @@ var App = () => {
     }
   };
   const eta = (0, import_react110.useMemo)(() => {
-    if (!isRunning || progress < 3 || elapsed < 1) return null;
+    if (!isRunning || progress < 2 || elapsed < 1) return null;
     return Math.max(0, elapsed / progress * (100 - progress));
   }, [isRunning, progress, elapsed]);
-  return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
     "main",
     {
       style: {
@@ -55894,7 +57838,7 @@ var App = () => {
         color: "#E9F3FF"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
           "div",
           {
             style: {
@@ -55904,78 +57848,101 @@ var App = () => {
               textTransform: "uppercase",
               marginBottom: 10
             },
-            children: "Tau Law \xB7 Film 01 \xB7 Sample"
+            children: "Tau Law \xB7 Film 01 \xB7 16 shots"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("h1", { style: { fontSize: 31, margin: "0 0 10px", letterSpacing: 0.5, lineHeight: 1.3 }, children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B \xB7 \u7247\u5934\u6837\u7247" }),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("p", { style: { color: "rgba(233,243,255,.58)", margin: "0 0 20px", fontSize: 15, lineHeight: 1.8 }, children: [
-          "\u955C\u5934 1\u20132\uFF1A\u4E00\u628A\u91CF\u4E86\u516D\u5341\u5E74\u7684\u91D1\u5C5E\u5C3A\uFF0C\u628A\u82AF\u7247\u903C\u5230 1nm\u3002",
-          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("br", {}),
-          "\u5C3A\u5B50\u8FD8\u5728\uFF0C\u65F6\u95F4\u8FD8\u6CA1\u51FA\u573A\u2014\u201410 \u79D2\u540E\uFF0C\u7B2C 3 \u955C\u4F1A\u628A\u5C3A\u5B50\u6298\u65AD\u3002"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("section", { style: { marginBottom: 14 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-            Player,
-            {
-              component: COMPOSITION.component,
-              durationInFrames: COMPOSITION.durationInFrames,
-              fps: COMPOSITION.fps,
-              compositionWidth: COMPOSITION.width,
-              compositionHeight: COMPOSITION.height,
-              style: {
-                width: "100%",
-                aspectRatio: "16 / 9",
-                borderRadius: 12,
-                overflow: "hidden",
-                background: "#000",
-                border: "1px solid rgba(233,243,255,.12)",
-                boxShadow: "0 24px 60px rgba(0,0,0,.55)"
-              },
-              controls: true,
-              loop: true,
-              autoPlay: true,
-              clickToPlay: true,
-              doubleClickToFullscreen: true,
-              initiallyMuted: true,
-              acknowledgeRemotionLicense: true
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-            "div",
-            {
-              style: {
-                marginTop: 10,
-                display: "flex",
-                flexWrap: "wrap",
-                gap: 8,
-                fontSize: 12.5,
-                color: "rgba(233,243,255,.46)"
-              },
-              children: [
-                "1920\xD71080",
-                "16:9",
-                "30 fps",
-                "300 \u5E27 = 10.000s",
-                "Noto Sans CJK",
-                "\u65E0\u914D\u97F3 \xB7 \u5B57\u5E55\u627F\u8F7D",
-                "\u542B\u539F\u521B\u914D\u4E50"
-              ].map((t) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-                "span",
-                {
-                  style: {
-                    padding: "5px 10px",
-                    borderRadius: 6,
-                    border: "1px solid rgba(233,243,255,.13)",
-                    background: "rgba(255,255,255,.025)"
-                  },
-                  children: t
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("h1", { style: { fontSize: 31, margin: "0 0 10px", letterSpacing: 0.5, lineHeight: 1.3 }, children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B \xB7 \u6280\u672F\u8BB2\u89E3\u7247" }),
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("p", { style: { color: "rgba(233,243,255,.58)", margin: "0 0 18px", fontSize: 15, lineHeight: 1.8 }, children: "\u4E00\u628A\u91CF\u4E86\u516D\u5341\u5E74\u7684\u91D1\u5C5E\u5C3A\uFF0C\u5728 11.5 \u79D2\u5904\u6298\u65AD\uFF1B\u6B64\u540E\u8BB2\u7684\u90FD\u662F\u540C\u4E00\u4EF6\u4E8B\u2014\u2014\u628A\u4FE1\u53F7\u7B49\u5F85\u7684\u65F6\u95F4\u538B\u77ED\u3002" }),
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 14 }, children: COMPS.map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
+          "button",
+          {
+            onClick: () => {
+              if (isRunning) return;
+              setCompIndex(i);
+              setResult(null);
+              setProgress(0);
+              setStatus("\u5F85\u6E32\u67D3");
+            },
+            style: {
+              padding: "9px 16px",
+              borderRadius: 8,
+              cursor: isRunning ? "not-allowed" : "pointer",
+              border: i === compIndex ? "1px solid #2FE3FF" : "1px solid rgba(255,255,255,.14)",
+              background: i === compIndex ? "rgba(47,227,255,.12)" : "rgba(255,255,255,.03)",
+              color: "#E9F3FF",
+              fontSize: 14
+            },
+            children: [
+              c2.label,
+              " \xB7 ",
+              mmss(c2.durationInFrames, c2.fps)
+            ]
+          },
+          c2.id
+        )) }),
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+          Player,
+          {
+            component: comp.component,
+            durationInFrames: comp.durationInFrames,
+            fps: comp.fps,
+            compositionWidth: comp.width,
+            compositionHeight: comp.height,
+            style: {
+              width: "100%",
+              aspectRatio: "16 / 9",
+              borderRadius: 12,
+              overflow: "hidden",
+              background: "#000",
+              border: "1px solid rgba(233,243,255,.12)",
+              boxShadow: "0 24px 60px rgba(0,0,0,.55)"
+            },
+            controls: true,
+            autoPlay: true,
+            loop: true,
+            clickToPlay: true,
+            doubleClickToFullscreen: true,
+            initiallyMuted: true,
+            acknowledgeRemotionLicense: true
+          },
+          comp.id
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+          "div",
+          {
+            style: {
+              marginTop: 10,
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 8,
+              fontSize: 12.5,
+              color: "rgba(233,243,255,.46)"
+            },
+            children: [
+              "1920\xD71080",
+              "16:9",
+              "30 fps",
+              `${comp.durationInFrames} \u5E27`,
+              `${(comp.durationInFrames / comp.fps).toFixed(3)}s`,
+              "16 \u955C",
+              "Noto Sans CJK",
+              "\u542B\u914D\u4E50"
+            ].map((t) => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+              "span",
+              {
+                style: {
+                  padding: "5px 10px",
+                  borderRadius: 6,
+                  border: "1px solid rgba(233,243,255,.13)",
+                  background: "rgba(255,255,255,.025)"
                 },
-                t
-              ))
-            }
-          )
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+                children: t
+              },
+              t
+            ))
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
           "section",
           {
             style: {
@@ -55986,13 +57953,13 @@ var App = () => {
               background: "linear-gradient(180deg, rgba(47,227,255,.07), rgba(255,255,255,.015))"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { fontSize: 12.5, color: "rgba(233,243,255,.5)", letterSpacing: 1.4 }, children: "\u6D4F\u89C8\u5668\u5185\u51FA\u7247\uFF08WebCodecs\uFF0C\u4E0D\u7ECF\u8FC7\u5BB9\u5668 Chromium\uFF09" }),
-              /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { fontSize: 15.5, marginTop: 6, color: "rgba(233,243,255,.86)" }, children: plan ? plan.note : checked ? "\u8FD9\u53F0\u6D4F\u89C8\u5668\u6CA1\u6709\u53EF\u7528\u7684\u7F16\u7801\u7EC4\u5408" : "\u68C0\u6D4B\u4E2D\u2026" }),
-              issues.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("details", { style: { marginTop: 10, fontSize: 12.5, color: "rgba(233,243,255,.45)" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("summary", { style: { cursor: "pointer" }, children: "\u68C0\u6D4B\u8BE6\u60C5" }),
-                /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("ul", { style: { paddingLeft: 18, lineHeight: 1.7 }, children: issues.map((i) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("li", { children: i }, i)) })
+              /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("div", { style: { fontSize: 12.5, color: "rgba(233,243,255,.5)", letterSpacing: 1.4 }, children: "\u6D4F\u89C8\u5668\u5185\u51FA\u7247\uFF08WebCodecs\uFF0C\u4E0D\u7ECF\u8FC7\u5BB9\u5668 Chromium\uFF09" }),
+              /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("div", { style: { fontSize: 15.5, marginTop: 6, color: "rgba(233,243,255,.86)" }, children: plan ? plan.note : checked ? "\u8FD9\u53F0\u6D4F\u89C8\u5668\u6CA1\u6709\u53EF\u7528\u7684\u7F16\u7801\u7EC4\u5408" : "\u68C0\u6D4B\u4E2D\u2026" }),
+              issues.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("details", { style: { marginTop: 10, fontSize: 12.5, color: "rgba(233,243,255,.45)" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("summary", { style: { cursor: "pointer" }, children: "\u68C0\u6D4B\u8BE6\u60C5" }),
+                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("ul", { style: { paddingLeft: 18, lineHeight: 1.7 }, children: issues.map((i) => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("li", { children: i }, i)) })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
                 "button",
                 {
                   onClick: start,
@@ -56010,10 +57977,10 @@ var App = () => {
                     background: plan ? "linear-gradient(90deg,#2FE3FF,#7FB3FF)" : "#39404f",
                     cursor: plan && !isRunning ? "pointer" : "not-allowed"
                   },
-                  children: isRunning ? "\u6E32\u67D3\u4E2D\u2026" : `\u6E32\u67D3 ${fmt(DURATION_SECONDS)} \u79D2\u6837\u7247`
+                  children: isRunning ? "\u6E32\u67D3\u4E2D\u2026" : `\u6E32\u67D3\u300C${comp.label}\u300D${(comp.durationInFrames / comp.fps).toFixed(0)} \u79D2`
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
                 "div",
                 {
                   style: {
@@ -56025,15 +57992,15 @@ var App = () => {
                     color: "rgba(233,243,255,.6)"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { children: status }),
-                    /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("span", { style: { fontVariantNumeric: "tabular-nums" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { children: status }),
+                    /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("span", { style: { fontVariantNumeric: "tabular-nums" }, children: [
                       elapsed > 0 ? `\u5DF2\u7528 ${fmt(elapsed)}s` : "",
                       eta !== null ? ` \xB7 \u7EA6\u5269 ${fmt(eta)}s` : ""
                     ] })
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
                 "div",
                 {
                   style: {
@@ -56043,7 +58010,7 @@ var App = () => {
                     background: "rgba(255,255,255,.1)",
                     overflow: "hidden"
                   },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+                  children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
                     "div",
                     {
                       style: {
@@ -56056,7 +58023,7 @@ var App = () => {
                   )
                 }
               ),
-              error2 && /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+              error2 && /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
                 "pre",
                 {
                   style: {
@@ -56072,8 +58039,8 @@ var App = () => {
                   children: error2
                 }
               ),
-              result && /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("div", { style: { marginTop: 16 }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+              result && /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("div", { style: { marginTop: 16 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
                   "video",
                   {
                     src: result.url,
@@ -56082,7 +58049,7 @@ var App = () => {
                     style: { width: "100%", borderRadius: 10, background: "#000" }
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
                   "a",
                   {
                     href: result.url,
@@ -56101,93 +58068,37 @@ var App = () => {
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("section", { style: { marginTop: 26 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("section", { style: { marginTop: 26 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("div", { style: { fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }, children: "\u5206\u955C \xB7 16 \u955C / 3420 \u5E27 / 114.000s" }),
+          SHOTS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
             "div",
             {
               style: {
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "space-between",
-                marginBottom: 10
+                display: "grid",
+                gridTemplateColumns: "34px 128px 1fr 44px",
+                alignItems: "center",
+                gap: 8,
+                padding: "7px 0",
+                borderTop: "1px solid rgba(233,243,255,.07)",
+                fontSize: 13.5,
+                color: "rgba(233,243,255,.86)"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("div", { style: { fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)" }, children: [
-                  "\u5168\u7247\u8FDB\u5EA6 \xB7 16 \u955C / ",
-                  TOTAL_FRAMES,
-                  " \u5E27 / ",
-                  (TOTAL_FRAMES / FPS).toFixed(0),
-                  "s"
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { fontSize: 12.5, color: "rgba(233,243,255,.36)" }, children: "2 / 16 \u5DF2\u51FA" })
+                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.66 }, children: String(s.id).padStart(2, "0") }),
+                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.6 }, children: s.tc }),
+                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { children: s.title }),
+                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { style: { fontSize: 11.5, textAlign: "right", color: "#2FE3FF" }, children: "\u5DF2\u51FA" })
               ]
-            }
-          ),
-          SHOTS.map((s) => {
-            const done = s.id <= 2;
-            return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
-              "div",
-              {
-                style: {
-                  display: "grid",
-                  gridTemplateColumns: "34px 118px 1fr 52px",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "7px 0",
-                  borderTop: "1px solid rgba(233,243,255,.07)",
-                  fontSize: 13.5,
-                  color: done ? "rgba(233,243,255,.9)" : "rgba(233,243,255,.42)"
-                },
-                children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.7 }, children: String(s.id).padStart(2, "0") }),
-                  /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.66 }, children: s.tc }),
-                  /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { children: s.title }),
-                  /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-                    "span",
-                    {
-                      style: {
-                        fontSize: 11.5,
-                        textAlign: "right",
-                        color: done ? "#2FE3FF" : "rgba(233,243,255,.3)"
-                      },
-                      children: done ? "\u5DF2\u51FA" : "\u5F85\u505A"
-                    }
-                  )
-                ]
-              },
-              s.id
-            );
-          })
+            },
+            s.id
+          ))
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-          "p",
-          {
-            style: {
-              margin: "22px 0 0",
-              fontSize: 12.5,
-              lineHeight: 1.85,
-              color: "rgba(233,243,255,.4)"
-            },
-            children: "\u65F6\u95F4\u8F74\u6309 30fps \u4E25\u683C\u5BF9\u9F50\u811A\u672C\uFF1A\u955C 1 = 0\u2013180 \u5E27\uFF0800:00\u201300:06\uFF09\uFF0C\u955C 2 = 180\u2013345 \u5E27\uFF1B \u6837\u7247\u53D6 0\u2013300 \u5E27\u6536\u9ED1\u3002\u5B57\u5E55\u6587\u672C\u9010\u5B57\u7167\u6284\u811A\u672C\uFF0C\u672A\u505A\u6539\u5199\u3002\u52A8\u753B\u53EA\u7528 interpolate / spring\u3002"
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-          "p",
-          {
-            style: {
-              margin: "10px 0 0",
-              fontSize: 12.5,
-              lineHeight: 1.85,
-              color: "rgba(233,243,255,.4)"
-            },
-            children: "\u6E32\u67D3\u65F6\u8BF7\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u4E0D\u8981\u9501\u5C4F\u300210 \u79D2\u6837\u7247\u5728\u8FD9\u53F0\u624B\u673A\u4E0A\u9884\u8BA1 2\u20134 \u5206\u949F\u3002"
-          }
-        )
+        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("p", { style: { margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }, children: "\u6574\u7247\u6E32\u67D3\u8BF7\u63D2\u7535\u3001\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u522B\u9501\u5C4F\uFF1A1080p / 3420 \u5E27\uFF0C\u6309\u8FD9\u53F0\u624B\u673A\u7684\u7F16\u7801\u901F\u5EA6\u5927\u7EA6 25\u201345 \u5206\u949F\uFF1B\u7247\u5934 10 \u79D2\u6837\u7247\u53EA\u9700 2\u20134 \u5206\u949F\u3002\u4E2D\u9014\u5207\u540E\u53F0\u53EF\u80FD\u4E2D\u65AD\uFF0C\u91CD\u6765\u5373\u53EF\u3002" })
       ]
     }
   );
 };
-(0, import_client2.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime69.jsx)(App, {}));
+(0, import_client2.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime84.jsx)(App, {}));
 /*! Bundled license information:
 
 react/cjs/react.production.js:
