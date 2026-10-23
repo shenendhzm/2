@@ -1,3 +1,11 @@
+# 韬（τ）定律 · Remotion 工程
+
+> **当前状态（2026-10-23）**：工程已切到 16 镜 / 114.000s 的《韬（τ）定律》技术讲解片。
+> 片头 0–10s（镜 1–2）已出，合成 `TauLawSample`（300 帧）；出片页 = WebCodecs 渲染页。
+> 新代码在 `src/film/`（look / data / components / scenes），分镜见 `docs/分镜表.md`。
+> 旧的「六风格片头」代码仍保留在 `src/plates.tsx`、`src/scenes/*`、`src/looks/*`，未注册、不再使用。
+> 配乐：`public/score-sample.m4a`（11s）+ `public/impact-open.wav`（0.9s 第一击）。
+
 # 韬（τ）定律 · Remotion 视频（片头样片 8 秒 × 六风格）
 
 本工程做完 `华为韬定律-技术解析脚本.md`（120 秒 / 8 个镜头）的**片头 S1**：

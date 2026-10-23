@@ -1,33 +1,27 @@
 import { Composition } from "remotion";
-import {
-  TauBlackSample,
-  TauGoldSample,
-  TauDotsSample,
-  TauGlowSample,
-  TauLinesSample,
-  TauCrtSample,
-} from "./plates";
+import { TauLawSample } from "./HelloWorld";
+import { FPS, SAMPLE_FRAMES, TOTAL_FRAMES } from "./film/data";
+import { H, W } from "./film/look";
 
 /**
- * 片头样片：六种风格，同一镜头。
- * 画幅 1920×1080 / 30fps / 240 帧 = 8.000s（脚本 S1：00:00–00:08）。
+ * 合成注册。
+ * 现在只挂样片（300 帧 = 10.000s）；整片 16 镜做齐后，再把
+ * <Composition id="TauLaw" ... durationInFrames={TOTAL_FRAMES} /> 挂上。
  */
-const S1 = {
-  durationInFrames: 240,
-  fps: 30,
-  width: 1920,
-  height: 1080,
-};
-
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-      <Composition id="TauLawBlack" component={TauBlackSample} {...S1} />
-      <Composition id="TauLawGold" component={TauGoldSample} {...S1} />
-      <Composition id="TauLawDots" component={TauDotsSample} {...S1} />
-      <Composition id="TauLawGlow" component={TauGlowSample} {...S1} />
-      <Composition id="TauLawLines" component={TauLinesSample} {...S1} />
-      <Composition id="TauLawCrt" component={TauCrtSample} {...S1} />
+      <Composition
+        id="TauLawSample"
+        component={TauLawSample}
+        durationInFrames={SAMPLE_FRAMES}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
     </>
   );
 };
+
+/** 整片规格，供 Studio 与出片页对齐 */
+export const FULL_FILM = { fps: FPS, width: W, height: H, durationInFrames: TOTAL_FRAMES };
