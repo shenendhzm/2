@@ -55056,114 +55056,86 @@ var Video = ({
 };
 Internals.addSequenceStackTraces(Video);
 
-// src/film/look.ts
-var BG = "#05070C";
-var TEXT = "#E9F3FF";
-var CYAN = "#2FE3FF";
-var RED = "#FF4D3D";
-var MUTED = "#6C7A8C";
+// src/newton/look.ts
+var W = 1920;
+var H = 1080;
+var BG = "#070B12";
+var TEXT = "#EDF2FF";
+var CYAN = "#35E0FF";
+var ORANGE = "#FF6B3D";
 var FONT = '"Noto Sans CJK SC","Noto Sans CJK","Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
-var MONO = '"DIN Alternate","JetBrains Mono","Roboto Mono",ui-monospace,"SF Mono",monospace';
 var CLAMP = {
   extrapolateLeft: "clamp",
   extrapolateRight: "clamp"
 };
 var EASE_OUT = Easing.out(Easing.cubic);
-var EASE_IN_OUT = Easing.inOut(Easing.cubic);
 var EASE_IN = Easing.in(Easing.cubic);
+var EASE_IN_OUT = Easing.inOut(Easing.cubic);
 var fadeIn = (frame, start, dur = 12, easing = EASE_OUT) => interpolate(frame, [start, start + dur], [0, 1], { ...CLAMP, easing });
 var fadeOut = (frame, start, dur = 12, easing = EASE_IN) => interpolate(frame, [start, start + dur], [1, 0], { ...CLAMP, easing });
 
-// src/film/data.ts
+// src/newton/data.ts
 var FPS = 30;
 var SHOTS = [
-  { id: 1, from: 0, to: 180, tc: "00:00\u201300:06", title: "\u5C3A\u5B50\u63A8\u5165\uFF0C\u4E08\u91CF\u82AF\u7247" },
-  { id: 2, from: 180, to: 345, tc: "00:06\u201300:11.5", title: "7\u21922nm \u6570\u5B57\u76D6\u7AE0" },
-  { id: 3, from: 345, to: 540, tc: "00:11.5\u201300:18", title: "\u523B\u5EA6\u6324\u538B\uFF0C\u5C3A\u8EAB\u65AD\u88C2" },
-  { id: 4, from: 540, to: 750, tc: "00:18\u201300:25", title: "\u03C4 \u5199\u51FA\uFF0C\u7247\u540D\u5347\u8D77" },
-  { id: 5, from: 750, to: 990, tc: "00:25\u201300:33", title: "\u6676\u4F53\u7BA1\u9635\u5217\u7FFB\u500D" },
-  { id: 6, from: 990, to: 1215, tc: "00:33\u201300:40.5", title: "\u539F\u5B50\u7279\u5199\uFF0C\u7EA2\u5899\u538B\u4E0B" },
-  { id: 7, from: 1215, to: 1455, tc: "00:40.5\u201300:48.5", title: "RC \u5145\u7535\uFF0C\u03C4=R\xD7C" },
-  { id: 8, from: 1455, to: 1695, tc: "00:48.5\u201300:56.5", title: "\u5173\u952E\u8DEF\u5F84\u9AD8\u4EAE" },
-  { id: 9, from: 1695, to: 1905, tc: "00:56.5\u201301:03.5", title: "\u5E73\u9762\u5BF9\u6298" },
-  { id: 10, from: 1905, to: 2145, tc: "01:03.5\u201301:11.5", title: "\u5256\u9762\uFF1A\u5782\u76F4\u4E92\u8FDE" },
-  { id: 11, from: 2145, to: 2355, tc: "01:11.5\u201301:18.5", title: "\u03C4\u2193 \u9891\u7387\u2191" },
-  { id: 12, from: 2355, to: 2565, tc: "01:18.5\u201301:25.5", title: "\u2260 3D \u5806\u53E0" },
-  { id: 13, from: 2565, to: 2805, tc: "01:25.5\u201301:33.5", title: "ps\u2192ns\u2192\u03BCs \u56DB\u5C42 \u03C4" },
-  { id: 14, from: 2805, to: 3030, tc: "01:33.5\u201301:41", title: "381 \u6B3E / \u9E92\u9E9F / 2031" },
-  { id: 15, from: 3030, to: 3210, tc: "01:41\u201301:47", title: "\u4E09\u73AF\u672A\u70B9\u4EAE" },
-  { id: 16, from: 3210, to: 3420, tc: "01:47\u201301:54", title: "\u5F15\u6587 \xB7 \u7247\u540D \xB7 \u9ED1\u573A" }
+  { id: 1, from: 0, to: 240, tc: "00:00\u201300:08", title: "\u8F68\u9053\u751F\u957F\uFF0C\u7403\u5165\u753B\uFF0C\u629B\u51FA\u95EE\u9898" },
+  { id: 2, from: 240, to: 465, tc: "00:08\u201300:15.5", title: "\u63A8\u7BB1\u677E\u624B\uFF0C\u76F4\u89C9\u767B\u573A" },
+  { id: 3, from: 465, to: 750, tc: "00:15.5\u201300:25", title: "\u4F3D\u5229\u7565\u53CC\u659C\u9762\uFF0C\u51E0\u4E4E\u7B49\u9AD8" },
+  { id: 4, from: 750, to: 990, tc: "00:25\u201300:33", title: "\u659C\u9762\u653E\u5E73\uFF0C\u8D8A\u6EDA\u8D8A\u8FDC" },
+  { id: 5, from: 990, to: 1305, tc: "00:33\u201300:43.5", title: "\u767D\u573A\uFF0C\u5B9A\u5F8B\u539F\u6587\u843D\u5B9A" },
+  { id: 6, from: 1305, to: 1545, tc: "00:43.5\u201300:51.5", title: "\u60EF\u6027\uFF1A\u90A3\u5C42\u58F3" },
+  { id: 7, from: 1545, to: 1785, tc: "00:51.5\u201300:59.5", title: "\u516C\u4EA4\u8F66\uFF1A\u5239\u8F66\u524D\u503E\u3001\u542F\u52A8\u540E\u4EF0" },
+  { id: 8, from: 1785, to: 2010, tc: "00:59.5\u201301:07", title: "\u592A\u7A7A\u63A2\u6D4B\u5668\uFF0C\u5173\u673A\u4ECD\u5728\u98DE" },
+  { id: 9, from: 2010, to: 2235, tc: "01:07\u201301:14.5", title: "\u5206\u5C4F\uFF1A\u529B = \u6539\u53D8" },
+  { id: 10, from: 2235, to: 2460, tc: "01:14.5\u201301:22", title: "\u7EA0\u504F\uFF1A\u60EF\u6027\u4E0D\u662F\u529B" },
+  { id: 11, from: 2460, to: 2700, tc: "01:22\u201301:30", title: "\u95ED\u73AF\uFF1A\u6469\u64E6\u6D88\u5931\uFF0C\u5B83\u4E0D\u505C" },
+  { id: 12, from: 2700, to: 2940, tc: "01:30\u201301:38", title: "\u91D1\u53E5\u4E0E\u7247\u540D" }
 ];
 var TOTAL_FRAMES = SHOTS[SHOTS.length - 1].to;
 var SAMPLE_FRAMES = 300;
-var SUBS = [
-  { from: 0, to: 180, lines: ["\u516D\u5341\u5E74\uFF0C\u6211\u4EEC\u53EA\u7528\u4E00\u628A\u5C3A\u5B50\uFF0C", "\u4E08\u91CF\u82AF\u7247\u3002"] },
-  { from: 180, to: 345, lines: ["\u7EB3\u7C73\u3002", "\u6570\u5B57\u8D8A\u5C0F\uFF0C\u82AF\u7247\u8D8A\u5F3A\u3002"] },
-  { from: 345, to: 540, lines: ["\u4F46\u4ECA\u5929\uFF0C\u8FD9\u628A\u5C3A\u5B50\uFF0C", "\u5FEB\u91CF\u5230\u5C3D\u5934\u4E86\u3002"] },
-  { from: 540, to: 750, lines: ["2026 \u5E74 5 \u6708\uFF0C\u534E\u4E3A\u7ED9\u51FA\u53E6\u4E00\u4E2A\u7B54\u6848\uFF1A", "\u97EC\u5B9A\u5F8B\u3002"] },
-  { from: 750, to: 990, lines: ["\u6469\u5C14\u5B9A\u5F8B\u8BF4\uFF1A\u6BCF\u4E24\u5E74\uFF0C", "\u540C\u6837\u9762\u79EF\u7684\u82AF\u7247\uFF0C\u6676\u4F53\u7BA1\u7FFB\u4E00\u500D\u3002"] },
-  { from: 990, to: 1215, lines: ["\u8FD9\u6761\u8DEF\uFF0C\u53EB\u51E0\u4F55\u7F29\u5FAE\u3002", "\u53EF\u8D8A\u63A5\u8FD1\u539F\u5B50\u5C3A\u5EA6\uFF0C", "\u5B83\u8D8A\u8D35\uFF0C\u4E5F\u8D8A\u96BE\u3002"] },
-  { from: 1215, to: 1455, lines: ["\u03C4\uFF0C\u8BFB\u4F5C tao\uFF0C", "\u662F\u7535\u8DEF\u91CC\u7684\u65F6\u95F4\u5E38\u6570\uFF1A", "\u7535\u963B\u4E58\u7535\u5BB9\uFF0C\u5355\u4F4D\u662F\u79D2\u3002"] },
-  { from: 1455, to: 1695, lines: ["\u5B83\u8861\u91CF\u4FE1\u53F7\u7A33\u5B9A\u4E0B\u6765\u8981\u591A\u4E45\u3002", "\u800C\u82AF\u7247\u80FD\u8DD1\u591A\u5FEB\uFF0C", "\u53D6\u51B3\u4E8E\u6700\u957F\u7684\u90A3\u6761\u8DEF\u3002"] },
-  { from: 1695, to: 1905, lines: ["\u65E2\u7136\u8DEF\u7ED5\u8FDC\u4E86\uFF0C", "\u90A3\u5C31\u628A\u8DEF\uFF0C\u6298\u8D77\u6765\u3002"] },
-  { from: 1905, to: 2145, lines: ["\u903B\u8F91\u6298\u53E0\uFF1A", "\u628A\u5173\u952E\u8DEF\u5F84\u4E0A\u7684\u903B\u8F91\u95E8\uFF0C", "\u5206\u5230\u4E0A\u4E0B\u4E24\u5C42\uFF0C\u5782\u76F4\u76F8\u8FDE\u3002"] },
-  { from: 2145, to: 2355, lines: ["\u5BFC\u7EBF\u53EA\u5269\u4E00\u5C0F\u6BB5\u3002", "\u7535\u963B\u5C0F\u4E86\uFF0C\u7535\u5BB9\u5C0F\u4E86\uFF0C\u03C4 \u5C31\u5C0F\u4E86\u3002"] },
-  { from: 2355, to: 2565, lines: ["\u8FD9\u4E0D\u662F\u4E24\u9897\u82AF\u7247\u645E\u5728\u4E00\u8D77\uFF0C", "\u800C\u662F\u4E00\u9897\u82AF\u7247\uFF0C\u88AB\u6298\u53E0\u3002"] },
-  { from: 2565, to: 2805, lines: ["\u4ECE\u6676\u4F53\u7BA1\u7684\u76AE\u79D2\uFF0C\u5230\u5185\u5B58\u7684\u7EB3\u79D2\uFF0C", "\u518D\u5230\u96C6\u7FA4\u7684\u5FAE\u79D2\u2014\u2014", "\u6BCF\u4E00\u5C42\uFF0C\u90FD\u6709\u81EA\u5DF1\u7684 \u03C4\u3002"] },
-  { from: 2805, to: 3030, lines: ["\u516D\u5E74\uFF0C381 \u6B3E\u82AF\u7247\uFF1B", "2026 \u5E74\u79CB\uFF0C\u9E92\u9E9F\u7528\u4E0A\u903B\u8F91\u6298\u53E0\u3002"] },
-  { from: 3030, to: 3210, lines: ["\u4F46\u5B83\u8FD8\u4E0D\u662F\u5B9A\u5F8B\uFF0C", "\u53EA\u662F\u4E00\u6761\u6B63\u5728\u88AB\u9A8C\u8BC1\u7684\u8DEF\u3002"] },
-  { from: 3210, to: 3420, lines: ["\u5F53\u7A7A\u95F4\u8D70\u5230\u5C3D\u5934\uFF0C", "\u65F6\u95F4\uFF0C\u624D\u521A\u521A\u5F00\u59CB\u3002"] }
+var CUES = [
+  { from: 0, to: 120, text: "\u5982\u679C\u5730\u7403\u4E0A\u6240\u6709\u7684\u6469\u64E6\uFF0C" },
+  { from: 126, to: 240, text: "\u7A81\u7136\u6D88\u5931\uFF0C\u4F60\u63A8\u51FA\u53BB\u7684\u7269\u4F53\uFF0C\u8FD8\u4F1A\u505C\u4E0B\u6765\u5417\uFF1F" },
+  { from: 240, to: 345, text: "\u63A8\u4E00\u4E0B\u7BB1\u5B50\uFF0C\u677E\u624B\uFF0C\u5B83\u505C\u4E86\u3002" },
+  { from: 351, to: 465, text: "\u4E8E\u662F\u6211\u4EEC\u4EE5\u4E3A\uFF1A\u8FD0\u52A8\uFF0C\u9700\u8981\u529B\u6765\u7EF4\u6301\u3002" },
+  { from: 465, to: 600, text: "\u56DB\u767E\u5E74\u524D\uFF0C\u4F3D\u5229\u7565\u8BA9\u5C0F\u7403\u4ECE\u659C\u9762\u6EDA\u4E0B\uFF0C" },
+  { from: 606, to: 669, text: "\u518D\u51B2\u4E0A\u53E6\u4E00\u4E2A\u659C\u9762\u3002" },
+  { from: 675, to: 750, text: "\u5B83\u51E0\u4E4E\u56DE\u5230\u4E86\u539F\u6765\u7684\u9AD8\u5EA6\u3002" },
+  { from: 750, to: 837, text: "\u4ED6\u4E0D\u65AD\u653E\u5E73\u7B2C\u4E8C\u4E2A\u659C\u9762\uFF0C" },
+  { from: 843, to: 906, text: "\u5C0F\u7403\u5C31\u6EDA\u5F97\u66F4\u8FDC\u3002" },
+  { from: 912, to: 990, text: "\u90A3\u5982\u679C\uFF0C\u659C\u9762\u53D8\u6210\u6C34\u5E73\u5462\uFF1F" },
+  { from: 990, to: 1059, text: "\u5C0F\u7403\u4F1A\u4E00\u76F4\u6EDA\u4E0B\u53BB\u3002" },
+  { from: 1065, to: 1131, text: "\u8FD9\u5C31\u662F\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B\uFF1A" },
+  { from: 1137, to: 1227, text: "\u7269\u4F53\u603B\u4FDD\u6301\u9759\u6B62\u6216\u5300\u901F\u76F4\u7EBF\u8FD0\u52A8\uFF0C" },
+  { from: 1233, to: 1305, text: "\u76F4\u5230\u6709\u5916\u529B\u6539\u53D8\u5B83\u3002" },
+  { from: 1305, to: 1410, text: "\u8FD9\u79CD\u201C\u61D2\u5F97\u6539\u53D8\u201D\u7684\u6027\u8D28\uFF0C\u53EB\u60EF\u6027\u3002" },
+  { from: 1416, to: 1545, text: "\u5B83\u4E0D\u662F\u4E00\u79CD\u529B\uFF0C\u800C\u662F\u7269\u4F53\u672C\u8EAB\u7684\u5C5E\u6027\u3002" },
+  { from: 1545, to: 1650, text: "\u516C\u4EA4\u8F66\u6025\u5239\u8F66\uFF0C\u4F60\u7684\u8EAB\u4F53\u5411\u524D\u51B2\uFF1B" },
+  { from: 1656, to: 1734, text: "\u8F66\u542F\u52A8\uFF0C\u4F60\u53C8\u88AB\u6309\u56DE\u5EA7\u6905\u3002" },
+  { from: 1740, to: 1785, text: "\u4E0D\u662F\u6709\u4EBA\u5728\u63A8\u4F60\u3002" },
+  { from: 1785, to: 1851, text: "\u592A\u7A7A\u4E2D\u6CA1\u6709\u6469\u64E6\uFF0C" },
+  { from: 1857, to: 1923, text: "\u63A2\u6D4B\u5668\u5173\u673A\u4E4B\u540E\uFF0C" },
+  { from: 1929, to: 2010, text: "\u4ECD\u80FD\u9760\u60EF\u6027\u98DE\u4E0A\u51E0\u5341\u5E74\u3002" },
+  { from: 2010, to: 2124, text: "\u6240\u4EE5\uFF0C\u529B\u4E0D\u662F\u7EF4\u6301\u8FD0\u52A8\u7684\u539F\u56E0\u3002" },
+  { from: 2130, to: 2235, text: "\u529B\uFF0C\u662F\u6539\u53D8\u8FD0\u52A8\u72B6\u6001\u7684\u539F\u56E0\u3002" },
+  { from: 2235, to: 2307, text: "\u8FD8\u6709\uFF0C\u60EF\u6027\u4E0D\u662F\u529B\u3002" },
+  { from: 2313, to: 2388, text: "\u4E0D\u80FD\u8BF4\u201C\u53D7\u5230\u60EF\u6027\u4F5C\u7528\u201D\uFF0C" },
+  { from: 2394, to: 2460, text: "\u53EA\u80FD\u8BF4\u201C\u7531\u4E8E\u60EF\u6027\u201D\u3002" },
+  { from: 2460, to: 2592, text: "\u56DE\u5230\u5F00\u5934\uFF1A\u5C0F\u8F66\u4F1A\u505C\u4E0B\uFF0C\u662F\u56E0\u4E3A\u6469\u64E6\u3002" },
+  { from: 2598, to: 2649, text: "\u6469\u64E6\u771F\u7684\u6D88\u5931\uFF0C" },
+  { from: 2655, to: 2700, text: "\u5B83\u5C31\u4F1A\u4E00\u76F4\u8D70\u4E0B\u53BB\u3002" },
+  { from: 2700, to: 2778, text: "\u5B83\u771F\u6B63\u544A\u8BC9\u6211\u4EEC\u7684\uFF0C\u662F\u2014\u2014" },
+  { from: 2784, to: 2862, text: "\u4E0D\u9700\u8981\u529B\uFF0C\u7269\u4F53\u4E5F\u80FD\u4E00\u76F4\u8FD0\u52A8\uFF1B" },
+  { from: 2868, to: 2940, text: "\u8981\u6539\u53D8\uFF0C\u624D\u9700\u8981\u529B\u3002" }
 ];
 
-// src/film/subtitles.ts
-var CPS = 5;
-var GAP = 3;
-var MIN = 18;
-var splitChunks = (text) => {
-  const raw = text.match(/[^，。；：、—]+[，。；：、—]*/g) ?? [text];
-  const merged = [];
-  let buf = "";
-  for (const part of raw) {
-    buf += part;
-    if (buf.length >= 10) {
-      merged.push(buf);
-      buf = "";
-    }
-  }
-  if (buf) merged.push(buf);
-  return merged.filter(Boolean);
-};
-var build = () => {
-  const cues = [];
-  SUBS.forEach((sub, index) => {
-    const whole = sub.lines.join("");
-    const chunks = index === SUBS.length - 1 ? [whole] : splitChunks(whole);
-    if (!chunks.length) return;
-    const window2 = sub.to - sub.from;
-    const raw = chunks.map((c2) => Math.max(MIN, Math.round(c2.length / CPS * FPS)));
-    const sum = raw.reduce((a2, b2) => a2 + b2, 0) + GAP * (chunks.length - 1);
-    const room = window2 - 4 - GAP * (chunks.length - 1);
-    const scale = sum > room ? room / (sum - GAP * (chunks.length - 1)) : 1;
-    let t = sub.from;
-    chunks.forEach((text, i) => {
-      const d = Math.max(MIN, Math.round(raw[i] * scale));
-      const to = Math.min(sub.to - 2, t + d);
-      cues.push({ from: t, to, text });
-      t = to + GAP;
-    });
-  });
-  return cues;
-};
-var CUES = build();
-
-// src/film/components/Subtitles.tsx
+// src/newton/components/Subtitles.tsx
 var import_jsx_runtime63 = __toESM(require_jsx_runtime());
 var Subtitles = () => {
   const frame = useCurrentFrame();
   const cue = CUES.find((c2) => frame >= c2.from && frame < c2.to);
   if (!cue) return null;
   const opacity = Math.min(fadeIn(frame, cue.from, 4), fadeOut(frame, cue.to - 4, 4));
-  const y = fadeIn(frame, cue.from, 5) * 6;
+  const lift = fadeIn(frame, cue.from, 5) * 6;
   return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
     "div",
     {
@@ -55175,7 +55147,7 @@ var Subtitles = () => {
         display: "flex",
         justifyContent: "center",
         opacity,
-        transform: `translateY(${6 - y}px)`,
+        transform: `translateY(${6 - lift}px)`,
         pointerEvents: "none"
       },
       children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
@@ -55198,125 +55170,274 @@ var Subtitles = () => {
   );
 };
 
-// src/film/components/ui.tsx
+// src/newton/geometry.ts
+var HORIZON_Y = 466;
+var NEAR_Y = 1046;
+var NEAR_HALF_W = 642;
+var BALL_R0 = 54;
+var D0 = 340;
+var yOf = (u) => HORIZON_Y + (NEAR_Y - HORIZON_Y) * u;
+var halfOf = (u) => NEAR_HALF_W * u;
+var rOf = (u) => BALL_R0 * u;
+var xOf = (u, lateral = 0) => W / 2 + lateral * halfOf(u);
+var uAt = (t, speed = 0.62) => 1 / (1 + speed * Math.max(0, t));
+var SLEEPERS = Array.from({ length: 16 }, (_, i) => 1 / Math.pow(1.29, i));
+var mulberry322 = (seed) => () => {
+  seed |= 0;
+  seed = seed + 1831565813 | 0;
+  let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+  t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+  return ((t ^ t >>> 14) >>> 0) / 4294967296;
+};
+var SPECKS = (() => {
+  const rand = mulberry322(20261023);
+  const out = [];
+  for (let i = 0; i < 130; i += 1) {
+    const u = 0.026 + Math.pow(rand(), 0.55) * 1;
+    const lateral = (rand() * 2 - 1) * 1.34;
+    out.push({ u, lateral, r: 0.6 + rand() * 1.9, a: 0.24 + rand() * 0.5 });
+  }
+  return out.sort((a2, b2) => b2.u - a2.u);
+})();
+
+// src/newton/components/Ball.tsx
 var import_jsx_runtime64 = __toESM(require_jsx_runtime());
-var Eyebrow = ({ text, x, y, size = 22, color = CYAN, opacity = 1, align = "left", width = 900 }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
-  "div",
-  {
-    style: {
-      position: "absolute",
-      left: x,
-      top: y,
-      width,
-      fontFamily: MONO,
-      fontSize: size,
-      letterSpacing: 4.5,
-      color,
-      opacity,
-      textAlign: align,
-      whiteSpace: "nowrap"
-    },
-    children: text
-  }
-);
-var Label = ({ text, x, y, size = 30, color, opacity = 1, align = "left", width = 900, weight = 500 }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
-  "div",
-  {
-    style: {
-      position: "absolute",
-      left: x,
-      top: y,
-      width,
-      fontSize: size,
-      fontWeight: weight,
-      color,
-      opacity,
-      textAlign: align,
-      letterSpacing: 1,
-      whiteSpace: "nowrap"
-    },
-    children: text
-  }
-);
-var TauGlyph = ({ size, progress, color = CYAN, strokeWidth = 7, opacity = 1, glow = 1, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
-  "svg",
-  {
-    width: size,
-    height: size,
-    viewBox: "0 0 100 100",
-    style: {
-      opacity,
-      filter: `drop-shadow(0 0 ${18 * glow}px ${color}66)`,
-      overflow: "visible",
-      ...style2
-    },
-    children: [
-      /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
-        "path",
-        {
-          d: "M14 20 H86",
-          fill: "none",
-          stroke: color,
-          strokeWidth,
-          strokeLinecap: "round",
-          pathLength: 1,
-          strokeDasharray: "1 1",
-          strokeDashoffset: 1 - Math.min(1, progress * 2)
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
-        "path",
-        {
-          d: "M50 20 V58 C50 76 60 86 84 88",
-          fill: "none",
-          stroke: color,
-          strokeWidth,
-          strokeLinecap: "round",
-          pathLength: 1,
-          strokeDasharray: "1 1",
-          strokeDashoffset: 1 - Math.max(0, Math.min(1, (progress - 0.5) * 2))
-        }
-      )
-    ]
-  }
-);
-var StatCard = ({ x, y, w, title, value, note, opacity = 1, accent = CYAN }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
-  "div",
-  {
-    style: {
-      position: "absolute",
-      left: x,
-      top: y,
-      width: w,
-      opacity,
-      padding: "22px 24px",
-      border: `1px solid ${accent}44`,
-      background: "linear-gradient(180deg, rgba(9,16,24,.92), rgba(5,8,12,.92))",
-      borderRadius: 4
-    },
-    children: [
-      /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { fontFamily: MONO, fontSize: 20, letterSpacing: 3, color: accent, opacity: 0.9 }, children: title }),
-      /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+var clamp01 = (v) => Math.max(0, Math.min(1, v));
+var Ball = ({ u, spin = 0, opacity = 1, trail = true, glow = 1 }) => {
+  const x = xOf(u);
+  const y = yOf(u);
+  const r = rOf(u);
+  const marks = clamp01((r - 8) / 12);
+  return /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(import_jsx_runtime64.Fragment, { children: [
+    trail && [1, 2, 3].map((i) => {
+      const ut = Math.min(1.05, u * (1 + 0.052 * i));
+      const rt = rOf(ut);
+      return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
         "div",
         {
           style: {
-            fontFamily: MONO,
-            fontSize: 58,
-            fontWeight: 700,
-            color: "#E9F3FF",
-            marginTop: 10,
-            lineHeight: 1.05,
-            whiteSpace: "nowrap"
-          },
-          children: value
+            position: "absolute",
+            left: xOf(ut) - rt,
+            top: yOf(ut) - 2 * rt,
+            width: 2 * rt,
+            height: 2 * rt,
+            borderRadius: "50%",
+            background: "rgba(214,232,255,.55)",
+            opacity: opacity * (0.1 / i),
+            filter: "blur(1px)"
+          }
+        },
+        i
+      );
+    }),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: x - 1.7 * r,
+          top: y - 0.42 * r,
+          width: 3.4 * r,
+          height: 0.84 * r,
+          borderRadius: "50%",
+          background: "radial-gradient(ellipse at center, rgba(0,0,0,.66), rgba(0,0,0,0) 72%)",
+          opacity: 0.85 * opacity
         }
-      ),
-      note ? /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { fontSize: 21, color: "rgba(233,243,255,.5)", marginTop: 8 }, children: note }) : null
-    ]
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: x - 1.9 * r,
+          top: y - r - 1.9 * r,
+          width: 3.8 * r,
+          height: 3.8 * r,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(53,224,255,.18) 0%, rgba(53,224,255,.05) 42%, rgba(53,224,255,0) 68%)",
+          opacity: glow * opacity
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: x - r,
+          top: y - 2 * r,
+          width: 2 * r,
+          height: 2 * r,
+          borderRadius: "50%",
+          opacity,
+          background: "radial-gradient(circle at 34% 27%, #FFFFFF 0%, #E8EFFA 32%, #BCCBDF 60%, #8697AE 84%, #5E6E85 100%)",
+          boxShadow: `inset ${-0.24 * r}px ${-0.3 * r}px ${0.6 * r}px rgba(0,0,0,.34), 0 ${0.1 * r}px ${0.9 * r}px rgba(53,224,255,.18)`,
+          overflow: "hidden"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)("div", { style: { position: "absolute", inset: 0, opacity: marks }, children: [0, 1, 2].map((k) => /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                width: r * 0.22,
+                height: r * 0.22,
+                marginLeft: -r * 0.11,
+                marginTop: -r * 0.11,
+                borderRadius: "50%",
+                background: "rgba(86,106,134,.5)",
+                transform: `rotate(${spin + k * 120}deg) translateX(${r * 0.54}px)`
+              }
+            },
+            k
+          )) }),
+          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: r * 0.26,
+                top: r * 0.2,
+                width: r * 0.62,
+                height: r * 0.44,
+                borderRadius: "50%",
+                background: "rgba(255,255,255,.55)",
+                filter: "blur(2px)",
+                opacity: 0.75
+              }
+            }
+          )
+        ]
+      }
+    )
+  ] });
+};
+
+// src/newton/components/Track.tsx
+var import_jsx_runtime65 = __toESM(require_jsx_runtime());
+var U_NEAR = 1.02;
+var U_FAR = 0.016;
+var RAIL_W = 0.0135;
+var quad = (latL, latR) => {
+  const yN = yOf(U_NEAR);
+  const yF = yOf(U_FAR);
+  return [
+    [xOf(U_NEAR, latL), yN],
+    [xOf(U_NEAR, latR), yN],
+    [xOf(U_FAR, latR), yF],
+    [xOf(U_FAR, latL), yF]
+  ].map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
+};
+var Track = ({ grow = 1, dust = 1, id = "t" }) => {
+  const yN = yOf(U_NEAR);
+  const yF = yOf(U_FAR);
+  const bottom = NEAR_Y + 120;
+  const reveal = Math.max(0, Math.min(1, grow));
+  const h = (bottom - HORIZON_Y) * reveal;
+  const clipY = bottom - h;
+  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
+    "svg",
+    {
+      width: W,
+      height: H,
+      viewBox: `0 0 ${W} ${H}`,
+      style: { position: "absolute", inset: 0, overflow: "visible" },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("defs", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("clipPath", { id: `${id}-clip`, children: /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("rect", { x: 0, y: clipY, width: W, height: h }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("linearGradient", { id: `${id}-bed`, gradientUnits: "userSpaceOnUse", x1: 0, y1: yF, x2: 0, y2: yN, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("stop", { offset: "0", stopColor: "#2A3A4E", stopOpacity: "0.55" }),
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("stop", { offset: "0.45", stopColor: "#141D2A", stopOpacity: "0.9" }),
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("stop", { offset: "1", stopColor: "#0A0F17", stopOpacity: "0.95" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("linearGradient", { id: `${id}-rail`, gradientUnits: "userSpaceOnUse", x1: 0, y1: yF, x2: 0, y2: yN, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("stop", { offset: "0", stopColor: "#9AAFC9", stopOpacity: "0.30" }),
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("stop", { offset: "0.55", stopColor: "#A9BCD4", stopOpacity: "0.62" }),
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("stop", { offset: "1", stopColor: "#C3D3E6", stopOpacity: "0.86" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("linearGradient", { id: `${id}-tie`, gradientUnits: "userSpaceOnUse", x1: 0, y1: yF, x2: 0, y2: yN, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("stop", { offset: "0", stopColor: "#7E8FA6", stopOpacity: "0.16" }),
+            /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("stop", { offset: "1", stopColor: "#8FA2BA", stopOpacity: "0.5" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("g", { clipPath: `url(#${id}-clip)`, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("polygon", { points: quad(-1.5, 1.5), fill: `url(#${id}-bed)` }),
+          SLEEPERS.map((u, i) => {
+            const y = yOf(u);
+            const w = Math.max(1.1, 7.4 * u);
+            return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+              "line",
+              {
+                x1: xOf(u, -1.045),
+                y1: y,
+                x2: xOf(u, 1.045),
+                y2: y,
+                stroke: `url(#${id}-tie)`,
+                strokeWidth: w,
+                strokeLinecap: "butt"
+              },
+              i
+            );
+          }),
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("polygon", { points: quad(-1 - RAIL_W, -1 + RAIL_W), fill: `url(#${id}-rail)` }),
+          /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("polygon", { points: quad(1 - RAIL_W, 1 + RAIL_W), fill: `url(#${id}-rail)` }),
+          dust > 0 && SPECKS.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+            "circle",
+            {
+              cx: xOf(s.u, s.lateral),
+              cy: yOf(s.u),
+              r: Math.max(0.4, s.r * s.u * 2.2),
+              fill: "#8B98AB",
+              opacity: Math.min(1, s.a * (0.18 + 0.82 * s.u)) * dust
+            },
+            i
+          ))
+        ] })
+      ]
+    }
+  );
+};
+var VanishingGlow = ({
+  opacity,
+  scale = 1
+}) => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: W / 2 - 260 * scale,
+      top: HORIZON_Y - 260 * scale,
+      width: 520 * scale,
+      height: 520 * scale,
+      borderRadius: "50%",
+      background: "radial-gradient(circle, rgba(53,224,255,.30) 0%, rgba(53,224,255,.10) 34%, rgba(53,224,255,0) 70%)",
+      opacity,
+      pointerEvents: "none"
+    }
   }
 );
-var Grid = ({ sizeX = 40, sizeY = 40, color, inset = 0, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(import_jsx_runtime64.Fragment, { children: [
-  /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+var HorizonLine = ({ opacity, width }) => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: (W - width) / 2,
+      top: HORIZON_Y,
+      width,
+      height: 1,
+      background: "linear-gradient(90deg, rgba(53,224,255,0), rgba(53,224,255,.55), rgba(53,224,255,0))",
+      opacity
+    }
+  }
+);
+
+// src/newton/components/ui.tsx
+var import_jsx_runtime66 = __toESM(require_jsx_runtime());
+var Grid = ({ sizeX = 40, sizeY = 40, color, inset = 0, style: style2 }) => /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(import_jsx_runtime66.Fragment, { children: [
+  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
     "div",
     {
       style: {
@@ -55328,7 +55449,7 @@ var Grid = ({ sizeX = 40, sizeY = 40, color, inset = 0, style: style2 }) => /* @
       }
     }
   ),
-  /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+  /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
     "div",
     {
       style: {
@@ -55342,2302 +55463,466 @@ var Grid = ({ sizeX = 40, sizeY = 40, color, inset = 0, style: style2 }) => /* @
   )
 ] });
 
-// src/film/components/Chip.tsx
-var import_jsx_runtime65 = __toESM(require_jsx_runtime());
-var Chip = ({ x, y, size = 330, scale, blur, opacity, glow = 1, rotate: rotate2 = -7 }) => {
-  const cells = Array.from({ length: 12 }, (_, i) => i);
-  return /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: x,
-        top: y,
-        width: size,
-        height: size,
-        opacity,
-        filter: `blur(${blur}px)`,
-        transform: `perspective(1600px) rotateX(16deg) rotateZ(${rotate2}deg) scale(${scale})`,
-        transformOrigin: "50% 50%"
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              borderRadius: 6,
-              background: "linear-gradient(148deg,#12202C 0%,#070C12 52%,#0B1620 100%)",
-              border: `1px solid rgba(47,227,255,${0.5 * glow})`,
-              boxShadow: `0 0 ${60 * glow}px rgba(47,227,255,${0.22 * glow}), inset 0 0 60px rgba(47,227,255,.07)`,
-              overflow: "hidden"
-            },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(Grid, { inset: 18, sizeX: 24, sizeY: 24, color: "rgba(47,227,255,.16)", style: { opacity: 0.75 } }),
-              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    inset: 18,
-                    backgroundImage: "repeating-linear-gradient(0deg, rgba(233,243,255,.06) 0 1px, transparent 1px 6px)"
-                  }
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    left: "50%",
-                    top: "50%",
-                    width: size * 0.3,
-                    height: size * 0.3,
-                    transform: "translate(-50%,-50%)",
-                    background: "radial-gradient(circle, rgba(47,227,255,.55), rgba(47,227,255,.08) 64%, transparent 72%)",
-                    border: `1px solid rgba(47,227,255,${0.75 * glow})`,
-                    boxShadow: `0 0 ${26 * glow}px rgba(47,227,255,${0.55 * glow})`
-                  }
-                }
-              ),
-              cells.slice(0, 4).map((i) => {
-                const right = i % 2 === 1;
-                const bottom = i > 1;
-                return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-                  "div",
-                  {
-                    style: {
-                      position: "absolute",
-                      [right ? "right" : "left"]: 10,
-                      [bottom ? "bottom" : "top"]: 10,
-                      width: 22,
-                      height: 22,
-                      borderTop: bottom ? void 0 : `1.5px solid ${CYAN}`,
-                      borderBottom: bottom ? `1.5px solid ${CYAN}` : void 0,
-                      borderLeft: right ? void 0 : `1.5px solid ${CYAN}`,
-                      borderRight: right ? `1.5px solid ${CYAN}` : void 0,
-                      opacity: 0.55
-                    }
-                  },
-                  i
-                );
-              })
-            ]
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 12,
-              right: 12,
-              bottom: -26,
-              height: 26,
-              background: "radial-gradient(50% 100% at 50% 0%, rgba(47,227,255,.16), transparent 70%)",
-              filter: "blur(6px)"
-            }
-          }
-        )
-      ]
-    }
-  );
-};
-
-// src/film/components/Ruler.tsx
-var import_jsx_runtime66 = __toESM(require_jsx_runtime());
-var TICK_STEP = 36;
-var TICK_COUNT = 46;
-var LABELS = ["90", "65", "45", "22", "14", "10", "7", "5", "3"];
-var Ruler = ({ x, y, rotate: rotate2, scaleX, opacity, width = 1680 }) => {
-  const ticks = Array.from({ length: TICK_COUNT }, (_, i) => i);
-  return /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: x,
-        top: y,
-        width,
-        height: 196,
-        borderRadius: 5,
-        opacity,
-        transform: `rotate(${rotate2}deg) scaleX(${scaleX})`,
-        transformOrigin: "50% 50%",
-        backgroundColor: "#9AA8B9",
-        backgroundImage: "linear-gradient(180deg,#EEF3F9 0%,#C6D1DE 9%,#96A4B6 34%,#7A889B 52%,#8E9CAE 70%,#B8C4D3 90%,#DCE5EF 100%)",
-        boxShadow: "0 30px 60px rgba(0,0,0,.55)",
-        overflow: "hidden"
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              inset: 0,
-              backgroundImage: "repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0px, rgba(255,255,255,.07) 1px, rgba(255,255,255,0) 1px, rgba(255,255,255,0) 4px)"
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: 0, height: 2, backgroundColor: "rgba(255,255,255,.85)" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 0, right: 0, bottom: 0, height: 4, backgroundColor: "rgba(0,0,0,.35)" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: 2, height: 10, backgroundImage: "linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0))" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("div", { style: { position: "absolute", left: 12, top: 0, right: 0, height: 96 }, children: [
-          ticks.map((i) => {
-            const major = i % 5 === 0;
-            const mid = i % 5 === 2;
-            return /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
-              "div",
-              {
-                style: {
-                  position: "absolute",
-                  left: i * TICK_STEP,
-                  top: 0,
-                  width: major ? 2.5 : 1.5,
-                  height: major ? 62 : mid ? 40 : 24,
-                  backgroundColor: "#0C1219",
-                  opacity: major ? 0.86 : mid ? 0.55 : 0.36
-                }
-              },
-              i
-            );
-          }),
-          LABELS.map((label3, i) => /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: i * 5 * TICK_STEP - 2,
-                top: 74,
-                fontFamily: MONO,
-                fontSize: 31,
-                fontWeight: 700,
-                letterSpacing: 0.5,
-                color: "#101820",
-                opacity: 0.86
-              },
-              children: label3
-            },
-            label3 + i
-          )),
-          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                right: 26,
-                top: 78,
-                fontFamily: MONO,
-                fontSize: 26,
-                letterSpacing: 2,
-                color: "#101820",
-                opacity: 0.7
-              },
-              children: "nm"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 10, right: 10, top: 108, height: 1, backgroundColor: "rgba(11,17,24,.3)" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime66.jsx)("div", { style: { position: "absolute", left: 12, top: 112, right: 0, bottom: 0 }, children: Array.from({ length: 10 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime66.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: i * 168,
-                top: 0,
-                width: 1.5,
-                height: 26,
-                backgroundColor: "#0C1219",
-                opacity: 0.3
-              }
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: i * 168 - 5,
-                top: 40,
-                fontFamily: MONO,
-                fontSize: 19,
-                fontWeight: 500,
-                color: "#101820",
-                opacity: 0.5
-              },
-              children: i
-            }
-          )
-        ] }, i)) })
-      ]
-    }
-  );
-};
-
-// src/film/components/Stage.tsx
+// src/newton/components/Stage.tsx
 var import_jsx_runtime67 = __toESM(require_jsx_runtime());
-var Stage = ({ glow = 1, grid = 1, vignette = 1, lightX = 1180, lightY = 430 }) => {
-  return /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(AbsoluteFill, { style: { backgroundColor: BG, overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          opacity: glow,
-          background: `radial-gradient(circle at ${lightX}px ${lightY}px, rgba(47,227,255,.13), rgba(47,227,255,.04) 46%, rgba(47,227,255,0) 72%)`
-        }
+var Stage = ({ glow = 1, grid = 1, vignette = 1, horizon = 1 }) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(AbsoluteFill, { style: { backgroundColor: BG, overflow: "hidden" }, children: [
+  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    AbsoluteFill,
+    {
+      style: {
+        opacity: glow,
+        background: `radial-gradient(circle at 50% 44%, rgba(53,224,255,.16) 0%, rgba(53,224,255,.05) 26%, rgba(53,224,255,0) 56%)`
       }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          opacity: 0.55 * grid,
-          maskImage: "radial-gradient(circle at 50% 46%, #000 30%, transparent 88%)",
-          WebkitMaskImage: "radial-gradient(circle at 50% 46%, #000 30%, transparent 88%)"
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Grid, { sizeX: 48, sizeY: 48, color: "rgba(233,243,255,.055)" })
+    }
+  ),
+  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    "div",
+    {
+      style: {
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top: 392,
+        height: 150,
+        opacity: 0.85 * horizon,
+        background: "linear-gradient(180deg, rgba(53,224,255,0) 0%, rgba(53,224,255,.10) 46%, rgba(53,224,255,.02) 72%, rgba(53,224,255,0) 100%)"
       }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          opacity: vignette,
-          boxShadow: "inset 0 0 260px 90px rgba(0,0,0,.85)"
-        }
+    }
+  ),
+  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    AbsoluteFill,
+    {
+      style: {
+        opacity: 0.5 * grid,
+        maskImage: "radial-gradient(circle at 50% 48%, #000 26%, transparent 84%)",
+        WebkitMaskImage: "radial-gradient(circle at 50% 48%, #000 26%, transparent 84%)"
+      },
+      children: /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Grid, { sizeX: 60, sizeY: 60, color: "rgba(237,242,255,.05)" })
+    }
+  ),
+  /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    AbsoluteFill,
+    {
+      style: {
+        opacity: vignette,
+        boxShadow: "inset 0 0 300px 110px rgba(0,0,0,.82)"
       }
-    )
-  ] });
-};
-var LightSweep = ({ x, opacity }) => /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
+    }
+  )
+] });
+var Rule = ({
+  width,
+  opacity = 0.9,
+  color = CYAN
+}) => /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
   "div",
   {
     style: {
-      position: "absolute",
-      left: 0,
-      top: 0,
-      width: 520,
-      height: 1500,
-      transform: `translateX(${x}px) rotate(14deg)`,
+      width,
+      height: 2,
+      background: color,
       opacity,
-      backgroundImage: "linear-gradient(90deg, rgba(47,227,255,0) 0%, rgba(47,227,255,.10) 32%, rgba(233,243,255,.22) 50%, rgba(47,227,255,.10) 68%, rgba(47,227,255,0) 100%)",
-      filter: "blur(6px)",
-      mixBlendMode: "screen",
-      pointerEvents: "none"
+      boxShadow: `0 0 14px ${color}88`
     }
   }
 );
 
-// src/film/scenes/Opening.tsx
+// src/newton/scenes/Shot01.tsx
 var import_jsx_runtime68 = __toESM(require_jsx_runtime());
-var HITS = [
-  { at: 0, amp: 16 },
-  { at: 73, amp: 7 },
-  { at: 180, amp: 15 },
-  { at: 205, amp: 12 },
-  { at: 240, amp: 11 },
-  { at: 271, amp: 15 }
-];
-var DIGITS = [
-  { v: "7", at: 180 },
-  { v: "5", at: 205 },
-  { v: "3", at: 240 },
-  { v: "2", at: 271 }
-];
-var shakeAt = (frame, at, amp) => {
-  const l = frame - at;
-  if (l < 0 || l > 6) return 0;
-  return interpolate(l, [0, 1, 2, 3, 4, 5, 6], [0, -1, 0.78, -0.52, 0.32, -0.16, 0]) * amp;
-};
-var flashAt = (frame, at, peak = 0.5) => {
-  const l = frame - at;
-  if (l < 0 || l > 3) return 0;
-  return interpolate(l, [0, 1, 3], [peak, peak * 0.7, 0], CLAMP);
-};
-var chipY = (frame) => interpolate(frame, [0, 180], [470, 262], CLAMP);
-var Opening = () => {
+var Shot01 = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const camScale = interpolate(
-    frame,
-    [0, 9, 40, 73, 180, 271, 300],
-    [1.52, 1, 1.02, 1.06, 1.1, 1.16, 1.24],
-    { ...CLAMP, easing: EASE_OUT }
-  );
-  const rulerX = interpolate(frame, [0, 3, 6, 10, 73, 180], [1240, 40, 112, 96, -220, -340], {
-    ...CLAMP,
-    easing: EASE_IN
-  });
-  const rulerSlamRotate = interpolate(frame, [0, 4, 10], [-5.5, 1.2, 0], CLAMP);
-  const compressed = frame >= 180;
-  const chipIn = spring({
-    frame: frame - 3,
-    fps,
-    config: { damping: 12, mass: 0.7, stiffness: 190 }
-  });
-  const focus = interpolate(frame, [70, 73], [10, 0], { ...CLAMP, easing: EASE_OUT });
-  const lockPop = interpolate(frame, [73, 76, 82], [1, 1.05, 1], CLAMP);
-  const pulse = interpolate(frame, [118, 122, 132], [1, 1.07, 1], CLAMP);
-  const shakeX = HITS.reduce((sum, h) => sum + shakeAt(frame, h.at, h.amp), 0);
-  const shakeY = HITS.reduce((sum, h) => sum + shakeAt(frame, h.at, h.amp * 0.62), 0);
-  const flash = Math.min(
-    1,
-    HITS.reduce((sum, h) => sum + flashAt(frame, h.at, h.at === 0 ? 0.26 : 0.34), 0)
-  );
-  const sweepX = interpolate(frame, [1, 22], [-900, 2500], { ...CLAMP, easing: EASE_OUT });
-  const sweepOpacity = interpolate(frame, [1, 6, 18, 26], [0, 1, 1, 0], CLAMP);
-  const tail = interpolate(frame, [288, 298], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-      Stage,
-      {
-        glow: interpolate(frame, [0, 12, 180], [0.5, 1, 1.2], CLAMP),
-        grid: interpolate(frame, [0, 10], [0.35, 1], CLAMP) * (compressed ? 0.62 : 1),
-        lightX: compressed ? 960 : 1180,
-        lightY: compressed ? 620 : 470
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { transform: `translate3d(${shakeX}px, ${shakeY}px, 0)` }, children: [
+  const grow = interpolate(frame, [10, 58], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const black = interpolate(frame, [0, 10], [1, 0], CLAMP);
+  const enter = fadeIn(frame, 44, 14);
+  const t = Math.max(0, frame - 44) / fps;
+  const u = uAt(t, 0.62);
+  const spin = (D0 / u - D0) / BALL_R0 * 24;
+  const cam = interpolate(frame, [0, 240], [1, 1.045], { ...CLAMP, easing: EASE_OUT });
+  const dim = interpolate(frame, [120, 152], [1, 0.82], { ...CLAMP, easing: EASE_OUT });
+  const q = fadeIn(frame, 120, 14);
+  const ruleW = interpolate(frame, [120, 150], [0, 96], { ...CLAMP, easing: EASE_OUT });
+  const glow = 0.42 + 0.28 * fadeIn(frame, 110, 40);
+  return /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { backgroundColor: "#070B12", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)("div", { style: { position: "absolute", inset: 0, opacity: dim }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Stage, { glow: 1, grid: 1, vignette: 1 }),
       /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
         "div",
         {
           style: {
             position: "absolute",
             inset: 0,
-            transform: `scale(${camScale})`,
-            transformOrigin: "50% 46%"
+            transform: `scale(${cam})`,
+            transformOrigin: `50% ${HORIZON_Y}px`
           },
           children: [
-            compressed ? /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Ruler, { x: 120, y: 300, rotate: 0, scaleX: 0.5, opacity: 0.3 }) : /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-              Ruler,
-              {
-                x: rulerX,
-                y: interpolate(frame, [0, 180], [238, 268], CLAMP),
-                rotate: rulerSlamRotate,
-                scaleX: 1,
-                opacity: 1
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-              Chip,
-              {
-                x: compressed ? 1452 : 1316,
-                y: chipY(frame),
-                scale: interpolate(chipIn, [0, 1], [1.42, 1]) * (compressed ? 1.5 : (1.02 + 0.06 * interpolate(frame, [73, 180], [0, 1], CLAMP)) * lockPop),
-                blur: compressed ? 12 : focus,
-                opacity: interpolate(frame, [0, 6], [0, 1], CLAMP) * (compressed ? 0.35 : 1),
-                glow: compressed ? 0.6 : 1.15 * pulse,
-                rotate: compressed ? -4 : interpolate(frame, [0, 180], [-9.5, -5.5], CLAMP)
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(LightSweep, { x: sweepX, opacity: sweepOpacity * 0.95 })
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Track, { grow, dust: 1, id: "s1" }),
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(VanishingGlow, { opacity: glow }),
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(HorizonLine, { opacity: 0.5 * grow, width: 1700 }),
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)("div", { style: { position: "absolute", inset: 0, transform: `translateY(${(1 - enter) * 140}px)` }, children: /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Ball, { u, spin, opacity: enter, glow: 1 }) })
           ]
         }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(AbsoluteFill, { style: { pointerEvents: "none" }, children: [
-        DIGITS.map((d, i) => {
-          const local = frame - d.at;
-          if (local < 0) return null;
-          const next = DIGITS[i + 1];
-          const scale = interpolate(local, [0, 1, 3], [1.75, 1.06, 1], {
-            ...CLAMP,
-            easing: EASE_OUT
-          });
-          const opacity = next === void 0 ? 1 : local >= next.at - d.at ? 0 : 1;
-          return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+      )
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          right: 154,
+          top: 296,
+          width: 620,
+          textAlign: "right",
+          opacity: q,
+          transform: `translateY(${(1 - q) * 16}px)`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime68.jsx)("div", { style: { display: "flex", justifyContent: "flex-end", marginBottom: 36 }, children: /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Rule, { width: ruleW }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
+            "div",
+            {
+              style: {
+                fontSize: 82,
+                lineHeight: 1.42,
+                fontWeight: 600,
+                letterSpacing: 2,
+                color: TEXT,
+                textShadow: "0 4px 40px rgba(0,0,0,.72)"
+              },
+              children: [
+                "\u5982\u679C\u6469\u64E6\uFF0C",
+                /* @__PURE__ */ (0, import_jsx_runtime68.jsx)("br", {}),
+                "\u7A81\u7136\u6D88\u5931\uFF1F"
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
+            "div",
+            {
+              style: {
+                marginTop: 30,
+                fontFamily: '"DIN Alternate","JetBrains Mono",ui-monospace,monospace',
+                fontSize: 19,
+                letterSpacing: 6,
+                color: CYAN,
+                opacity: 0.55
+              },
+              children: "IF FRICTION VANISHED"
+            }
+          )
+        ]
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(AbsoluteFill, { style: { background: "#000", opacity: black, pointerEvents: "none" } })
+  ] });
+};
+
+// src/newton/scenes/Shot02.tsx
+var import_jsx_runtime69 = __toESM(require_jsx_runtime());
+var riseStyle = (p, dist = 16) => ({
+  opacity: p,
+  transform: `translateY(${(1 - p) * dist}px)`
+});
+var ForceArrow = ({
+  x1,
+  x2,
+  y,
+  opacity
+}) => {
+  const head = 22;
+  return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+    "svg",
+    {
+      width: 1920,
+      height: 1080,
+      viewBox: "0 0 1920 1080",
+      style: { position: "absolute", inset: 0, opacity },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("line", { x1, y1: y, x2: x2 - head, y2: y, stroke: ORANGE, strokeWidth: 9, strokeLinecap: "round" }),
+        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+          "polygon",
+          {
+            points: `${x2},${y} ${x2 - head},${y - head * 0.62} ${x2 - head},${y + head * 0.62}`,
+            fill: ORANGE
+          }
+        )
+      ]
+    }
+  );
+};
+var Shot02 = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const push = interpolate(frame, [0, 20], [0, 1], { ...CLAMP, easing: EASE_OUT });
+  const glide = interpolate(frame, [22, 170], [0, 1], {
+    ...CLAMP,
+    easing: Easing.out(Easing.cubic)
+  });
+  const settle = interpolate(frame, [170, 174, 182], [0, 1, 0], CLAMP);
+  const boxX = 700 + 66 * push + 250 * glide - settle * 3;
+  const handIn = spring({ frame, fps, config: { damping: 17, stiffness: 150, mass: 0.8 } });
+  const handOut = interpolate(frame, [24, 44], [0, 1], { ...CLAMP, easing: EASE_IN });
+  const handShift = -300 * (1 - handIn) - 250 * handOut;
+  const handRight = boxX - 8 + handShift;
+  const force = frame < 22 ? 1 : interpolate(frame, [22, 34], [1, 0], { ...CLAMP, easing: EASE_OUT });
+  const speed = frame < 22 ? 1 : interpolate(frame, [22, 170], [1, 0], { ...CLAMP, easing: Easing.out(Easing.quad) });
+  const cap = fadeIn(frame, 162, 12);
+  const cap2 = fadeIn(frame, 176, 12);
+  const fingers = [0, 1, 2, 3];
+  return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { backgroundColor: "#080D15", overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+      AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(circle at 42% 32%, rgba(53,224,255,.07) 0%, rgba(53,224,255,.02) 34%, rgba(0,0,0,0) 66%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { position: "absolute", inset: 0, opacity: 0.6 }, children: /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(Grid, { sizeX: 96, sizeY: 96, color: "rgba(237,242,255,.035)" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(AbsoluteFill, { style: { boxShadow: "inset 0 0 300px 110px rgba(0,0,0,.8)" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: boxX + 12,
+          top: 494,
+          width: 216,
+          height: 216,
+          borderRadius: 8,
+          background: "radial-gradient(ellipse at 30% 25%, rgba(0,0,0,.5), rgba(0,0,0,0) 70%)",
+          filter: "blur(14px)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: boxX,
+          top: 470,
+          width: 210,
+          height: 210,
+          borderRadius: 6,
+          backgroundColor: "#1D2735",
+          border: "1px solid rgba(190,215,245,.16)",
+          boxSizing: "border-box",
+          overflow: "hidden"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(135deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 52%)"
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: 92,
+                top: 0,
+                width: 26,
+                height: 210,
+                background: "rgba(237,242,255,.05)"
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
             "div",
             {
               style: {
                 position: "absolute",
                 left: 0,
-                right: 0,
-                top: 194,
-                height: 588,
-                display: "flex",
-                alignItems: "flex-end",
-                justifyContent: "center",
-                opacity
-              },
-              children: /* @__PURE__ */ (0, import_jsx_runtime68.jsxs)(
-                "div",
-                {
-                  style: {
-                    display: "flex",
-                    alignItems: "baseline",
-                    gap: 18,
-                    transform: `scale(${scale})`,
-                    transformOrigin: "50% 100%"
-                  },
-                  children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-                      "span",
-                      {
-                        style: {
-                          fontFamily: MONO,
-                          fontSize: 460,
-                          lineHeight: 0.9,
-                          fontWeight: 700,
-                          color: TEXT,
-                          textShadow: "0 0 120px rgba(47,227,255,.42), 0 0 34px rgba(47,227,255,.22)"
-                        },
-                        children: d.v
-                      }
-                    ),
-                    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-                      "span",
-                      {
-                        style: {
-                          fontFamily: MONO,
-                          fontSize: 76,
-                          fontWeight: 500,
-                          letterSpacing: 4,
-                          color: TEXT,
-                          opacity: 0.5
-                        },
-                        children: "nm"
-                      }
-                    )
-                  ]
-                }
-              )
-            },
-            d.v
-          );
-        }),
-        DIGITS.map((d) => {
-          const l = frame - d.at;
-          if (l < 0 || l > 9) return null;
-          const w = interpolate(l, [0, 5], [80, 1280], { ...CLAMP, easing: EASE_OUT });
-          const op = interpolate(l, [0, 2, 9], [0.95, 0.55, 0], CLAMP);
-          return /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: 960 - w / 2,
-                top: 784,
-                width: w,
-                height: 2,
-                background: `linear-gradient(90deg, transparent, ${CYAN}, transparent)`,
-                opacity: op
+                top: 92,
+                width: 210,
+                height: 26,
+                background: "rgba(237,242,255,.035)"
               }
-            },
-            "shock" + d.v
-          );
-        })
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: 260,
-          background: "linear-gradient(180deg, transparent, rgba(3,5,9,.88))",
-          pointerEvents: "none"
-        }
+            }
+          )
+        ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(
-      AbsoluteFill,
-      {
-        style: {
-          background: "#DFF6FF",
-          opacity: flash * 0.55,
-          mixBlendMode: "screen",
-          pointerEvents: "none"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(AbsoluteFill, { style: { background: "#000", opacity: tail, pointerEvents: "none" } })
-  ] });
-};
-
-// src/film/scenes/Shot03.tsx
-var import_jsx_runtime69 = __toESM(require_jsx_runtime());
-var SHARDS = [
-  { x: 620, y: 300, w: 220, h: 150, dx: -420, dy: -260, rot: -38, clip: "polygon(0 0,100% 0,100% 64%,34% 100%)" },
-  { x: 760, y: 240, w: 180, h: 120, dx: 260, dy: -300, rot: 44, clip: "polygon(0 12%,100% 0,86% 100%,0 78%)" },
-  { x: 980, y: 280, w: 240, h: 160, dx: 420, dy: -180, rot: 62, clip: "polygon(0 0,88% 8%,100% 100%,12% 84%)" },
-  { x: 520, y: 520, w: 200, h: 140, dx: -380, dy: 240, rot: 28, clip: "polygon(0 0,100% 22%,74% 100%,0 100%)" },
-  { x: 900, y: 560, w: 260, h: 170, dx: 180, dy: 330, rot: -26, clip: "polygon(6% 0,100% 16%,100% 100%,0 76%)" },
-  { x: 1180, y: 500, w: 190, h: 130, dx: 460, dy: 260, rot: 40, clip: "polygon(0 0,100% 0,72% 100%,0 82%)" },
-  { x: 700, y: 380, w: 150, h: 110, dx: -180, dy: -360, rot: -58, clip: "polygon(0 0,100% 26%,82% 100%,0 68%)" },
-  { x: 1060, y: 400, w: 170, h: 120, dx: 300, dy: -340, rot: 34, clip: "polygon(12% 0,100% 12%,100% 100%,0 88%)" },
-  { x: 840, y: 660, w: 230, h: 150, dx: -300, dy: 380, rot: -34, clip: "polygon(0 0,100% 20%,88% 100%,0 100%)" },
-  { x: 1240, y: 360, w: 160, h: 120, dx: 520, dy: -120, rot: 74, clip: "polygon(0 0,100% 30%,100% 100%,0 74%)" }
-];
-var Shot03 = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const slam = spring({ frame, fps, config: { damping: 13, mass: 0.6, stiffness: 220 } });
-  const scale = interpolate(slam, [0, 1], [1.9, 1]) * interpolate(frame, [16, 40], [1, 1], CLAMP);
-  const squashX = interpolate(frame, [14, 44], [1, 1.34], { ...CLAMP, easing: EASE_IN });
-  const squashY = interpolate(frame, [14, 44], [1, 0.52], { ...CLAMP, easing: EASE_IN });
-  const numOpacity = interpolate(frame, [0, 2, 40, 52], [0, 1, 1, 0], CLAMP);
-  const crack = interpolate(frame, [42, 78], [0, 1], { ...CLAMP, easing: EASE_IN });
-  const flash = interpolate(frame, [76, 78, 82], [0, 1, 0], CLAMP);
-  const burst = interpolate(frame, [78, 150], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const fade = interpolate(frame, [150, 186], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(Stage, { glow: 0.9 * (1 - fade), grid: 0.5 * (1 - fade), lightX: 960, lightY: 600 }),
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { opacity: 1 - fade }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("div", { style: { position: "absolute", inset: 0 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-        Ruler,
-        {
-          x: 120,
-          y: 300,
-          rotate: 0,
-          scaleX: interpolate(frame, [0, 78], [0.5, 0.66], CLAMP),
-          opacity: interpolate(frame, [0, 78], [0.32, 0.5], CLAMP) * (1 - burst)
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
         "div",
         {
           style: {
             position: "absolute",
-            left: 0,
-            right: 0,
-            top: 250,
-            height: 430,
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "center",
-            opacity: numOpacity * (1 - burst),
-            transform: `scale(${scale}) scale(${squashX}, ${squashY})`,
-            transformOrigin: "50% 70%"
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-              "span",
-              {
-                style: {
-                  fontFamily: MONO,
-                  fontSize: 470,
-                  lineHeight: 0.9,
-                  fontWeight: 700,
-                  color: TEXT,
-                  textShadow: "0 0 110px rgba(47,227,255,.4)"
-                },
-                children: "1"
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontFamily: MONO, fontSize: 78, color: TEXT, opacity: 0.5, marginLeft: 18 }, children: "nm" })
-          ]
+            left: handRight - 214,
+            top: 486,
+            width: 140,
+            height: 158,
+            borderRadius: 46,
+            background: "#38465C",
+            boxShadow: "inset 0 2px 0 rgba(210,230,255,.20), 0 16px 34px rgba(0,0,0,.5)"
+          }
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-          "path",
-          {
-            d: "M300 210 L560 330 L520 430 L760 500 L700 610 L980 660 L950 780 L1240 830 L1600 900",
-            fill: "none",
-            stroke: "#EAF8FF",
-            strokeWidth: 2.5,
-            opacity: 0.9 * crack,
-            pathLength: 1,
-            strokeDasharray: "1 1",
-            strokeDashoffset: 1 - crack
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-          "path",
-          {
-            d: "M760 500 L700 380 L560 340",
-            fill: "none",
-            stroke: "#EAF8FF",
-            strokeWidth: 1.6,
-            opacity: 0.55 * crack,
-            pathLength: 1,
-            strokeDasharray: "1 1",
-            strokeDashoffset: 1 - crack
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-          "path",
-          {
-            d: "M980 660 L1120 600 L1300 640",
-            fill: "none",
-            stroke: "#EAF8FF",
-            strokeWidth: 1.4,
-            opacity: 0.45 * crack,
-            pathLength: 1,
-            strokeDasharray: "1 1",
-            strokeDashoffset: 1 - crack
-          }
-        )
-      ] }),
-      SHARDS.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+      fingers.map((i) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
         "div",
         {
           style: {
             position: "absolute",
-            left: s.x + s.dx * burst,
-            top: s.y + s.dy * burst,
-            width: s.w,
-            height: s.h,
-            clipPath: s.clip,
-            transform: `rotate(${s.rot * burst}deg)`,
-            background: "linear-gradient(150deg,#DCE6F2,#8C9BAE 46%,#5A6779 74%,#C4D0DE)",
-            opacity: interpolate(burst, [0, 0.15, 0.85, 1], [0, 0.95, 0.7, 0], CLAMP),
-            boxShadow: "0 20px 60px rgba(0,0,0,.6)"
+            left: handRight - 96,
+            top: 498 + i * 31,
+            width: 96,
+            height: 26,
+            borderRadius: 13,
+            background: "#3D4C63",
+            boxShadow: "inset 0 1px 0 rgba(210,230,255,.22)"
           }
         },
         i
-      ))
+      )),
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: handRight - 122,
+            top: 626,
+            width: 78,
+            height: 30,
+            borderRadius: 15,
+            background: "#36445A",
+            transform: "rotate(-18deg)"
+          }
+        }
+      )
     ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(ForceArrow, { x1: boxX - 172, x2: boxX - 10, y: 418, opacity: force }),
     /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-      AbsoluteFill,
+      "div",
       {
-        style: { background: "#EAF8FF", opacity: flash * 0.85, mixBlendMode: "screen" }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade } })
-  ] });
-};
-
-// src/film/scenes/Shot04.tsx
-var import_jsx_runtime70 = __toESM(require_jsx_runtime());
-var Shot04 = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const write = interpolate(frame, [8, 44], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const bloom = interpolate(frame, [40, 70], [0, 1], CLAMP);
-  const ring = interpolate(frame, [40, 110], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const titleIn = spring({ frame: frame - 52, fps, config: { damping: 18, mass: 0.8, stiffness: 120 } });
-  const subIn = interpolate(frame, [70, 88], [0, 1], CLAMP);
-  const wave2 = interpolate(frame, [88, 150], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const flash = interpolate(frame, [192, 204, 212], [0, 1, 0], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Stage, { glow: 0.55 + 0.45 * bloom, grid: 0.25 + 0.2 * bloom, lightX: 960, lightY: 420 }),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0, opacity: 0.34 * bloom }, children: [
-      [220, 380, 560, 760].map((r) => /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-        "circle",
-        {
-          cx: 960,
-          cy: 430,
-          r,
-          fill: "none",
-          stroke: CYAN,
-          strokeWidth: 1,
-          opacity: interpolate(ring, [0, 1], [0, 0.5], CLAMP)
+        style: {
+          position: "absolute",
+          left: boxX - 214,
+          top: 382,
+          fontFamily: '"DIN Alternate","JetBrains Mono",ui-monospace,monospace',
+          fontSize: 34,
+          fontWeight: 700,
+          color: ORANGE,
+          opacity: force
         },
-        r
-      )),
-      Array.from({ length: 24 }, (_, i) => {
-        const a2 = i / 24 * Math.PI * 2;
-        return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-          "line",
-          {
-            x1: 960 + Math.cos(a2) * 220,
-            y1: 430 + Math.sin(a2) * 220,
-            x2: 960 + Math.cos(a2) * 760,
-            y2: 430 + Math.sin(a2) * 760,
-            stroke: CYAN,
-            strokeWidth: 0.7,
-            opacity: 0.22 * ring
-          },
-          i
-        );
-      })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("div", { style: { position: "absolute", left: 960 - 210, top: 430 - 210 }, children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(TauGlyph, { size: 420, progress: write, color: CYAN, strokeWidth: 6.5, glow: 1 + bloom }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+        children: "F"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
       "div",
       {
         style: {
           position: "absolute",
-          left: 0,
-          right: 0,
-          top: 690,
-          height: 120,
-          overflow: "hidden",
-          opacity: interpolate(titleIn, [0, 0.4], [0, 1], CLAMP)
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-          "div",
-          {
-            style: {
-              transform: `translateY(${(1 - titleIn) * 120}%)`,
-              textAlign: "center",
-              fontSize: 96,
-              fontWeight: 700,
-              letterSpacing: 6,
-              color: TEXT,
-              lineHeight: 1.1
-            },
-            children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 820,
-          textAlign: "center",
-          fontSize: 32,
-          letterSpacing: 3,
-          color: MUTED,
-          opacity: subIn
-        },
-        children: "\u4EE5\u201C\u65F6\u95F4\u7F29\u5FAE\u201D\u66FF\u4EE3\u201C\u51E0\u4F55\u7F29\u5FAE\u201D"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0, opacity: 0.55 * wave2 }, children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
-      "path",
-      {
-        d: "M120 980 L260 980 L300 930 L340 1020 L380 980 L1520 980 L1560 900 L1600 980 L1800 980",
-        fill: "none",
-        stroke: CYAN,
-        strokeWidth: 2,
-        pathLength: 1,
-        strokeDasharray: "1 1",
-        strokeDashoffset: 1 - wave2
-      }
-    ) }),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(AbsoluteFill, { style: { background: "#DFF6FF", opacity: flash * 0.7, mixBlendMode: "screen" } })
-  ] });
-};
-
-// src/film/scenes/Shot05.tsx
-var import_jsx_runtime71 = __toESM(require_jsx_runtime());
-var N = 16;
-var CELLS = Array.from({ length: N * N }, (_, i) => {
-  const cx = i % N;
-  const cy = Math.floor(i / N);
-  const d = Math.hypot(cx - (N - 1) / 2, cy - (N - 1) / 2) / (N * 0.72);
-  return { cx, cy, d };
-});
-var Shot05 = () => {
-  const frame = useCurrentFrame();
-  const camIn = interpolate(frame, [0, 240], [1, 1.07], CLAMP);
-  const tip = interpolate(frame, [0, 20], [-3, 0], { ...CLAMP, easing: EASE_OUT });
-  const curve = interpolate(frame, [30, 150], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const label3 = interpolate(frame, [150, 170], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Stage, { glow: 1, grid: 0.7, lightX: 1100, lightY: 620 }),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          inset: 0,
-          transform: `perspective(2200px) rotateX(${58 + tip}deg) rotateZ(-40deg) scale(${camIn})`,
-          transformOrigin: "50% 56%"
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 960 - 560,
-              top: 560 - 560,
-              width: 1120,
-              height: 1120,
-              border: "1px solid rgba(47,227,255,.22)"
-            },
-            children: [
-              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Grid, { sizeX: 35, sizeY: 35, color: "rgba(47,227,255,.1)" }),
-              CELLS.map((c2, i) => {
-                const born = 20 + c2.d * 150;
-                const on = interpolate(frame, [born, born + 12], [0, 1], CLAMP);
-                if (on <= 0) return null;
-                return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-                  "div",
-                  {
-                    style: {
-                      position: "absolute",
-                      left: c2.cx * 70 + 2,
-                      top: c2.cy * 70 + 2,
-                      width: 8,
-                      height: 8,
-                      background: CYAN,
-                      opacity: on * (0.35 + 0.65 * c2.d),
-                      boxShadow: `0 0 ${6 + 10 * on}px rgba(47,227,255,.55)`
-                    }
-                  },
-                  i
-                );
-              })
-            ]
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-        "path",
-        {
-          d: "M160 420 L160 200 M160 420 L600 420",
-          stroke: "rgba(233,243,255,.28)",
-          strokeWidth: 1.5,
-          fill: "none"
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-        "path",
-        {
-          d: "M170 412 C260 404 330 372 380 320 C420 276 450 236 520 214",
-          fill: "none",
-          stroke: CYAN,
-          strokeWidth: 3,
-          pathLength: 1,
-          strokeDasharray: "1 1",
-          strokeDashoffset: 1 - curve
-        }
-      )
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Eyebrow, { text: "MOORE / GEOMETRIC SCALING", x: 120, y: 120, opacity: 0.75 }),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Label, { text: "\u6469\u5C14\u5B9A\u5F8B \xB7 \u51E0\u4F55\u7F29\u5FAE", x: 120, y: 152, size: 44, color: TEXT, weight: 700 }),
-    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
-      Label,
-      {
-        text: "\u6676\u4F53\u7BA1\u6570\u91CF \xD72 \uFF0F 18\u201324 \u4E2A\u6708",
-        x: 120,
-        y: 470,
-        size: 30,
-        color: "rgba(233,243,255,.66)",
-        opacity: label3
-      }
-    )
-  ] });
-};
-
-// src/film/scenes/Shot06.tsx
-var import_jsx_runtime72 = __toESM(require_jsx_runtime());
-var LATTICE = Array.from({ length: 11 * 6 }, (_, i) => ({
-  x: 260 + i % 11 * 128,
-  y: 300 + Math.floor(i / 11) * 120
-}));
-var Shot06 = () => {
-  const frame = useCurrentFrame();
-  const push = interpolate(frame, [0, 120], [1, 1.22], { ...CLAMP, easing: EASE_OUT });
-  const wall = interpolate(frame, [104, 124], [-700, 0], { ...CLAMP, easing: EASE_IN });
-  const hit = interpolate(frame, [124, 126, 132], [0, 1, 0], CLAMP);
-  const squash = interpolate(frame, [120, 150], [1, 0.42], { ...CLAMP, easing: EASE_IN });
-  const words = [150, 166, 182];
-  return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(Stage, { glow: 0.9, grid: 0.2, lightX: 960, lightY: 520 }),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          inset: 0,
-          transform: `scale(${push})`,
-          transformOrigin: "50% 58%"
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0, opacity: 0.75 }, children: [
-          LATTICE.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("g", { children: [
-            i % 11 !== 10 && /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("line", { x1: p.x, y1: p.y, x2: p.x + 128, y2: p.y, stroke: CYAN, strokeWidth: 1, opacity: 0.16 }),
-            i < 55 && /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("line", { x1: p.x, y1: p.y, x2: p.x, y2: p.y + 120, stroke: CYAN, strokeWidth: 1, opacity: 0.16 }),
-            /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("circle", { cx: p.x, cy: p.y, r: 7, fill: "rgba(47,227,255,.55)" })
-          ] }, i)),
-          [0, 1, 2].map((k) => {
-            const x = interpolate(frame, [0, 120], [300 + k * 90, 1300 + k * 60], CLAMP);
-            const y = 300 + k % 3 * 240;
-            return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("g", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("circle", { cx: x, cy: y, r: 14, fill: "#EAF8FF", opacity: 0.9 }),
-              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("circle", { cx: x, cy: y, r: 26, fill: "#EAF8FF", opacity: 0.12 })
-            ] }, k);
-          })
-        ] })
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 0,
-          height: 430,
-          transform: `translateY(${wall}px)`,
-          background: "linear-gradient(180deg, rgba(255,77,61,.42), rgba(255,77,61,.16) 62%, rgba(255,77,61,0))",
-          borderBottom: `2px solid ${RED}`,
-          boxShadow: `0 30px 90px rgba(255,77,61,${0.35 * (1 - Math.abs(wall) / 700)})`
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(AbsoluteFill, { style: { background: RED, opacity: hit * 0.18, mixBlendMode: "screen" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-      "svg",
-      {
-        width: 1920,
-        height: 1080,
-        style: { position: "absolute", inset: 0, transform: `scaleY(${squash})`, transformOrigin: "50% 470px" },
-        children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-          "path",
-          {
-            d: "M180 470 C320 460 420 420 520 380 C620 340 700 320 820 310",
-            fill: "none",
-            stroke: CYAN,
-            strokeWidth: 3,
-            opacity: 0.85
-          }
-        )
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(Eyebrow, { text: "ATOMIC SCALE / LIMIT", x: 120, y: 470, opacity: 0.7 }),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(Label, { text: "\u51E0\u4F55\u7F29\u5FAE\u649E\u5899", x: 120, y: 500, size: 40, color: TEXT, weight: 700 }),
-    ["\u7269\u7406\u6781\u9650", "\u6210\u672C", "\u5149\u523B"].map((w, i) => {
-      const o = interpolate(frame, [words[i], words[i] + 12], [0, 1], CLAMP);
-      const y = interpolate(frame, [words[i], words[i] + 12], [16, 0], { ...CLAMP, easing: EASE_OUT });
-      return /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 1180 + i * 210,
-            top: 520,
-            transform: `translateY(${y}px)`,
-            opacity: o,
-            fontSize: 34,
-            color: TEXT,
-            letterSpacing: 2,
-            padding: "10px 18px",
-            border: "1px solid rgba(255,77,61,.45)",
-            background: "rgba(255,77,61,.08)"
-          },
-          children: w
-        },
-        w
-      );
-    }),
-    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1180,
-          top: 596,
-          fontSize: 20,
-          color: MUTED,
-          opacity: interpolate(frame, [186, 200], [0, 0.8], CLAMP),
-          letterSpacing: 1
-        },
-        children: "\u4E09\u6761\u7EA6\u675F\u540C\u65F6\u6536\u7D27\uFF0C\u7EB3\u7C73\u5C3A\u5B50\u5931\u6548"
-      }
-    )
-  ] });
-};
-
-// src/film/scenes/Shot07.tsx
-var import_jsx_runtime73 = __toESM(require_jsx_runtime());
-var MONO_F = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
-var CHARGE = (() => {
-  const pts = [];
-  for (let i = 0; i <= 40; i++) {
-    const u = i / 40;
-    const x = 40 + u * 480;
-    const y = 185 - (1 - Math.exp(-u * 3.2)) * 140;
-    pts.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`);
-  }
-  return pts.join(" ");
-})();
-var FORMULA = ["\u03C4", " = ", "R", " \xD7 ", "C"];
-var Shot07 = () => {
-  const frame = useCurrentFrame();
-  const wire = interpolate(frame, [0, 24], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const pulse = interpolate(frame, [24, 70, 120], [260, 900, 1560], { ...CLAMP, easing: EASE_IN_OUT });
-  const charge = interpolate(frame, [70, 150], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const formula = interpolate(frame, [40, 90], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Stage, { glow: 0.95, grid: 0.6, lightX: 900, lightY: 430 }),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 240,
-          top: 378,
-          width: 760 * wire,
-          height: 4,
-          background: "linear-gradient(90deg, rgba(47,227,255,.25), rgba(47,227,255,.75))",
-          boxShadow: "0 0 18px rgba(47,227,255,.35)"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1e3,
-          top: 378,
-          width: 680 * wire,
-          height: 4,
-          background: "linear-gradient(90deg, rgba(47,227,255,.75), rgba(47,227,255,.2))",
-          boxShadow: "0 0 18px rgba(47,227,255,.35)"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-        "path",
-        {
-          d: "M560 380 L590 380 L604 352 L632 408 L660 352 L688 408 L716 352 L744 380 L770 380",
-          fill: "none",
-          stroke: "#E9F3FF",
-          strokeWidth: 3,
-          opacity: 0.9 * wire
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("line", { x1: 1010, y1: 332, x2: 1010, y2: 428, stroke: "#E9F3FF", strokeWidth: 4, opacity: 0.9 * wire }),
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("line", { x1: 1036, y1: 332, x2: 1036, y2: 428, stroke: "#E9F3FF", strokeWidth: 4, opacity: 0.9 * wire })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { position: "absolute", left: 640, top: 288, fontFamily: MONO_F, fontSize: 28, color: CYAN, opacity: wire * 0.9 }, children: "R" }),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", { style: { position: "absolute", left: 1014, top: 288, fontFamily: MONO_F, fontSize: 28, color: CYAN, opacity: wire * 0.9 }, children: "C" }),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: pulse,
-          top: 362,
-          width: 36,
-          height: 36,
-          borderRadius: 18,
-          background: "#EAF8FF",
-          boxShadow: "0 0 40px 12px rgba(47,227,255,.55)",
-          opacity: wire
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)("div", { style: { position: "absolute", left: 240, top: 520, display: "flex", alignItems: "baseline" }, children: [
-      FORMULA.map((ch, i) => /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-        "span",
-        {
-          style: {
-            fontFamily: MONO_F,
-            fontSize: ch === " = " || ch === " \xD7 " ? 80 : 112,
-            fontWeight: 700,
-            color: ch === "\u03C4" ? CYAN : TEXT,
-            opacity: interpolate(formula, [i * 0.16, i * 0.16 + 0.3], [0, 1], CLAMP),
-            textShadow: ch === "\u03C4" ? "0 0 60px rgba(47,227,255,.45)" : void 0
-          },
-          children: ch
-        },
-        i
-      )),
-      /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-        "span",
-        {
-          style: {
-            fontFamily: MONO_F,
-            fontSize: 42,
-            color: MUTED,
-            marginLeft: 22,
-            opacity: interpolate(formula, [0.8, 1], [0, 1], CLAMP)
-          },
-          children: "[s]"
-        }
-      )
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-      Label,
-      {
-        text: "\u4FE1\u53F7\u4ECE\u8DF3\u53D8\u5230\u7A33\u5B9A\uFF0C\u6240\u9700\u7684\u65F6\u95F4",
-        x: 244,
-        y: 676,
-        size: 28,
-        color: "rgba(233,243,255,.55)",
-        opacity: interpolate(frame, [80, 100], [0, 1], CLAMP)
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1140,
-          top: 556,
+          left: 680,
+          top: 812,
           width: 560,
-          height: 230,
-          border: "1px solid rgba(47,227,255,.2)",
-          opacity: interpolate(frame, [60, 80], [0, 1], CLAMP)
+          height: 8,
+          borderRadius: 4,
+          background: "rgba(237,242,255,.10)",
+          overflow: "hidden"
         },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Grid, { sizeX: 32, sizeY: 32, color: "rgba(47,227,255,.06)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("svg", { width: 560, height: 230, style: { position: "absolute", inset: 0 }, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
-            "path",
-            {
-              d: CHARGE,
-              fill: "none",
-              stroke: CYAN,
-              strokeWidth: 3,
-              pathLength: 1,
-              strokeDasharray: "1 1",
-              strokeDashoffset: 1 - charge,
-              style: { filter: "drop-shadow(0 0 10px rgba(47,227,255,.5))" }
-            }
-          ) })
-        ]
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(Eyebrow, { text: "RC DELAY / TIME CONSTANT", x: 1140, y: 790, opacity: 0.5 })
-  ] });
-};
-
-// src/film/scenes/Shot08.tsx
-var import_jsx_runtime74 = __toESM(require_jsx_runtime());
-var GATES = Array.from({ length: 14 * 8 }, (_, i) => ({
-  x: 520 + i % 14 * 68,
-  y: 320 + Math.floor(i / 14) * 62
-}));
-var PATH = "M440 376 H700 V556 H980 V700 H1240 V432 H1480";
-var Shot08 = () => {
-  const frame = useCurrentFrame();
-  const dieIn = interpolate(frame, [0, 18], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const route = interpolate(frame, [18, 110], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const dot = interpolate(frame, [104, 214], [1, 0], { ...CLAMP, easing: EASE_IN_OUT });
-  const label3 = interpolate(frame, [120, 145], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(Stage, { glow: 0.85, grid: 0.45, lightX: 960, lightY: 520 }),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0, opacity: dieIn }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("rect", { x: 340, y: 250, width: 1240, height: 580, fill: "rgba(9,16,24,.72)", stroke: "rgba(47,227,255,.28)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("g", { opacity: 0.5, children: [
-        Array.from({ length: 13 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("line", { x1: 380 + i * 96, y1: 260, x2: 380 + i * 96, y2: 820, stroke: "rgba(47,227,255,.07)" }, "v" + i)),
-        Array.from({ length: 7 }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("line", { x1: 345, y1: 300 + i * 80, x2: 1575, y2: 300 + i * 80, stroke: "rgba(47,227,255,.07)" }, "h" + i))
-      ] }),
-      [0, 1, 2, 3].map((i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsxs)("g", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("rect", { x: 372, y: 330 + i * 120, width: 70, height: 72, fill: "rgba(47,227,255,.12)", stroke: CYAN, strokeWidth: 1.2 }),
-        /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("rect", { x: 1478, y: 330 + i * 120, width: 70, height: 72, fill: "rgba(47,227,255,.12)", stroke: CYAN, strokeWidth: 1.2 })
-      ] }, "L" + i)),
-      GATES.map((g, i) => /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("rect", { x: g.x, y: g.y, width: 22, height: 22, fill: "rgba(233,243,255,.14)", stroke: "rgba(233,243,255,.28)", strokeWidth: 0.8 }, i)),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("path", { d: "M440 496 H860 V376 H1480", fill: "none", stroke: "rgba(233,243,255,.16)", strokeWidth: 2 }),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)("path", { d: "M440 736 H1080 V616 H1480", fill: "none", stroke: "rgba(233,243,255,.16)", strokeWidth: 2 }),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "path",
-        {
-          d: PATH,
-          fill: "none",
-          stroke: RED,
-          strokeWidth: 4,
-          pathLength: 1,
-          strokeDasharray: "1 1",
-          strokeDashoffset: 1 - route,
-          style: { filter: "drop-shadow(0 0 14px rgba(255,77,61,.55))" }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-        "path",
-        {
-          d: PATH,
-          fill: "none",
-          stroke: "#FFFFFF",
-          strokeWidth: 9,
-          strokeLinecap: "round",
-          pathLength: 1,
-          strokeDasharray: "0.006 1",
-          strokeDashoffset: dot,
-          opacity: 0.95,
-          style: { filter: "drop-shadow(0 0 18px rgba(255,150,140,.9))" }
-        }
-      )
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(Eyebrow, { text: "CRITICAL PATH", x: 120, y: 120, opacity: 0.72 }),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(Label, { text: "\u6700\u957F\u7684\u90A3\u6761\u8DEF\uFF0C\u51B3\u5B9A\u65F6\u949F\u9891\u7387", x: 120, y: 152, size: 42, color: TEXT, weight: 700 }),
-    /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1180,
-          top: 862,
-          fontFamily: '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace',
-          fontSize: 24,
-          letterSpacing: 2,
-          color: RED,
-          opacity: label3
-        },
-        children: "KEY PATH \xB7 DELAY MAX"
-      }
-    )
-  ] });
-};
-
-// src/film/scenes/Shot09.tsx
-var import_jsx_runtime75 = __toESM(require_jsx_runtime());
-var HALF_W = 900;
-var HALF_H = 260;
-var Shot09 = () => {
-  const frame = useCurrentFrame();
-  const fold = interpolate(frame, [34, 96], [0, -62], { ...CLAMP, easing: EASE_IN_OUT });
-  const enter = interpolate(frame, [0, 22], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const glow = interpolate(frame, [90, 110], [0, 1], CLAMP);
-  const zoom = interpolate(frame, [0, 210], [1, 1.06], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Stage, { glow: 0.9, grid: 0.4, lightX: 960, lightY: 520 }),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          inset: 0,
-          transform: `scale(${zoom})`,
-          transformOrigin: "50% 55%",
-          perspective: 1500
-        },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: 960 - HALF_W / 2,
-                top: 560,
-                width: HALF_W,
-                height: HALF_H,
-                border: `1px solid rgba(47,227,255,${0.45 * enter})`,
-                background: "rgba(8,14,20,.75)",
-                opacity: enter
-              },
-              children: [
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Grid, { sizeX: 45, sizeY: 45, color: "rgba(47,227,255,.12)" }),
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-                  "div",
-                  {
-                    style: {
-                      position: "absolute",
-                      inset: 0,
-                      backgroundImage: "linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.05))",
-                      opacity: Math.min(1, Math.abs(fold) / 62)
-                    }
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("svg", { width: HALF_W, height: HALF_H, style: { position: "absolute", inset: 0 }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-                    "path",
-                    {
-                      d: `M40 ${HALF_H - 70} H${HALF_W - 40}`,
-                      stroke: RED,
-                      strokeWidth: 5,
-                      fill: "none",
-                      strokeDasharray: "1 1",
-                      pathLength: 1,
-                      strokeDashoffset: 1 - interpolate(frame, [16, 60], [0, 1], CLAMP),
-                      style: { filter: "drop-shadow(0 0 12px rgba(255,77,61,.6))" }
-                    }
-                  ),
-                  /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("circle", { cx: HALF_W - 40, cy: HALF_H - 70, r: 7, fill: RED, opacity: 0.9 })
-                ] })
-              ]
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: 960 - HALF_W / 2,
-                top: 560 - HALF_H,
-                width: HALF_W,
-                height: HALF_H,
-                transformOrigin: "50% 100%",
-                transform: `rotateX(${fold}deg)`,
-                border: `1px solid rgba(47,227,255,${0.45 * enter})`,
-                background: "rgba(8,14,20,.75)",
-                opacity: enter
-              },
-              children: [
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Grid, { sizeX: 45, sizeY: 45, color: "rgba(47,227,255,.12)" }),
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-                  "div",
-                  {
-                    style: {
-                      position: "absolute",
-                      inset: 0,
-                      backgroundImage: "linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.05))",
-                      opacity: Math.min(1, Math.abs(fold) / 62)
-                    }
-                  }
-                ),
-                /* @__PURE__ */ (0, import_jsx_runtime75.jsxs)("svg", { width: HALF_W, height: HALF_H, style: { position: "absolute", inset: 0 }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-                    "path",
-                    {
-                      d: `M40 ${HALF_H - 70} H${HALF_W - 40}`,
-                      stroke: RED,
-                      strokeWidth: 5,
-                      fill: "none",
-                      strokeDasharray: "1 1",
-                      pathLength: 1,
-                      strokeDashoffset: 1 - interpolate(frame, [16, 60], [0, 1], CLAMP),
-                      style: { filter: "drop-shadow(0 0 12px rgba(255,77,61,.6))" }
-                    }
-                  ),
-                  /* @__PURE__ */ (0, import_jsx_runtime75.jsx)("circle", { cx: 40, cy: HALF_H - 70, r: 7, fill: RED, opacity: 0.9 })
-                ] })
-              ]
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: 960 - HALF_W / 2,
-                top: 558,
-                width: HALF_W,
-                height: 3,
-                background: `linear-gradient(90deg, transparent, ${CYAN}, transparent)`,
-                opacity: 0.35 + 0.65 * glow,
-                boxShadow: `0 0 ${40 * glow}px rgba(47,227,255,.6)`
-              }
-            }
-          )
-        ]
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Eyebrow, { text: "LOGIC FOLDING", x: 120, y: 120, opacity: 0.72 }),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Label, { text: "\u903B\u8F91\u6298\u53E0", x: 120, y: 152, size: 44, color: TEXT, weight: 700 }),
-    /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
-      Label,
-      {
-        text: "\u5173\u952E\u8DEF\u5F84\u4E0A\u7684\u903B\u8F91\u95E8\uFF0C\u5206\u5230\u4E0A\u4E0B\u4E24\u5C42",
-        x: 120,
-        y: 214,
-        size: 26,
-        color: "rgba(233,243,255,.55)",
-        opacity: interpolate(frame, [70, 90], [0, 1], CLAMP)
-      }
-    )
-  ] });
-};
-
-// src/film/scenes/Shot10.tsx
-var import_jsx_runtime76 = __toESM(require_jsx_runtime());
-var SLAB = { x: 420, w: 1080, h: 92 };
-var TOP_Y = 286;
-var BOT_Y = 606;
-var PILLARS = Array.from({ length: 6 }, (_, i) => 486 + i * 196);
-var Shot10 = () => {
-  const frame = useCurrentFrame();
-  const enter = interpolate(frame, [0, 26], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const dive = interpolate(frame, [104, 168], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const scale = 1 + dive * 0.22;
-  const shiftY = dive * 34;
-  return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Stage, { glow: 0.95, grid: 0.35, lightX: 960, lightY: 470 }),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          inset: 0,
-          transform: `scale(${scale}) translateY(${shiftY}px)`,
-          transformOrigin: "50% 62%"
-        },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: SLAB.x,
-                top: TOP_Y - (1 - enter) * 40,
-                width: SLAB.w,
-                height: SLAB.h,
-                opacity: enter,
-                background: "linear-gradient(180deg,#16232E,#0A121A 62%,#0D1720)",
-                border: `1px solid rgba(47,227,255,.42)`,
-                boxShadow: "0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)"
-              },
-              children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Grid, { inset: 12, sizeX: 26, sizeY: 26, color: "rgba(47,227,255,.13)" })
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: SLAB.x,
-                top: BOT_Y + (1 - enter) * 40,
-                width: SLAB.w,
-                height: SLAB.h,
-                opacity: enter,
-                background: "linear-gradient(180deg,#16232E,#0A121A 62%,#0D1720)",
-                border: `1px solid rgba(47,227,255,.42)`,
-                boxShadow: "0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)"
-              },
-              children: /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Grid, { inset: 12, sizeX: 26, sizeY: 26, color: "rgba(47,227,255,.13)" })
-            }
-          ),
-          PILLARS.map((x, i) => {
-            const on = interpolate(frame, [34 + i * 9, 54 + i * 9], [0, 1], { ...CLAMP, easing: EASE_OUT });
-            return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)("div", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    left: x - 13,
-                    top: TOP_Y + SLAB.h,
-                    width: 26,
-                    height: (BOT_Y - TOP_Y - SLAB.h) * on,
-                    background: `linear-gradient(180deg, ${CYAN}, rgba(47,227,255,.35))`,
-                    boxShadow: "0 0 22px rgba(47,227,255,.55)",
-                    opacity: on
-                  }
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    left: x - 30,
-                    top: TOP_Y + SLAB.h - 8,
-                    width: 60,
-                    height: 10,
-                    background: CYAN,
-                    opacity: 0.55 * on
-                  }
-                }
-              ),
-              /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-                "div",
-                {
-                  style: {
-                    position: "absolute",
-                    left: x - 30,
-                    top: BOT_Y - 2,
-                    width: 60,
-                    height: 10,
-                    background: CYAN,
-                    opacity: 0.55 * on
-                  }
-                }
-              )
-            ] }, x);
-          }),
-          /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: 420,
-                top: 468,
-                height: 2,
-                width: 360,
-                background: `linear-gradient(90deg, rgba(255,77,61,.0), rgba(255,77,61,.85))`,
-                opacity: interpolate(frame, [150, 175], [0, 0.9], CLAMP)
-              }
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                left: 800,
-                top: 440,
-                fontSize: 24,
-                color: MUTED,
-                letterSpacing: 1,
-                opacity: interpolate(frame, [150, 175], [0, 1], CLAMP)
-              },
-              children: "\u539F\u672C\u8981\u6A2A\u7A7F\u6574\u5C42\u7684\u8D70\u7EBF\uFF0C\u53EA\u5269\u8FD9\u4E00\u5C0F\u6BB5"
-            }
-          )
-        ]
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Eyebrow, { text: "CROSS SECTION / HYBRID BONDING", x: 120, y: 120, opacity: 0.7 }),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Label, { text: "\u5256\u9762\uFF1A\u4E0A\u4E0B\u4E24\u5C42\uFF0C\u5782\u76F4\u76F8\u8FDE", x: 120, y: 152, size: 40, color: TEXT, weight: 700 }),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      Label,
-      {
-        text: "\u5173\u952E\u8DEF\u5F84\u8D70\u7EBF \u2193",
-        x: 120,
-        y: 330,
-        size: 26,
-        color: "rgba(233,243,255,.55)",
-        opacity: interpolate(frame, [60, 80], [0, 1], CLAMP)
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      Label,
-      {
-        text: "\u5782\u76F4\u4E92\u8FDE \u2191",
-        x: 1580,
-        y: 520,
-        size: 26,
-        color: CYAN,
-        opacity: interpolate(frame, [70, 90], [0, 1], CLAMP)
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1660,
-          top: 800,
-          fontFamily: '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace',
-          fontSize: 20,
-          letterSpacing: 3,
-          color: "rgba(233,243,255,.3)"
-        },
-        children: "\u793A\u610F\u56FE"
-      }
-    )
-  ] });
-};
-
-// src/film/scenes/Shot11.tsx
-var import_jsx_runtime77 = __toESM(require_jsx_runtime());
-var MONO_F2 = '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace';
-var SIZE = 320;
-var Gauge = ({ cx, cy, value, label: label3, unit, accent = CYAN }) => {
-  const c2 = SIZE / 2;
-  const r = 118;
-  const start = -220;
-  const end = 40;
-  const angle = interpolate(value, [0, 1], [start, end], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("div", { style: { position: "absolute", left: cx - SIZE / 2, top: cy - SIZE / 2, width: SIZE, height: SIZE }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("svg", { width: SIZE, height: SIZE, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("circle", { cx: c2, cy: c2, r, fill: "none", stroke: "rgba(233,243,255,.1)", strokeWidth: 3 }),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "path",
-        {
-          d: `M ${c2 + r * Math.cos(start * Math.PI / 180)} ${c2 + r * Math.sin(start * Math.PI / 180)} A ${r} ${r} 0 1 1 ${c2 + r * Math.cos(end * Math.PI / 180)} ${c2 + r * Math.sin(end * Math.PI / 180)}`,
-          fill: "none",
-          stroke: accent,
-          strokeWidth: 3,
-          opacity: 0.5
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "line",
-        {
-          x1: c2,
-          y1: c2,
-          x2: c2 + (r - 14) * Math.cos(angle * Math.PI / 180),
-          y2: c2 + (r - 14) * Math.sin(angle * Math.PI / 180),
-          stroke: TEXT,
-          strokeWidth: 4,
-          strokeLinecap: "round",
-          style: { filter: `drop-shadow(0 0 10px ${accent}88)` }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("circle", { cx: c2, cy: c2, r: 7, fill: TEXT })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: c2 + 56,
-          textAlign: "center",
-          fontFamily: MONO_F2,
-          fontSize: 46,
-          fontWeight: 700,
-          color: accent === RED ? RED : TEXT
-        },
-        children: [
-          Math.round(value * 100),
-          "%"
-        ]
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: c2 + 112, textAlign: "center", fontSize: 24, color: "rgba(233,243,255,.62)" }, children: label3 }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("div", { style: { position: "absolute", left: 0, right: 0, top: c2 + 146, textAlign: "center", fontFamily: MONO_F2, fontSize: 15, letterSpacing: 2.4, color: MUTED }, children: unit })
-  ] });
-};
-var Shot11 = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const drop = (delay2, to) => interpolate(
-    spring({ frame: frame - delay2, fps, config: { damping: 16, mass: 0.7, stiffness: 90 } }),
-    [0, 1],
-    [1, to],
-    CLAMP
-  );
-  const len = drop(24, 0.38);
-  const rc = drop(36, 0.31);
-  const tau = drop(48, 0.27);
-  const rise = interpolate(frame, [120, 190], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Stage, { glow: 0.9, grid: 0.45, lightX: 900, lightY: 520 }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Gauge, { cx: 360, cy: 430, value: len, label: "\u8D70\u7EBF\u957F\u5EA6", unit: "WIRE LENGTH" }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Gauge, { cx: 720, cy: 430, value: rc, label: "\u5BC4\u751F RC", unit: "RC LOAD" }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Gauge, { cx: 1080, cy: 430, value: tau, label: "\u03C4", unit: "TIME CONSTANT", accent: RED }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)("svg", { width: 1920, height: 1080, style: { position: "absolute", inset: 0 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)("path", { d: "M1380 830 L1820 830 M1380 830 L1380 560", stroke: "rgba(233,243,255,.22)", strokeWidth: 1.4, fill: "none" }),
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-        "path",
-        {
-          d: "M1390 820 C1470 790 1530 730 1610 680 C1680 636 1740 600 1806 574",
-          fill: "none",
-          stroke: CYAN,
-          strokeWidth: 3,
-          pathLength: 1,
-          strokeDasharray: "1 1",
-          strokeDashoffset: 1 - rise,
-          style: { filter: "drop-shadow(0 0 16px rgba(47,227,255,.45))" }
-        }
-      )
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Label, { text: "\u9891\u7387 \u2191", x: 1640, y: 500, size: 34, color: CYAN, opacity: interpolate(frame, [130, 150], [0, 1], CLAMP) }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Eyebrow, { text: "\u03C4 DOWN / FREQUENCY UP", x: 120, y: 120, opacity: 0.72 }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Label, { text: "\u540C\u4E00\u5236\u7A0B\uFF0C\u66F4\u9AD8\u7684\u9891\u7387", x: 120, y: 152, size: 40, color: TEXT, weight: 700 }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 120,
-          top: 720,
-          fontSize: 26,
-          color: MUTED,
-          letterSpacing: 1,
-          opacity: interpolate(frame, [90, 115], [0, 1], CLAMP)
-        },
-        children: "\u5BFC\u7EBF\u77ED\u4E86\uFF0C\u7535\u5BB9\u5C0F\u4E86\uFF0C\u03C4 \u5C31\u5C0F\u4E86\u3002"
-      }
-    )
-  ] });
-};
-
-// src/film/scenes/Shot12.tsx
-var import_jsx_runtime78 = __toESM(require_jsx_runtime());
-var Die = ({ x, y, w, h, opacity }) => /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-  "div",
-  {
-    style: {
-      position: "absolute",
-      left: x,
-      top: y,
-      width: w,
-      height: h,
-      opacity,
-      background: "linear-gradient(160deg,#16232E,#0A121A 60%,#101B24)",
-      border: "1px solid rgba(47,227,255,.55)",
-      boxShadow: "0 18px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.1)"
-    },
-    children: /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Grid, { inset: 8, sizeX: 22, sizeY: 22, color: "rgba(47,227,255,.12)" })
-  }
-);
-var Shot12 = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const enter = interpolate(frame, [0, 20], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const x1 = spring({ frame: frame - 92, fps, config: { damping: 14, mass: 0.6, stiffness: 160 } });
-  const ribbon = interpolate(frame, [24, 100], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const eq = interpolate(frame, [110, 130], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "absolute", left: 180, top: 240, width: 700, height: 560, opacity: enter }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Die, { x: 130, y: 40, w: 420, h: 130, opacity: 0.95 }),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Die, { x: 130, y: 250, w: 420, h: 130, opacity: 0.95 }),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-        "div",
-        {
-          style: {
-            position: "absolute",
-            left: 130,
-            top: 178,
-            width: 420,
-            height: 64,
-            borderTop: "1px dashed rgba(233,243,255,.22)",
-            borderBottom: "1px dashed rgba(233,243,255,.22)"
-          }
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("svg", { width: 700, height: 560, style: { position: "absolute", inset: 0 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "line",
+        children: /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+          "div",
           {
-            x1: 280,
-            y1: 160,
-            x2: 280 + 160 * x1,
-            y2: 160 + 160 * x1,
-            stroke: RED,
-            strokeWidth: 10,
-            strokeLinecap: "round",
-            style: { filter: "drop-shadow(0 0 20px rgba(255,77,61,.6))" }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "line",
-          {
-            x1: 440,
-            y1: 160,
-            x2: 440 - 160 * x1,
-            y2: 160 + 160 * x1,
-            stroke: RED,
-            strokeWidth: 10,
-            strokeLinecap: "round",
-            style: { filter: "drop-shadow(0 0 20px rgba(255,77,61,.6))" }
+            style: {
+              width: "100%",
+              height: "100%",
+              background: `linear-gradient(90deg, ${CYAN}, #7FB3FF)`,
+              transformOrigin: "left center",
+              transform: `scaleX(${speed})`,
+              opacity: 0.9
+            }
           }
         )
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Label, { text: "\u4E24\u9897\u82AF\u7247\uFF0C\u5404\u81EA\u5B8C\u6574", x: 130, y: 430, size: 26, color: "rgba(233,243,255,.5)" })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("div", { style: { position: "absolute", left: 1040, top: 240, width: 760, height: 560, opacity: enter }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)("svg", { width: 760, height: 560, style: { position: "absolute", inset: 0 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "path",
-          {
-            d: "M80 150 H600 A70 70 0 0 1 600 290 H80",
-            fill: "none",
-            stroke: "#16242F",
-            strokeWidth: 46,
-            strokeLinecap: "round",
-            pathLength: 1,
-            strokeDasharray: "1 1",
-            strokeDashoffset: 1 - ribbon
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "path",
-          {
-            d: "M80 150 H600 A70 70 0 0 1 600 290 H80",
-            fill: "none",
-            stroke: CYAN,
-            strokeWidth: 2.4,
-            strokeLinecap: "round",
-            opacity: 0.75,
-            pathLength: 1,
-            strokeDasharray: "1 1",
-            strokeDashoffset: 1 - ribbon,
-            style: { filter: "drop-shadow(0 0 14px rgba(47,227,255,.5))" }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-          "path",
-          {
-            d: "M80 150 H600 A70 70 0 0 1 600 290 H80",
-            fill: "none",
-            stroke: "rgba(47,227,255,.35)",
-            strokeWidth: 1.2,
-            strokeDasharray: "6 10",
-            strokeLinecap: "round",
-            pathLength: 1,
-            strokeDashoffset: 1 - ribbon
-          }
-        )
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Label, { text: "\u4E00\u6B21\u6210\u578B\uFF0C\u4E2D\u95F4\u6CA1\u6709\u63A5\u7F1D", x: 80, y: 430, size: 26, color: "rgba(233,243,255,.5)" })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Eyebrow, { text: "\u2260 3D STACKING / = ONE CONTINUOUS DIE", x: 120, y: 120, opacity: 0.72 }),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Label, { text: "\u8FD9\u4E0D\u662F\u5806\u53E0\uFF0C\u662F\u6298\u53E0", x: 120, y: 152, size: 42, color: TEXT, weight: 700 }),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 180,
-          top: 700,
-          width: 700,
-          textAlign: "center",
-          fontSize: 40,
-          fontWeight: 700,
-          color: RED,
-          opacity: eq
-        },
-        children: "\u2260 3D \u5806\u53E0"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1040,
-          top: 700,
-          width: 760,
-          textAlign: "center",
-          fontSize: 40,
-          fontWeight: 700,
-          color: CYAN,
-          opacity: eq
-        },
-        children: "= \u4E00\u9897\u8FDE\u7EED\u7684\u6574\u4F53"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { position: "absolute", left: 920, top: 300, width: 1, height: 260, background: "rgba(233,243,255,.12)" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)("div", { style: { position: "absolute", left: 916, top: 300, width: 8, height: 8, borderRadius: 4, background: MUTED, opacity: 0.4 } })
-  ] });
-};
-
-// src/film/scenes/Shot13.tsx
-var import_jsx_runtime79 = __toESM(require_jsx_runtime());
-var LAYERS = [
-  { size: 520, label: "\u6676\u4F53\u7BA1 \xB7 \u76AE\u79D2", unit: "ps", y: 340 },
-  { size: 400, label: "\u7247\u5185\u4E92\u8FDE \xB7 \u7EB3\u79D2", unit: "ns", y: 420 },
-  { size: 288, label: "\u5185\u5B58\u8BBF\u95EE \xB7 \u7EB3\u79D2", unit: "ns", y: 500 },
-  { size: 186, label: "\u96C6\u7FA4\u4E92\u8054 \xB7 \u5FAE\u79D2", unit: "\u03BCs", y: 580 }
-];
-var Shot13 = () => {
-  const frame = useCurrentFrame();
-  const axis = interpolate(frame, [150, 200], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const settle = interpolate(frame, [190, 220], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Stage, { glow: 0.9, grid: 0.4, lightX: 820, lightY: 470 }),
-    LAYERS.map((l, i) => {
-      const on = interpolate(frame, [16 + i * 34, 46 + i * 34], [0, 1], { ...CLAMP, easing: EASE_OUT });
-      const edge = 820 + l.size / 2;
-      return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 820 - l.size / 2,
-              top: 470 - l.size / 2,
-              width: l.size,
-              height: l.size,
-              border: `1.5px solid rgba(47,227,255,${0.16 + 0.55 * on})`,
-              boxShadow: `0 0 ${50 * on}px rgba(47,227,255,${0.14 * on}) inset`,
-              opacity: 0.35 + 0.65 * on,
-              borderRadius: 6
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: edge,
-              top: l.y + 10,
-              width: 1160 - edge,
-              height: 1,
-              background: `linear-gradient(90deg, rgba(47,227,255,${0.7 * on}), rgba(47,227,255,${0.08 * on}))`
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 1166,
-              top: l.y - 8,
-              width: 8,
-              height: 8,
-              borderRadius: 4,
-              background: CYAN,
-              opacity: on
-            }
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          Label,
-          {
-            text: l.label,
-            x: 1192,
-            y: l.y - 20,
-            size: 30,
-            color: TEXT,
-            opacity: on
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 1192,
-              top: l.y + 20,
-              fontFamily: '"DIN Alternate","JetBrains Mono","Roboto Mono",monospace',
-              fontSize: 18,
-              letterSpacing: 3,
-              color: MUTED,
-              opacity: on
-            },
-            children: l.unit
-          }
-        )
-      ] }, l.label);
-    }),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 818,
-          top: 470 - 300 * axis,
-          width: 4,
-          height: 600 * axis,
-          background: `linear-gradient(180deg, transparent, ${CYAN}, transparent)`,
-          boxShadow: "0 0 30px rgba(47,227,255,.65)",
-          opacity: axis
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
       "div",
       {
         style: {
           position: "absolute",
           left: 640,
-          top: 744,
-          width: 360,
-          textAlign: "center",
-          fontSize: 30,
-          letterSpacing: 2,
-          color: CYAN,
-          opacity: settle
-        },
-        children: "\u4E00\u4E2A\u6307\u6807\uFF1A\u03C4"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Eyebrow, { text: "ps \u2192 ns \u2192 \u03BCs", x: 120, y: 120, opacity: 0.75 }),
-    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Label, { text: "\u6BCF\u4E00\u5C42\uFF0C\u90FD\u6709\u81EA\u5DF1\u7684 \u03C4", x: 120, y: 152, size: 40, color: TEXT, weight: 700 })
-  ] });
-};
-
-// src/film/scenes/Shot14.tsx
-var import_jsx_runtime80 = __toESM(require_jsx_runtime());
-var BARS = Array.from({ length: 26 }, (_, i) => i);
-var Shot14 = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const roll = interpolate(frame, [18, 58], [0, 381], { ...CLAMP, easing: EASE_OUT });
-  const cards = [12, 46, 80].map(
-    (d) => spring({ frame: frame - d, fps, config: { damping: 19, mass: 0.8, stiffness: 110 } })
-  );
-  return /* @__PURE__ */ (0, import_jsx_runtime80.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(Stage, { glow: 0.8, grid: 0.35, lightX: 1520, lightY: 480 }),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)("div", { style: { position: "absolute", left: 1240, top: 170, width: 540, height: 640, opacity: 0.5 }, children: BARS.map((i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: i % 6 * 88,
-          top: Math.floor(i / 6) * 148,
-          width: 62,
-          height: 126,
-          border: "1px solid rgba(47,227,255,.18)",
-          background: "rgba(47,227,255,.03)"
-        },
-        children: [0, 1, 2, 3].map((k) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: 8,
-              right: 8,
-              top: 12 + k * 28,
-              height: 2,
-              background: "rgba(47,227,255,.16)"
-            }
-          },
-          k
-        ))
-      },
-      i
-    )) }),
-    [
-      { x: 120, y: 190, title: "6 YEARS / 381 CHIPS", value: `${Math.round(roll)} \u6B3E`, note: "\u516D\u5E74\u91CF\u4EA7\uFF0C\u8986\u76D6\u5343\u884C\u767E\u4E1A" },
-      { x: 120, y: 418, title: "2026 AUTUMN", value: "\u9E92\u9E9F", note: "\u9996\u53D1\u903B\u8F91\u6298\u53E0" },
-      { x: 120, y: 646, title: "2031", value: "\u22481.4nm", note: "\u6676\u4F53\u7BA1\u5BC6\u5EA6\u7B49\u6548\u6C34\u5E73" }
-    ].map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          transform: `translateY(${(1 - cards[i]) * 46}px)`,
-          opacity: interpolate(cards[i], [0, 0.45], [0, 1], CLAMP)
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(StatCard, { x: c2.x, y: c2.y, w: 840, title: c2.title, value: c2.value, note: c2.note })
-      },
-      c2.title
-    )),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(Eyebrow, { text: "EVIDENCE / 2026 \u2192 2031", x: 120, y: 120, opacity: 0.72 }),
-    /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1e3,
           top: 800,
-          fontSize: 20,
-          color: "rgba(233,243,255,.34)",
-          opacity: interpolate(frame, [110, 130], [0, 1], CLAMP),
-          letterSpacing: 1
-        },
-        children: "\u6570\u636E\u53E3\u5F84\uFF1A\u534E\u4E3A\u516C\u5F00\u6F14\u8BB2\u4E0E\u5A92\u4F53\u62AB\u9732"
-      }
-    )
-  ] });
-};
-
-// src/film/scenes/Shot15.tsx
-var import_jsx_runtime81 = __toESM(require_jsx_runtime());
-var RINGS = [
-  { r: 200, label: "EDA \u5DE5\u5177", x: 556, y: 96, speed: 0.22 },
-  { r: 260, label: "\u826F\u7387\u4E0E\u65F6\u5E8F", x: 912, y: 418, speed: -0.16 },
-  { r: 320, label: "\u8DE8\u5C42 RC \u5F00\u9500", x: 470, y: 768, speed: 0.12 }
-];
-var Shot15 = () => {
-  const frame = useCurrentFrame();
-  const dim = interpolate(frame, [0, 24], [1, 0.42], CLAMP);
-  const note = interpolate(frame, [96, 118], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  return /* @__PURE__ */ (0, import_jsx_runtime81.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(Stage, { glow: 0.5, grid: 0.25, lightX: 620, lightY: 430 }),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)("div", { style: { position: "absolute", left: 620 - 150, top: 430 - 150, opacity: 0.55 }, children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(TauGlyph, { size: 300, progress: 1, color: CYAN, strokeWidth: 5, glow: 0.4 }) }),
-    RINGS.map((ring) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 620 - ring.r,
-          top: 430 - ring.r,
-          width: ring.r * 2,
-          height: ring.r * 2,
-          transform: `rotate(${frame * ring.speed}deg)`,
-          transformOrigin: "50% 50%"
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)("svg", { width: ring.r * 2, height: ring.r * 2, children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-          "circle",
-          {
-            cx: ring.r,
-            cy: ring.r,
-            r: ring.r - 2,
-            fill: "none",
-            stroke: CYAN,
-            strokeWidth: 1.4,
-            strokeDasharray: "10 18",
-            opacity: 0.3
-          }
-        ) })
-      },
-      ring.label
-    )),
-    RINGS.map((ring, i) => /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      Label,
-      {
-        text: ring.label,
-        x: ring.x,
-        y: ring.y,
-        size: 26,
-        color: "rgba(233,243,255,.62)",
-        opacity: interpolate(frame, [40 + i * 12, 60 + i * 12], [0, 1], CLAMP),
-        width: 420
-      },
-      ring.label
-    )),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 100,
-          top: 120,
+          fontFamily: '"DIN Alternate","JetBrains Mono",ui-monospace,monospace',
           fontSize: 22,
-          letterSpacing: 4,
-          color: MUTED,
+          color: CYAN,
           opacity: 0.7
         },
-        children: "STILL UNPROVEN"
+        children: "v"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(Label, { text: "\u4E0D\u662F\u7ED3\u8BBA\uFF0C\u662F\u8DEF\u7EBF", x: 100, y: 152, size: 40, color: TEXT, weight: 700, opacity: 0.8 }),
-    /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 1060,
-          top: 720,
-          fontSize: 24,
-          color: "rgba(233,243,255,.4)",
-          opacity: note,
-          letterSpacing: 1
-        },
-        children: "\u4E09\u4E2A\u73AF\u90FD\u8FD8\u6CA1\u70B9\u4EAE"
-      }
-    )
-  ] });
-};
-
-// src/film/scenes/Shot16.tsx
-var import_jsx_runtime82 = __toESM(require_jsx_runtime());
-var Shot16 = () => {
-  const frame = useCurrentFrame();
-  const expand = interpolate(frame, [0, 46], [0, 1], { ...CLAMP, easing: EASE_IN_OUT });
-  const band = interpolate(frame, [26, 76], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const quote = interpolate(frame, [62, 86], [0, 1], CLAMP);
-  const author = interpolate(frame, [80, 98], [0, 1], CLAMP);
-  const title = interpolate(frame, [112, 140], [0, 1], { ...CLAMP, easing: EASE_OUT });
-  const fade = interpolate(frame, [162, 194], [0, 1], CLAMP);
-  const pulse = interpolate(frame, [188, 210], [0.18, 0.55], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime82.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 960 - 160,
-          top: 430 - 160,
-          opacity: (1 - expand) * 0.95,
-          filter: `blur(${expand * 18}px)`,
-          transform: `scale(${1 + expand * 1.5})`
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(TauGlyph, { size: 320, progress: 1, color: CYAN, strokeWidth: 5, glow: 1.4 })
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 960 - 760 * band,
-          top: 462,
-          width: 1520 * band,
-          height: 2,
-          background: `linear-gradient(90deg, transparent, ${CYAN}, #EAF8FF, ${CYAN}, transparent)`,
-          boxShadow: "0 0 40px rgba(47,227,255,.55)",
-          opacity: band
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("div", { style: { position: "absolute", left: 132, top: 168, ...riseStyle(cap) }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 26 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 76, fontWeight: 600, color: TEXT, letterSpacing: 2 }, children: "\u63A8" }),
+        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 54, color: CYAN, opacity: 0.85 }, children: "\u2192" }),
+        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 76, fontWeight: 600, color: TEXT, letterSpacing: 2 }, children: "\u505C" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+        "div",
+        {
+          style: {
+            marginTop: 26,
+            fontSize: 27,
+            color: "rgba(237,242,255,.42)",
+            letterSpacing: 1,
+            ...riseStyle(cap2, 10)
+          },
+          children: "\u7ECF\u9A8C\uFF0C\u5148\u7ED9\u51FA\u4E00\u4E2A\u7B54\u6848"
         }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 268,
-          textAlign: "center",
-          fontSize: 44,
-          lineHeight: 1.6,
-          color: TEXT,
-          letterSpacing: 1.5,
-          opacity: quote
-        },
-        children: "\u201C\u03C4\u5B9A\u5F8B\u662F\u534E\u4E3A\u53EF\u4EE5\u9009\u62E9\u7684\u552F\u4E00\u4E00\u6761\u7A81\u56F4\u9053\u8DEF\u3002\u201D"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 348,
-          textAlign: "center",
-          fontSize: 26,
-          letterSpacing: 3,
-          color: MUTED,
-          opacity: author
-        },
-        children: "\u2014\u2014 \u4EFB\u6B63\u975E"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          top: 560,
-          textAlign: "center",
-          fontSize: 92,
-          fontWeight: 700,
-          letterSpacing: 8,
-          color: TEXT,
-          opacity: title
-        },
-        children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B"
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade } }),
-    /* @__PURE__ */ (0, import_jsx_runtime82.jsx)("div", { style: { position: "absolute", left: 960 - 22, top: 500, opacity: pulse }, children: /* @__PURE__ */ (0, import_jsx_runtime82.jsx)(TauGlyph, { size: 44, progress: 1, color: CYAN, strokeWidth: 7, glow: 1.2 }) })
+      )
+    ] })
   ] });
 };
 
-// src/score.ts
-var bust = "?v=3";
+// src/newton/score.ts
+var bust = "?v=1";
 var url2 = (file) => typeof document !== "undefined" ? new URL(file + bust, document.baseURI).href : staticFile(file);
-var SCORE_SRC = url2("score-sample.m4a");
-var IMPACT_SRC = url2("impact-open.wav");
-var BED_SRC = url2("score-bed.wav");
+var SAMPLE_SRC = url2("newton-sample.wav");
 
 // src/HelloWorld.tsx
-var import_jsx_runtime83 = __toESM(require_jsx_runtime());
-var Soundtrack = () => /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(import_jsx_runtime83.Fragment, { children: [
-  /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: SCORE_SRC, volume: (f) => interpolate(f, [296, 348], [1, 0], CLAMP) }),
-  /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: IMPACT_SRC, volume: 0.9 }),
-  /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 300, durationInFrames: 3120, name: "\u94FA\u5E95", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-    Audio2,
+var import_jsx_runtime70 = __toESM(require_jsx_runtime());
+var PreviewTag = () => {
+  const frame = useCurrentFrame();
+  const p = interpolate(frame, [256, 272], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+    "div",
     {
-      src: BED_SRC,
-      volume: (f) => interpolate(f, [0, 80], [0, 1], CLAMP) * interpolate(f, [2980, 3120], [1, 0], CLAMP)
+      style: {
+        position: "absolute",
+        right: 62,
+        top: 46,
+        fontFamily: '"DIN Alternate","JetBrains Mono",ui-monospace,monospace',
+        fontSize: 17,
+        letterSpacing: 4.5,
+        color: "rgba(237,242,255,.34)",
+        opacity: p,
+        pointerEvents: "none"
+      },
+      children: "\u6837\u7247 PREVIEW \xB7 10s"
     }
-  ) }),
-  [540, 990, 1695, 2805].map((from) => /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from, durationInFrames: 60, name: "\u8F6C\u573A\u649E\u51FB " + from, children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: IMPACT_SRC, volume: 0.3 }) }, from))
-] });
-var TauLaw = () => {
-  const frame = useCurrentFrame();
-  const fade = interpolate(frame, [3400, 3420], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", fontFamily: FONT, overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Soundtrack, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 0, durationInFrames: 345, name: "\u955C 1\u20132 \xB7 \u5C3A\u5B50\u4E0E\u7EB3\u7C73", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Opening, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 345, durationInFrames: 195, name: "\u955C 3 \xB7 \u65AD\u88C2", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot03, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 540, durationInFrames: 210, name: "\u955C 4 \xB7 \u03C4", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot04, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 750, durationInFrames: 240, name: "\u955C 5 \xB7 \u6469\u5C14", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot05, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 990, durationInFrames: 225, name: "\u955C 6 \xB7 \u7EA2\u5899", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot06, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 1215, durationInFrames: 240, name: "\u955C 7 \xB7 RC", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot07, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 1455, durationInFrames: 240, name: "\u955C 8 \xB7 \u5173\u952E\u8DEF\u5F84", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot08, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 1695, durationInFrames: 210, name: "\u955C 9 \xB7 \u6298\u53E0", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot09, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 1905, durationInFrames: 240, name: "\u955C 10 \xB7 \u5256\u9762", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot10, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2145, durationInFrames: 210, name: "\u955C 11 \xB7 \u6536\u76CA", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot11, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2355, durationInFrames: 210, name: "\u955C 12 \xB7 \u8FA8\u6790", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot12, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2565, durationInFrames: 240, name: "\u955C 13 \xB7 \u56DB\u5C42", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot13, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 2805, durationInFrames: 225, name: "\u955C 14 \xB7 \u8BC1\u636E", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot14, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 3030, durationInFrames: 180, name: "\u955C 15 \xB7 \u514B\u5236", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot15, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 3210, durationInFrames: 210, name: "\u955C 16 \xB7 \u6536\u675F", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Shot16, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: 240,
-          background: "linear-gradient(180deg, transparent, rgba(3,5,9,.86))",
-          pointerEvents: "none"
-        }
-      }
-    ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Subtitles, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
-  ] });
+  );
 };
-var TauLawSample = () => {
+var NewtonSample = () => {
   const frame = useCurrentFrame();
-  const fade = interpolate(frame, [288, 298], [0, 1], CLAMP);
-  return /* @__PURE__ */ (0, import_jsx_runtime83.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05070C", fontFamily: FONT, overflow: "hidden" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: SCORE_SRC, volume: (f) => interpolate(f, [284, 300], [1, 0], CLAMP) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Audio2, { src: IMPACT_SRC, volume: 0.95 }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Sequence, { from: 0, durationInFrames: 345, name: "\u955C 1\u20132", children: /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Opening, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
+  const fade = interpolate(frame, [SAMPLE_FRAMES - 12, SAMPLE_FRAMES], [0, 1], CLAMP);
+  return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(AbsoluteFill, { style: { backgroundColor: "#070B12", fontFamily: FONT, overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+      Audio2,
+      {
+        src: SAMPLE_SRC,
+        volume: (f) => interpolate(f, [0, 10, 286, 300], [0, 1, 1, 0], CLAMP)
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Sequence, { from: 0, durationInFrames: 240, name: "\u955C 1 \xB7 \u63D0\u95EE", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Shot01, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Sequence, { from: 240, durationInFrames: 60, name: "\u955C 2 \xB7 \u76F4\u89C9\uFF08\u524D 2s\uFF09", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Shot02, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
       "div",
       {
         style: {
@@ -57651,34 +55936,25 @@ var TauLawSample = () => {
         }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Subtitles, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Subtitles, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(PreviewTag, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
   ] });
 };
 
 // web/main.tsx
-var import_jsx_runtime84 = __toESM(require_jsx_runtime());
-var FILM = {
-  id: "TauLaw",
-  label: "\u6574\u7247",
-  component: TauLaw,
-  width: 1920,
-  height: 1080,
-  fps: FPS,
-  durationInFrames: TOTAL_FRAMES
-  // 3420 = 114.000s
-};
+var import_jsx_runtime71 = __toESM(require_jsx_runtime());
 var SAMPLE = {
-  id: "TauLawSample",
-  label: "\u7247\u5934\u6837\u7247",
-  component: TauLawSample,
+  id: "NewtonSample",
+  label: "\u5F00\u5934\u6837\u7247",
+  component: NewtonSample,
   width: 1920,
   height: 1080,
   fps: FPS,
   durationInFrames: SAMPLE_FRAMES
   // 300 = 10.000s
 };
-var COMPS = [FILM, SAMPLE];
+var COMPS = [SAMPLE];
 var PLANS = [
   { container: "mp4", videoCodec: "h264", audioCodec: "aac", note: "MP4 / H.264 + AAC\uFF08\u63A8\u8350\uFF09" },
   { container: "webm", videoCodec: "vp8", audioCodec: "opus", note: "WebM / VP8 + Opus\uFF08\u515C\u5E95\uFF09" }
@@ -57793,7 +56069,7 @@ var App = () => {
       setResult({
         url: URL.createObjectURL(blob),
         size: blob.size,
-        name: `\u97EC\u5B9A\u5F8B-${comp.durationInFrames > 600 ? "\u6574\u7247" : "\u7247\u5934\u6837\u7247"}.${plan.container}`
+        name: `\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B-${comp.label}.${plan.container}`
       });
       setProgress(100);
       setStatus("\u5B8C\u6210");
@@ -57809,7 +56085,7 @@ var App = () => {
     if (!isRunning || progress < 2 || elapsed < 1) return null;
     return Math.max(0, elapsed / progress * (100 - progress));
   }, [isRunning, progress, elapsed]);
-  return /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
     "main",
     {
       style: {
@@ -57820,22 +56096,22 @@ var App = () => {
         color: "#E9F3FF"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
           "div",
           {
             style: {
               fontSize: 12,
               letterSpacing: 3.4,
-              color: "#2FE3FF",
+              color: "#35E0FF",
               textTransform: "uppercase",
               marginBottom: 10
             },
-            children: "Tau Law \xB7 Film 01 \xB7 16 shots"
+            children: "Newton's First Law \xB7 Film 01 \xB7 12 shots"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("h1", { style: { fontSize: 31, margin: "0 0 10px", letterSpacing: 0.5, lineHeight: 1.3 }, children: "\u97EC\uFF08\u03C4\uFF09\u5B9A\u5F8B \xB7 \u6280\u672F\u8BB2\u89E3\u7247" }),
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("p", { style: { color: "rgba(233,243,255,.58)", margin: "0 0 18px", fontSize: 15, lineHeight: 1.8 }, children: "\u4E00\u628A\u91CF\u4E86\u516D\u5341\u5E74\u7684\u91D1\u5C5E\u5C3A\uFF0C\u5728 11.5 \u79D2\u5904\u6298\u65AD\uFF1B\u6B64\u540E\u8BB2\u7684\u90FD\u662F\u540C\u4E00\u4EF6\u4E8B\u2014\u2014\u628A\u4FE1\u53F7\u7B49\u5F85\u7684\u65F6\u95F4\u538B\u77ED\u3002" }),
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 14 }, children: COMPS.map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("h1", { style: { fontSize: 31, margin: "0 0 10px", letterSpacing: 0.5, lineHeight: 1.3 }, children: "\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B \xB7 \u5F00\u5934\u6837\u7247" }),
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("p", { style: { color: "rgba(233,243,255,.58)", margin: "0 0 18px", fontSize: 15, lineHeight: 1.8 }, children: "\u5982\u679C\u5730\u7403\u4E0A\u6240\u6709\u7684\u6469\u64E6\u7A81\u7136\u6D88\u5931\uFF0C\u4F60\u63A8\u51FA\u53BB\u7684\u7269\u4F53\u8FD8\u4F1A\u505C\u4E0B\u6765\u5417\uFF1F\u6837\u7247\u53EA\u505A\u300C\u63D0\u95EE\u300D\u548C\u300C\u76F4\u89C9\u300D\u4E24\u955C\uFF0C 10 \u79D2\u505C\u5728\u521A\u677E\u624B\u7684\u90A3\u4E00\u523B\u2014\u2014\u7B54\u6848\u7559\u7ED9\u5168\u7247\u3002" }),
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 14 }, children: COMPS.map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
           "button",
           {
             onClick: () => {
@@ -57849,8 +56125,8 @@ var App = () => {
               padding: "9px 16px",
               borderRadius: 8,
               cursor: isRunning ? "not-allowed" : "pointer",
-              border: i === compIndex ? "1px solid #2FE3FF" : "1px solid rgba(255,255,255,.14)",
-              background: i === compIndex ? "rgba(47,227,255,.12)" : "rgba(255,255,255,.03)",
+              border: i === compIndex ? "1px solid #35E0FF" : "1px solid rgba(255,255,255,.14)",
+              background: i === compIndex ? "rgba(53,224,255,.12)" : "rgba(255,255,255,.03)",
               color: "#E9F3FF",
               fontSize: 14
             },
@@ -57862,7 +56138,7 @@ var App = () => {
           },
           c2.id
         )) }),
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
           Player,
           {
             component: comp.component,
@@ -57889,7 +56165,7 @@ var App = () => {
           },
           comp.id
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
           "div",
           {
             style: {
@@ -57906,10 +56182,10 @@ var App = () => {
               "30 fps",
               `${comp.durationInFrames} \u5E27`,
               `${(comp.durationInFrames / comp.fps).toFixed(3)}s`,
-              "16 \u955C",
+              "\u5168\u7247 12 \u955C / 98.000s",
               "Noto Sans CJK",
               "\u542B\u914D\u4E50"
-            ].map((t) => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+            ].map((t) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
               "span",
               {
                 style: {
@@ -57924,24 +56200,24 @@ var App = () => {
             ))
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
           "section",
           {
             style: {
               marginTop: 22,
-              border: "1px solid rgba(47,227,255,.22)",
+              border: "1px solid rgba(53,224,255,.22)",
               borderRadius: 14,
               padding: 18,
-              background: "linear-gradient(180deg, rgba(47,227,255,.07), rgba(255,255,255,.015))"
+              background: "linear-gradient(180deg, rgba(53,224,255,.07), rgba(255,255,255,.015))"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("div", { style: { fontSize: 12.5, color: "rgba(233,243,255,.5)", letterSpacing: 1.4 }, children: "\u6D4F\u89C8\u5668\u5185\u51FA\u7247\uFF08WebCodecs\uFF0C\u4E0D\u7ECF\u8FC7\u5BB9\u5668 Chromium\uFF09" }),
-              /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("div", { style: { fontSize: 15.5, marginTop: 6, color: "rgba(233,243,255,.86)" }, children: plan ? plan.note : checked ? "\u8FD9\u53F0\u6D4F\u89C8\u5668\u6CA1\u6709\u53EF\u7528\u7684\u7F16\u7801\u7EC4\u5408" : "\u68C0\u6D4B\u4E2D\u2026" }),
-              issues.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("details", { style: { marginTop: 10, fontSize: 12.5, color: "rgba(233,243,255,.45)" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("summary", { style: { cursor: "pointer" }, children: "\u68C0\u6D4B\u8BE6\u60C5" }),
-                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("ul", { style: { paddingLeft: 18, lineHeight: 1.7 }, children: issues.map((i) => /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("li", { children: i }, i)) })
+              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 12.5, color: "rgba(233,243,255,.5)", letterSpacing: 1.4 }, children: "\u6D4F\u89C8\u5668\u5185\u51FA\u7247\uFF08WebCodecs\uFF0C\u4E0D\u7ECF\u8FC7\u5BB9\u5668 Chromium\uFF09" }),
+              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 15.5, marginTop: 6, color: "rgba(233,243,255,.86)" }, children: plan ? plan.note : checked ? "\u8FD9\u53F0\u6D4F\u89C8\u5668\u6CA1\u6709\u53EF\u7528\u7684\u7F16\u7801\u7EC4\u5408" : "\u68C0\u6D4B\u4E2D\u2026" }),
+              issues.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("details", { style: { marginTop: 10, fontSize: 12.5, color: "rgba(233,243,255,.45)" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("summary", { style: { cursor: "pointer" }, children: "\u68C0\u6D4B\u8BE6\u60C5" }),
+                /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("ul", { style: { paddingLeft: 18, lineHeight: 1.7 }, children: issues.map((i) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("li", { children: i }, i)) })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
                 "button",
                 {
                   onClick: start,
@@ -57956,13 +56232,13 @@ var App = () => {
                     borderRadius: 10,
                     border: "none",
                     color: "#04121f",
-                    background: plan ? "linear-gradient(90deg,#2FE3FF,#7FB3FF)" : "#39404f",
+                    background: plan ? "linear-gradient(90deg,#35E0FF,#7FB3FF)" : "#39404f",
                     cursor: plan && !isRunning ? "pointer" : "not-allowed"
                   },
                   children: isRunning ? "\u6E32\u67D3\u4E2D\u2026" : `\u6E32\u67D3\u300C${comp.label}\u300D${(comp.durationInFrames / comp.fps).toFixed(0)} \u79D2`
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
                 "div",
                 {
                   style: {
@@ -57974,15 +56250,15 @@ var App = () => {
                     color: "rgba(233,243,255,.6)"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { children: status }),
-                    /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("span", { style: { fontVariantNumeric: "tabular-nums" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("span", { children: status }),
+                    /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("span", { style: { fontVariantNumeric: "tabular-nums" }, children: [
                       elapsed > 0 ? `\u5DF2\u7528 ${fmt(elapsed)}s` : "",
                       eta !== null ? ` \xB7 \u7EA6\u5269 ${fmt(eta)}s` : ""
                     ] })
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
                 "div",
                 {
                   style: {
@@ -57992,20 +56268,20 @@ var App = () => {
                     background: "rgba(255,255,255,.1)",
                     overflow: "hidden"
                   },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+                  children: /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
                     "div",
                     {
                       style: {
                         width: `${progress}%`,
                         height: "100%",
-                        background: "linear-gradient(90deg,#2FE3FF,#7FB3FF)",
+                        background: "linear-gradient(90deg,#35E0FF,#7FB3FF)",
                         transition: "width .2s"
                       }
                     }
                   )
                 }
               ),
-              error2 && /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+              error2 && /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
                 "pre",
                 {
                   style: {
@@ -58021,8 +56297,8 @@ var App = () => {
                   children: error2
                 }
               ),
-              result && /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("div", { style: { marginTop: 16 }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)(
+              result && /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { marginTop: 16 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
                   "video",
                   {
                     src: result.url,
@@ -58031,12 +56307,12 @@ var App = () => {
                     style: { width: "100%", borderRadius: 10, background: "#000" }
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
                   "a",
                   {
                     href: result.url,
                     download: result.name,
-                    style: { display: "inline-block", marginTop: 10, color: "#2FE3FF", fontSize: 14 },
+                    style: { display: "inline-block", marginTop: 10, color: "#35E0FF", fontSize: 14 },
                     children: [
                       "\u4E0B\u8F7D ",
                       result.name,
@@ -58050,37 +56326,50 @@ var App = () => {
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)("section", { style: { marginTop: 26 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("div", { style: { fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }, children: "\u5206\u955C \xB7 16 \u955C / 3420 \u5E27 / 114.000s" }),
-          SHOTS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime84.jsxs)(
-            "div",
-            {
-              style: {
-                display: "grid",
-                gridTemplateColumns: "34px 128px 1fr 44px",
-                alignItems: "center",
-                gap: 8,
-                padding: "7px 0",
-                borderTop: "1px solid rgba(233,243,255,.07)",
-                fontSize: 13.5,
-                color: "rgba(233,243,255,.86)"
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("section", { style: { marginTop: 26 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }, children: "\u5206\u955C \xB7 \u5168\u7247 12 \u955C / 2940 \u5E27 / 98.000s\uFF08\u6837\u7247 = \u955C 1 + \u955C 2 \u524D 2s\uFF09" }),
+          SHOTS.map((s) => {
+            const done = s.to <= SAMPLE_FRAMES;
+            return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
+              "div",
+              {
+                style: {
+                  display: "grid",
+                  gridTemplateColumns: "34px 132px 1fr 44px",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "7px 0",
+                  borderTop: "1px solid rgba(233,243,255,.07)",
+                  fontSize: 13.5,
+                  color: done ? "rgba(233,243,255,.86)" : "rgba(233,243,255,.4)"
+                },
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.66 }, children: String(s.id).padStart(2, "0") }),
+                  /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.6 }, children: s.tc }),
+                  /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("span", { children: s.title }),
+                  /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+                    "span",
+                    {
+                      style: {
+                        fontSize: 11.5,
+                        textAlign: "right",
+                        color: done ? "#35E0FF" : "rgba(233,243,255,.28)"
+                      },
+                      children: done ? "\u5DF2\u51FA" : "\u5F85\u505A"
+                    }
+                  )
+                ]
               },
-              children: [
-                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.66 }, children: String(s.id).padStart(2, "0") }),
-                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.6 }, children: s.tc }),
-                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { children: s.title }),
-                /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("span", { style: { fontSize: 11.5, textAlign: "right", color: "#2FE3FF" }, children: "\u5DF2\u51FA" })
-              ]
-            },
-            s.id
-          ))
+              s.id
+            );
+          })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime84.jsx)("p", { style: { margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }, children: "\u6574\u7247\u6E32\u67D3\u8BF7\u63D2\u7535\u3001\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u522B\u9501\u5C4F\uFF1A1080p / 3420 \u5E27\uFF0C\u6309\u8FD9\u53F0\u624B\u673A\u7684\u7F16\u7801\u901F\u5EA6\u5927\u7EA6 25\u201345 \u5206\u949F\uFF1B\u7247\u5934 10 \u79D2\u6837\u7247\u53EA\u9700 2\u20134 \u5206\u949F\u3002\u4E2D\u9014\u5207\u540E\u53F0\u53EF\u80FD\u4E2D\u65AD\uFF0C\u91CD\u6765\u5373\u53EF\u3002" })
+        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("p", { style: { margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }, children: "\u6837\u7247\u53EA\u6709 300 \u5E27\uFF0C\u624B\u673A\u4E0A\u5927\u7EA6 1\u20132 \u5206\u949F\u51FA\u7247\uFF1B\u5168\u7247 2940 \u5E27\u53E6\u7B97\u3002 \u6E32\u67D3\u65F6\u8BF7\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u522B\u9501\u5C4F\uFF0C\u5207\u540E\u53F0\u53EF\u80FD\u4E2D\u65AD\uFF0C\u91CD\u6765\u5373\u53EF\u3002" })
       ]
     }
   );
 };
-(0, import_client2.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime84.jsx)(App, {}));
+(0, import_client2.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime71.jsx)(App, {}));
 /*! Bundled license information:
 
 react/cjs/react.production.js:
