@@ -55667,7 +55667,6 @@ var Shot02 = () => {
   const force = frame < 22 ? 1 : interpolate(frame, [22, 36], [1, 0], { ...CLAMP, easing: EASE_OUT });
   const speed = frame < 22 ? 1 : interpolate(frame, [22, 160], [1, 0], { ...CLAMP, easing: Easing.out(Easing.quad) });
   const cap = fadeIn(frame, 150, 12);
-  const cap2 = fadeIn(frame, 166, 12);
   const fingers = [0, 1, 2, 3];
   return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { backgroundColor: "#080D15", overflow: "hidden" }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
@@ -55858,26 +55857,11 @@ var Shot02 = () => {
         children: "v"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("div", { style: { position: "absolute", left: 132, top: 168, ...riseStyle(cap) }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 26 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 76, fontWeight: 600, color: TEXT, letterSpacing: 2 }, children: "\u63A8" }),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 54, color: CYAN, opacity: 0.85 }, children: "\u2192" }),
-        /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 76, fontWeight: 600, color: TEXT, letterSpacing: 2 }, children: "\u505C" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
-        "div",
-        {
-          style: {
-            marginTop: 26,
-            fontSize: 27,
-            color: "rgba(237,242,255,.42)",
-            letterSpacing: 1,
-            ...riseStyle(cap2, 10)
-          },
-          children: "\u7ECF\u9A8C\uFF0C\u5148\u7ED9\u51FA\u4E00\u4E2A\u7B54\u6848"
-        }
-      )
-    ] })
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { position: "absolute", left: 132, top: 168, ...riseStyle(cap) }, children: /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: 26 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 76, fontWeight: 600, color: TEXT, letterSpacing: 2 }, children: "\u63A8" }),
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 54, color: CYAN, opacity: 0.85 }, children: "\u2192" }),
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 76, fontWeight: 600, color: TEXT, letterSpacing: 2 }, children: "\u505C" })
+    ] }) })
   ] });
 };
 
