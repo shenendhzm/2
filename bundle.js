@@ -55113,13 +55113,55 @@ var SUBS = [
   { from: 3210, to: 3420, lines: ["\u5F53\u7A7A\u95F4\u8D70\u5230\u5C3D\u5934\uFF0C", "\u65F6\u95F4\uFF0C\u624D\u521A\u521A\u5F00\u59CB\u3002"] }
 ];
 
+// src/film/subtitles.ts
+var CPS = 5;
+var GAP = 3;
+var MIN = 18;
+var splitChunks = (text) => {
+  const raw = text.match(/[^，。；：、—]+[，。；：、—]*/g) ?? [text];
+  const merged = [];
+  let buf = "";
+  for (const part of raw) {
+    buf += part;
+    if (buf.length >= 10) {
+      merged.push(buf);
+      buf = "";
+    }
+  }
+  if (buf) merged.push(buf);
+  return merged.filter(Boolean);
+};
+var build = () => {
+  const cues = [];
+  SUBS.forEach((sub, index) => {
+    const whole = sub.lines.join("");
+    const chunks = index === SUBS.length - 1 ? [whole] : splitChunks(whole);
+    if (!chunks.length) return;
+    const window2 = sub.to - sub.from;
+    const raw = chunks.map((c2) => Math.max(MIN, Math.round(c2.length / CPS * FPS)));
+    const sum = raw.reduce((a2, b2) => a2 + b2, 0) + GAP * (chunks.length - 1);
+    const room = window2 - 4 - GAP * (chunks.length - 1);
+    const scale = sum > room ? room / (sum - GAP * (chunks.length - 1)) : 1;
+    let t = sub.from;
+    chunks.forEach((text, i) => {
+      const d = Math.max(MIN, Math.round(raw[i] * scale));
+      const to = Math.min(sub.to - 2, t + d);
+      cues.push({ from: t, to, text });
+      t = to + GAP;
+    });
+  });
+  return cues;
+};
+var CUES = build();
+
 // src/film/components/Subtitles.tsx
 var import_jsx_runtime63 = __toESM(require_jsx_runtime());
 var Subtitles = () => {
   const frame = useCurrentFrame();
-  const active = SUBS.find((s) => frame >= s.from && frame < s.to);
-  if (!active) return null;
-  const opacity = Math.min(fadeIn(frame, active.from, 8), fadeOut(frame, active.to - 8, 8));
+  const cue = CUES.find((c2) => frame >= c2.from && frame < c2.to);
+  if (!cue) return null;
+  const opacity = Math.min(fadeIn(frame, cue.from, 4), fadeOut(frame, cue.to - 4, 4));
+  const y = fadeIn(frame, cue.from, 5) * 6;
   return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
     "div",
     {
@@ -55129,29 +55171,27 @@ var Subtitles = () => {
         right: 0,
         bottom: 104,
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 6,
+        justifyContent: "center",
         opacity,
+        transform: `translateY(${6 - y}px)`,
         pointerEvents: "none"
       },
-      children: active.lines.map((line, i) => /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
+      children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(
         "div",
         {
           style: {
             fontFamily: FONT,
-            fontSize: 54,
-            lineHeight: 1.46,
+            fontSize: 56,
+            lineHeight: 1.4,
             fontWeight: 500,
             letterSpacing: 0.6,
             color: TEXT,
             textShadow: "0 2px 26px rgba(0,0,0,.92), 0 0 2px rgba(0,0,0,.95)",
             whiteSpace: "nowrap"
           },
-          children: line
-        },
-        i
-      ))
+          children: cue.text
+        }
+      )
     }
   );
 };
