@@ -57625,20 +57625,6 @@ var TauLaw = () => {
         }
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(
-      "div",
-      {
-        style: {
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: 240,
-          background: "linear-gradient(180deg, transparent, rgba(3,5,9,.86))",
-          pointerEvents: "none"
-        }
-      }
-    ),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(Subtitles, {}),
     /* @__PURE__ */ (0, import_jsx_runtime83.jsx)(AbsoluteFill, { style: { background: "#000", opacity: fade, pointerEvents: "none" } })
   ] });
