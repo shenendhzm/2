@@ -55091,7 +55091,7 @@ var SHOTS = [
   { id: 12, from: 2700, to: 2940, tc: "01:30\u201301:38", title: "\u91D1\u53E5\u4E0E\u7247\u540D" }
 ];
 var TOTAL_FRAMES = SHOTS[SHOTS.length - 1].to;
-var SAMPLE_FRAMES = 300;
+var SAMPLE_FRAMES = 450;
 var CUES = [
   { from: 0, to: 120, text: "\u5982\u679C\u5730\u7403\u4E0A\u6240\u6709\u7684\u6469\u64E6\uFF0C" },
   { from: 126, to: 240, text: "\u7A81\u7136\u6D88\u5931\uFF0C\u4F60\u63A8\u51FA\u53BB\u7684\u7269\u4F53\uFF0C\u8FD8\u4F1A\u505C\u4E0B\u6765\u5417\uFF1F" },
@@ -55667,6 +55667,7 @@ var Shot02 = () => {
   const force = frame < 22 ? 1 : interpolate(frame, [22, 36], [1, 0], { ...CLAMP, easing: EASE_OUT });
   const speed = frame < 22 ? 1 : interpolate(frame, [22, 160], [1, 0], { ...CLAMP, easing: Easing.out(Easing.quad) });
   const cap = fadeIn(frame, 150, 12);
+  const quote = fadeIn(frame, 158, 14);
   const fingers = [0, 1, 2, 3];
   return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(AbsoluteFill, { style: { backgroundColor: "#080D15", overflow: "hidden" }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
@@ -55861,7 +55862,19 @@ var Shot02 = () => {
       /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 76, fontWeight: 600, color: TEXT, letterSpacing: 2 }, children: "\u63A8" }),
       /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 54, color: CYAN, opacity: 0.85 }, children: "\u2192" }),
       /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("span", { style: { fontSize: 76, fontWeight: 600, color: TEXT, letterSpacing: 2 }, children: "\u505C" })
-    ] }) })
+    ] }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime69.jsx)("div", { style: { position: "absolute", left: 136, top: 300, ...riseStyle(quote, 12) }, children: /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+      "div",
+      {
+        style: {
+          fontSize: 34,
+          fontWeight: 500,
+          letterSpacing: 1.2,
+          color: "rgba(237,242,255,.56)"
+        },
+        children: "\u201C\u8FD0\u52A8\u9700\u8981\u529B\u6765\u7EF4\u6301\u201D"
+      }
+    ) })
   ] });
 };
 
@@ -55874,7 +55887,7 @@ var SAMPLE_SRC = url2("newton-sample.wav");
 var import_jsx_runtime70 = __toESM(require_jsx_runtime());
 var PreviewTag = () => {
   const frame = useCurrentFrame();
-  const p = interpolate(frame, [256, 272], [0, 1], CLAMP);
+  const p = interpolate(frame, [20, 36], [0, 1], CLAMP);
   return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
     "div",
     {
@@ -55889,7 +55902,7 @@ var PreviewTag = () => {
         opacity: p,
         pointerEvents: "none"
       },
-      children: "\u6837\u7247 PREVIEW \xB7 10s"
+      children: "\u6837\u7247 PREVIEW \xB7 15s"
     }
   );
 };
@@ -55901,11 +55914,11 @@ var NewtonSample = () => {
       Audio2,
       {
         src: SAMPLE_SRC,
-        volume: (f) => interpolate(f, [0, 10, 286, 300], [0, 1, 1, 0], CLAMP)
+        volume: (f) => interpolate(f, [0, 10, 436, 450], [0, 1, 1, 0], CLAMP)
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Sequence, { from: 0, durationInFrames: 240, name: "\u955C 1 \xB7 \u63D0\u95EE", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Shot01, {}) }),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Sequence, { from: 240, durationInFrames: 60, name: "\u955C 2 \xB7 \u76F4\u89C9\uFF08\u524D 2s\uFF09", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Shot02, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Sequence, { from: 240, durationInFrames: SAMPLE_FRAMES - 240, name: "\u955C 2 \xB7 \u76F4\u89C9\uFF08\u524D 7s\uFF09", children: /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Shot02, {}) }),
     /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
       "div",
       {
@@ -56255,12 +56268,21 @@ var SAMPLE = {
   height: 1080,
   fps: FPS,
   durationInFrames: SAMPLE_FRAMES,
-  // 300 = 10.000s
+  // 450 = 15.000s
   kicker: "Newton's First Law \xB7 Film 01 \xB7 12 shots",
-  title: "\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B \xB7 \u5F00\u5934\u6837\u7247",
-  blurb: "\u5982\u679C\u5730\u7403\u4E0A\u6240\u6709\u7684\u6469\u64E6\u7A81\u7136\u6D88\u5931\uFF0C\u4F60\u63A8\u51FA\u53BB\u7684\u7269\u4F53\u8FD8\u4F1A\u505C\u4E0B\u6765\u5417\uFF1F\u6837\u7247\u53EA\u505A\u300C\u63D0\u95EE\u300D\u548C\u300C\u76F4\u89C9\u300D\u4E24\u955C\uFF0C10 \u79D2\u505C\u5728\u521A\u677E\u624B\u7684\u90A3\u4E00\u523B\u2014\u2014\u7B54\u6848\u7559\u7ED9\u5168\u7247\u3002",
+  title: "\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B \xB7 15 \u79D2\u6837\u7247",
+  blurb: "\u5982\u679C\u5730\u7403\u4E0A\u6240\u6709\u7684\u6469\u64E6\u7A81\u7136\u6D88\u5931\uFF0C\u4F60\u63A8\u51FA\u53BB\u7684\u7269\u4F53\u8FD8\u4F1A\u505C\u4E0B\u6765\u5417\uFF1F15 \u79D2\u6837\u7247\u8D70\u5B8C\u300C\u63D0\u95EE\u300D\u4E0E\u300C\u76F4\u89C9\u300D\u4E24\u955C\uFF1A\u63A8\u3001\u677E\u624B\u3001\u6ED1\u884C\u3001\u505C\u2014\u2014\u6700\u540E\u843D\u5728\u90A3\u53E5\u300C\u8FD0\u52A8\u9700\u8981\u529B\u6765\u7EF4\u6301\u300D\u3002\u5168\u7247\u5C31\u4ECE\u63A8\u7FFB\u8FD9\u53E5\u8BDD\u5F00\u59CB\u3002",
   filePrefix: "\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B",
-  meta: ["1920\xD71080", "16:9", "30 fps", `${SAMPLE_FRAMES} \u5E27`, "10.000s", "\u5168\u7247 12 \u955C / 98.000s", "Noto Sans CJK", "\u542B\u914D\u4E50"]
+  meta: [
+    "1920\xD71080",
+    "16:9",
+    "30 fps",
+    `${SAMPLE_FRAMES} \u5E27`,
+    "15.000s",
+    "\u5168\u7247 12 \u955C / 98.000s",
+    "Noto Sans CJK",
+    "\u542B\u914D\u4E50"
+  ]
 };
 var COMPS = [VIBE, SAMPLE];
 var PLANS = [
@@ -56626,7 +56648,7 @@ var App = () => {
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("section", { style: { marginTop: 26 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }, children: "\u5206\u955C \xB7 \u5168\u7247 12 \u955C / 2940 \u5E27 / 98.000s\uFF08\u6837\u7247 = \u955C 1 + \u955C 2 \u524D 2s\uFF09" }),
+          /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }, children: "\u5206\u955C \xB7 \u5168\u7247 12 \u955C / 2940 \u5E27 / 98.000s\uFF08\u6837\u7247 = \u955C 1 + \u955C 2 \u524D 7s\uFF09" }),
           SHOTS.map((s) => {
             const done = s.to <= SAMPLE_FRAMES;
             return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(
@@ -56663,7 +56685,7 @@ var App = () => {
             );
           })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("p", { style: { margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }, children: "\u6837\u7247\u53EA\u6709 300 \u5E27\uFF0C\u624B\u673A\u4E0A\u5927\u7EA6 1\u20132 \u5206\u949F\u51FA\u7247\uFF1B\u5168\u7247 2940 \u5E27\u53E6\u7B97\u3002 \u6E32\u67D3\u65F6\u8BF7\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u522B\u9501\u5C4F\uFF0C\u5207\u540E\u53F0\u53EF\u80FD\u4E2D\u65AD\uFF0C\u91CD\u6765\u5373\u53EF\u3002" })
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("p", { style: { margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }, children: "\u6837\u7247 450 \u5E27\uFF0C\u624B\u673A\u4E0A\u5927\u7EA6 1\u20132 \u5206\u949F\u51FA\u7247\uFF1B\u5168\u7247 2940 \u5E27\u53E6\u7B97\u3002 \u6E32\u67D3\u65F6\u8BF7\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u522B\u9501\u5C4F\uFF0C\u5207\u540E\u53F0\u53EF\u80FD\u4E2D\u65AD\uFF0C\u91CD\u6765\u5373\u53EF\u3002" })
       ]
     }
   );
