@@ -7,31 +7,46 @@ import type {
   WebRendererContainer,
   WebRendererVideoCodec,
 } from "@remotion/web-renderer";
-import { TauLaw, TauLawSample } from "../src/HelloWorld";
-import { FPS, SAMPLE_FRAMES, SHOTS, TOTAL_FRAMES } from "../src/film/data";
+import { NewtonSample } from "../src/HelloWorld";
+import { VibeJam } from "../src/vibe/JamSample";
+import { FRAMES as VIBE_FRAMES, W as VIBE_W, H as VIBE_H } from "../src/vibe/jam";
+import { FPS, SAMPLE_FRAMES, SHOTS } from "../src/newton/data";
 
 /* ------------------------------------------------------------------ *
  * 出片页常量（与 src/Root.tsx 的合成参数一致）
  * ------------------------------------------------------------------ */
-const FILM = {
-  id: "TauLaw",
-  label: "整片",
-  component: TauLaw,
-  width: 1920,
-  height: 1080,
+const VIBE = {
+  id: "VibeJam",
+  label: "幽灵堵车",
+  component: VibeJam,
+  width: VIBE_W,
+  height: VIBE_H,
   fps: FPS,
-  durationInFrames: TOTAL_FRAMES, // 3420 = 114.000s
+  durationInFrames: VIBE_FRAMES, // 300 = 10.000s
+  kicker: "Vibe Knowledge · Traffic Ring · 46 cars",
+  title: "幽灵堵车 · 10 秒样片",
+  blurb:
+    "46 辆车跑在一条环形单行道上，没有红绿灯、没有人变道、没有事故。前 5 秒它们匀速行驶，第 5 秒起每个人开始「慢半拍」——拥堵就自己从车流里长了出来。",
+  filePrefix: "幽灵堵车",
+  meta: ["1920×1080", "16:9", "30 fps", "300 帧", "10.000s", "46 车 / 200 格", "Noto Sans CJK", "无配乐"],
 };
+
 const SAMPLE = {
-  id: "TauLawSample",
-  label: "片头样片",
-  component: TauLawSample,
+  id: "NewtonSample",
+  label: "牛顿样片",
+  component: NewtonSample,
   width: 1920,
   height: 1080,
   fps: FPS,
   durationInFrames: SAMPLE_FRAMES, // 300 = 10.000s
+  kicker: "Newton's First Law · Film 01 · 12 shots",
+  title: "牛顿第一定律 · 开头样片",
+  blurb:
+    "如果地球上所有的摩擦突然消失，你推出去的物体还会停下来吗？样片只做「提问」和「直觉」两镜，10 秒停在刚松手的那一刻——答案留给全片。",
+  filePrefix: "牛顿第一定律",
+  meta: ["1920×1080", "16:9", "30 fps", `${SAMPLE_FRAMES} 帧`, "10.000s", "全片 12 镜 / 98.000s", "Noto Sans CJK", "含配乐"],
 };
-const COMPS = [FILM, SAMPLE];
+const COMPS = [VIBE, SAMPLE];
 
 type Plan = {
   container: WebRendererContainer;
@@ -164,7 +179,7 @@ const App: React.FC = () => {
       setResult({
         url: URL.createObjectURL(blob),
         size: blob.size,
-        name: `韬定律-${comp.durationInFrames > 600 ? "整片" : "片头样片"}.${plan.container}`,
+        name: `${comp.filePrefix}-${comp.label}.${plan.container}`,
       });
       setProgress(100);
       setStatus("完成");
@@ -197,18 +212,18 @@ const App: React.FC = () => {
         style={{
           fontSize: 12,
           letterSpacing: 3.4,
-          color: "#2FE3FF",
+          color: "#35E0FF",
           textTransform: "uppercase",
           marginBottom: 10,
         }}
       >
-        Tau Law · Film 01 · 16 shots
+        {comp.kicker}
       </div>
       <h1 style={{ fontSize: 31, margin: "0 0 10px", letterSpacing: 0.5, lineHeight: 1.3 }}>
-        韬（τ）定律 · 技术讲解片
+        {comp.title}
       </h1>
       <p style={{ color: "rgba(233,243,255,.58)", margin: "0 0 18px", fontSize: 15, lineHeight: 1.8 }}>
-        一把量了六十年的金属尺，在 11.5 秒处折断；此后讲的都是同一件事——把信号等待的时间压短。
+        {comp.blurb}
       </p>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
@@ -226,8 +241,8 @@ const App: React.FC = () => {
               padding: "9px 16px",
               borderRadius: 8,
               cursor: isRunning ? "not-allowed" : "pointer",
-              border: i === compIndex ? "1px solid #2FE3FF" : "1px solid rgba(255,255,255,.14)",
-              background: i === compIndex ? "rgba(47,227,255,.12)" : "rgba(255,255,255,.03)",
+              border: i === compIndex ? "1px solid #35E0FF" : "1px solid rgba(255,255,255,.14)",
+              background: i === compIndex ? "rgba(53,224,255,.12)" : "rgba(255,255,255,.03)",
               color: "#E9F3FF",
               fontSize: 14,
             }}
@@ -272,16 +287,7 @@ const App: React.FC = () => {
           color: "rgba(233,243,255,.46)",
         }}
       >
-        {[
-          "1920×1080",
-          "16:9",
-          "30 fps",
-          `${comp.durationInFrames} 帧`,
-          `${(comp.durationInFrames / comp.fps).toFixed(3)}s`,
-          "16 镜",
-          "Noto Sans CJK",
-          "含配乐",
-        ].map((t) => (
+        {comp.meta.map((t) => (
           <span
             key={t}
             style={{
@@ -299,10 +305,10 @@ const App: React.FC = () => {
       <section
         style={{
           marginTop: 22,
-          border: "1px solid rgba(47,227,255,.22)",
+          border: "1px solid rgba(53,224,255,.22)",
           borderRadius: 14,
           padding: 18,
-          background: "linear-gradient(180deg, rgba(47,227,255,.07), rgba(255,255,255,.015))",
+          background: "linear-gradient(180deg, rgba(53,224,255,.07), rgba(255,255,255,.015))",
         }}
       >
         <div style={{ fontSize: 12.5, color: "rgba(233,243,255,.5)", letterSpacing: 1.4 }}>
@@ -336,7 +342,7 @@ const App: React.FC = () => {
             borderRadius: 10,
             border: "none",
             color: "#04121f",
-            background: plan ? "linear-gradient(90deg,#2FE3FF,#7FB3FF)" : "#39404f",
+            background: plan ? "linear-gradient(90deg,#35E0FF,#7FB3FF)" : "#39404f",
             cursor: plan && !isRunning ? "pointer" : "not-allowed",
           }}
         >
@@ -375,7 +381,7 @@ const App: React.FC = () => {
             style={{
               width: `${progress}%`,
               height: "100%",
-              background: "linear-gradient(90deg,#2FE3FF,#7FB3FF)",
+              background: "linear-gradient(90deg,#35E0FF,#7FB3FF)",
               transition: "width .2s",
             }}
           />
@@ -409,7 +415,7 @@ const App: React.FC = () => {
             <a
               href={result.url}
               download={result.name}
-              style={{ display: "inline-block", marginTop: 10, color: "#2FE3FF", fontSize: 14 }}
+              style={{ display: "inline-block", marginTop: 10, color: "#35E0FF", fontSize: 14 }}
             >
               下载 {result.name}（{(result.size / 1024 / 1024).toFixed(1)} MB）
             </a>
@@ -419,35 +425,46 @@ const App: React.FC = () => {
 
       <section style={{ marginTop: 26 }}>
         <div style={{ fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }}>
-          分镜 · 16 镜 / 3420 帧 / 114.000s
+          分镜 · 全片 12 镜 / 2940 帧 / 98.000s（样片 = 镜 1 + 镜 2 前 2s）
         </div>
-        {SHOTS.map((s) => (
-          <div
-            key={s.id}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "34px 128px 1fr 44px",
-              alignItems: "center",
-              gap: 8,
-              padding: "7px 0",
-              borderTop: "1px solid rgba(233,243,255,.07)",
-              fontSize: 13.5,
-              color: "rgba(233,243,255,.86)",
-            }}
-          >
-            <span style={{ fontFamily: "ui-monospace, monospace", opacity: 0.66 }}>
-              {String(s.id).padStart(2, "0")}
-            </span>
-            <span style={{ fontFamily: "ui-monospace, monospace", opacity: 0.6 }}>{s.tc}</span>
-            <span>{s.title}</span>
-            <span style={{ fontSize: 11.5, textAlign: "right", color: "#2FE3FF" }}>已出</span>
-          </div>
-        ))}
+        {SHOTS.map((s) => {
+          const done = s.to <= SAMPLE_FRAMES;
+          return (
+            <div
+              key={s.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "34px 132px 1fr 44px",
+                alignItems: "center",
+                gap: 8,
+                padding: "7px 0",
+                borderTop: "1px solid rgba(233,243,255,.07)",
+                fontSize: 13.5,
+                color: done ? "rgba(233,243,255,.86)" : "rgba(233,243,255,.4)",
+              }}
+            >
+              <span style={{ fontFamily: "ui-monospace, monospace", opacity: 0.66 }}>
+                {String(s.id).padStart(2, "0")}
+              </span>
+              <span style={{ fontFamily: "ui-monospace, monospace", opacity: 0.6 }}>{s.tc}</span>
+              <span>{s.title}</span>
+              <span
+                style={{
+                  fontSize: 11.5,
+                  textAlign: "right",
+                  color: done ? "#35E0FF" : "rgba(233,243,255,.28)",
+                }}
+              >
+                {done ? "已出" : "待做"}
+              </span>
+            </div>
+          );
+        })}
       </section>
 
       <p style={{ margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }}>
-        整片渲染请插电、保持本页在前台、别锁屏：1080p / 3420 帧，按这台手机的编码速度大约
-        25–45 分钟；片头 10 秒样片只需 2–4 分钟。中途切后台可能中断，重来即可。
+        样片只有 300 帧，手机上大约 1–2 分钟出片；全片 2940 帧另算。
+        渲染时请保持本页在前台、别锁屏，切后台可能中断，重来即可。
       </p>
     </main>
   );
