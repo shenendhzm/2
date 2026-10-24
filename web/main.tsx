@@ -33,7 +33,7 @@ const VIBE = {
 
 const SAMPLE = {
   id: "NewtonSample",
-  label: "牛顿样片",
+  label: "15s样片",
   component: NewtonSample,
   width: 1920,
   height: 1080,
