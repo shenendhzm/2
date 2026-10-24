@@ -56262,7 +56262,7 @@ var VIBE = {
 };
 var SAMPLE = {
   id: "NewtonSample",
-  label: "\u725B\u987F\u6837\u7247",
+  label: "15s\u6837\u7247",
   component: NewtonSample,
   width: 1920,
   height: 1080,
