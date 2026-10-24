@@ -12687,18 +12687,18 @@ function hashCode(str) {
   }
   return hash;
 }
-var random = (seed, dummy) => {
+var random = (seed2, dummy) => {
   if (dummy !== void 0) {
     throw new TypeError("random() takes only one argument");
   }
-  if (seed === null) {
+  if (seed2 === null) {
     return Math.random();
   }
-  if (typeof seed === "string") {
-    return mulberry32(hashCode(seed));
+  if (typeof seed2 === "string") {
+    return mulberry32(hashCode(seed2));
   }
-  if (typeof seed === "number") {
-    return mulberry32(seed * 1e10);
+  if (typeof seed2 === "number") {
+    return mulberry32(seed2 * 1e10);
   }
   throw new Error("random() argument must be a number or a string");
 };
@@ -55182,10 +55182,10 @@ var rOf = (u) => BALL_R0 * u;
 var xOf = (u, lateral = 0) => W / 2 + lateral * halfOf(u);
 var uAt = (t, speed = 0.62) => 1 / (1 + speed * Math.max(0, t));
 var SLEEPERS = Array.from({ length: 16 }, (_, i) => 1 / Math.pow(1.29, i));
-var mulberry322 = (seed) => () => {
-  seed |= 0;
-  seed = seed + 1831565813 | 0;
-  let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+var mulberry322 = (seed2) => () => {
+  seed2 |= 0;
+  seed2 = seed2 + 1831565813 | 0;
+  let t = Math.imul(seed2 ^ seed2 >>> 15, 1 | seed2);
   t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
   return ((t ^ t >>> 14) >>> 0) / 4294967296;
 };
@@ -55926,19 +55926,343 @@ var NewtonSample = () => {
   ] });
 };
 
-// web/main.tsx
+// src/vibe/jam.ts
+var W2 = 1920;
+var H2 = 1080;
+var FRAMES = 300;
+var RING_R = 300;
+var RING_CX = W2 / 2;
+var RING_CY = 566;
+var L = 200;
+var CARS = 46;
+var VMAX = 5;
+var STEP_FRAMES = 2;
+var SWITCH_FRAME = 150;
+var seed = 2008;
+var rnd = () => {
+  seed = seed * 1103515245 + 12345 & 2147483647;
+  return seed / 2147483647;
+};
+var states = [];
+{
+  const pos = [];
+  const v = [];
+  const occ = new Array(L).fill(-1);
+  for (let i = 0; i < CARS; i++) {
+    const c2 = Math.round(i * L / CARS);
+    pos.push(c2);
+    v.push(VMAX);
+    occ[c2] = i;
+  }
+  states.push({ pos: pos.slice(), v: v.slice() });
+  const steps = Math.ceil(FRAMES / STEP_FRAMES) + 1;
+  for (let s = 0; s < steps; s++) {
+    const p = s * STEP_FRAMES < SWITCH_FRAME ? 0.02 : 0.3;
+    const nv = new Array(CARS);
+    const np = new Array(CARS);
+    for (let i = 0; i < CARS; i++) {
+      let gap = 1;
+      for (let k = 1; k <= L; k++) {
+        const c2 = (pos[i] + k) % L;
+        if (occ[c2] >= 0) {
+          gap = k;
+          break;
+        }
+      }
+      let vi = Math.min(v[i] + 1, VMAX, gap - 1);
+      if (rnd() < p) vi = Math.max(0, vi - 1);
+      nv[i] = vi;
+      np[i] = (pos[i] + vi) % L;
+    }
+    occ.fill(-1);
+    for (let i = 0; i < CARS; i++) {
+      pos[i] = np[i];
+      v[i] = nv[i];
+      occ[pos[i]] = i;
+    }
+    states.push({ pos: pos.slice(), v: v.slice() });
+  }
+}
+var carsAt = (frame) => {
+  const f = Math.min(FRAMES - 1, Math.max(0, frame)) / STEP_FRAMES;
+  const k = Math.min(states.length - 2, Math.floor(f));
+  const a2 = f - k;
+  const s0 = states[k];
+  const s1 = states[k + 1];
+  const out = [];
+  for (let i = 0; i < CARS; i++) {
+    let p1 = s1.pos[i];
+    if (p1 < s0.pos[i] - L / 2) p1 += L;
+    const p = (s0.pos[i] * (1 - a2) + p1 * a2) % L;
+    const v = s0.v[i] * (1 - a2) + s1.v[i] * a2;
+    out.push({ angle: p / L * Math.PI * 2 - Math.PI / 2, speed: v });
+  }
+  return out;
+};
+var T = {
+  hookIn: 0,
+  hookOut: 84,
+  ringIn: 90,
+  ringFull: 118,
+  jamIn: 150,
+  nameIn: 236,
+  end: FRAMES
+};
+var COPY = {
+  hook: "\u5835\u8F66\uFF0C\u771F\u7684\u4E0D\u662F\u56E0\u4E3A\u8F66\u591A\u3002",
+  hookSub: "\u4E5F\u4E0D\u662F\u56E0\u4E3A\u524D\u9762\u51FA\u4E86\u4E8B\u6545\u3002",
+  cap1: "46 \u8F86\u8F66\uFF0C\u540C\u4E00\u4E2A\u73AF\u9053\uFF0C\u540C\u4E00\u5957\u89C4\u77E9\u3002",
+  cap2: "\u53EA\u662F\u6BCF\u4E2A\u4EBA\uFF0C\u90FD\u6162\u4E86\u534A\u62CD\u3002",
+  name: "\u5E7D\u7075\u5835\u8F66",
+  nameEn: "PHANTOM JAM \xB7 NAGOYA 2008",
+  chapter: "01 \xB7 \u73AF\u9053"
+};
+
+// src/vibe/JamSample.tsx
 var import_jsx_runtime71 = __toESM(require_jsx_runtime());
+var FONT2 = '"Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
+var MONO2 = '"JetBrains Mono","Roboto Mono",ui-monospace,"SF Mono",monospace';
+var TEXT2 = "#EDF2FF";
+var AMBER = [232, 177, 94];
+var RED = [255, 77, 77];
+var mix = (a2, b2, t) => `rgb(${Math.round(a2[0] + (b2[0] - a2[0]) * t)},${Math.round(a2[1] + (b2[1] - a2[1]) * t)},${Math.round(
+  a2[2] + (b2[2] - a2[2]) * t
+)})`;
+var CLAMP2 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" };
+var Ring = ({ opacity, scale }) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+  "div",
+  {
+    style: {
+      position: "absolute",
+      left: RING_CX - RING_R,
+      top: RING_CY - RING_R,
+      width: RING_R * 2,
+      height: RING_R * 2,
+      opacity,
+      transform: `scale(${scale})`
+    },
+    children: [RING_R * 2 - 26, RING_R * 2 + 26].map((size, i) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: (RING_R * 2 - size) / 2,
+          top: (RING_R * 2 - size) / 2,
+          width: size,
+          height: size,
+          borderRadius: "50%",
+          border: "1px solid rgba(150,168,196,.16)"
+        }
+      },
+      i
+    ))
+  }
+);
+var VibeJam = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const cars = carsAt(frame);
+  const hookIn = spring({ frame: frame - 4, fps, config: { damping: 200, mass: 0.7 } });
+  const hookOut = interpolate(frame, [T.hookOut - 10, T.hookOut], [1, 0], CLAMP2);
+  const hookY = interpolate(hookIn, [0, 1], [34, 0]);
+  const subIn = spring({ frame: frame - 40, fps, config: { damping: 200, mass: 0.7 } });
+  const ringA = interpolate(frame, [T.ringIn, T.ringFull], [0, 1], CLAMP2);
+  const ringS = interpolate(frame, [T.ringIn, T.ringFull + 16], [0.93, 1], CLAMP2);
+  const ringDim = interpolate(frame, [T.nameIn, T.nameIn + 24], [1, 0.45], CLAMP2);
+  const cap1 = interpolate(frame, [112, 126, 164, 176], [0, 1, 1, 0], CLAMP2);
+  const cap2 = interpolate(frame, [178, 192, 230, 240], [0, 1, 1, 0], CLAMP2);
+  const nameIn = spring({ frame: frame - T.nameIn, fps, config: { damping: 200, mass: 0.8 } });
+  return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(AbsoluteFill, { style: { backgroundColor: "#05060A", fontFamily: FONT2, overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(60% 58% at 50% 52%, rgba(38,44,60,.55) 0%, rgba(10,12,18,.25) 45%, rgba(5,6,10,0) 72%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(75% 70% at 50% 50%, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 64,
+          top: 48,
+          fontFamily: MONO2,
+          fontSize: 19,
+          letterSpacing: 8,
+          color: "rgba(200,214,236,.42)"
+        },
+        children: COPY.chapter
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          right: 64,
+          top: 48,
+          fontFamily: MONO2,
+          fontSize: 17,
+          letterSpacing: 6,
+          color: "rgba(200,214,236,.26)"
+        },
+        children: "SAMPLE 05 \xB7 10s"
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(Ring, { opacity: ringA * 0.9, scale: ringS }),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { position: "absolute", inset: 0, opacity: ringA * ringDim }, children: cars.map((car, i) => {
+      const x = RING_CX + Math.cos(car.angle) * RING_R;
+      const y = RING_CY + Math.sin(car.angle) * RING_R;
+      const t = Math.max(0, Math.min(1, car.speed / 5));
+      const c2 = mix(RED, AMBER, t);
+      const stopped = car.speed < 0.6;
+      return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: x - 10,
+            top: y - 4.5,
+            width: 20,
+            height: 9,
+            borderRadius: 4.5,
+            background: c2,
+            transform: `rotate(${car.angle * 180 / Math.PI + 90}deg)`,
+            boxShadow: stopped ? `0 0 22px rgba(255,77,77,.85), 0 0 46px rgba(255,77,77,.35)` : `0 0 12px ${c2}66`,
+            opacity: 0.72 + 0.28 * (1 - t)
+          }
+        },
+        i
+      );
+    }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          width: "100%",
+          top: 452,
+          textAlign: "center",
+          opacity: Math.max(0, hookIn * hookOut),
+          transform: `translateY(${hookY}px)`
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 96, fontWeight: 700, letterSpacing: 2, color: TEXT2 }, children: COPY.hook })
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          width: "100%",
+          top: 588,
+          textAlign: "center",
+          opacity: Math.max(0, subIn * hookOut) * 0.8
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 44, letterSpacing: 1, color: "rgba(224,232,246,.86)" }, children: COPY.hookSub })
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          width: "100%",
+          bottom: 74,
+          textAlign: "center",
+          opacity: cap1
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 34, letterSpacing: 1.5, color: "rgba(236,242,252,.9)" }, children: COPY.cap1 })
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          width: "100%",
+          bottom: 74,
+          textAlign: "center",
+          opacity: cap2
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 38, letterSpacing: 1.5, color: "rgba(236,242,252,.95)" }, children: COPY.cap2 })
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          width: "100%",
+          top: RING_CY - 86,
+          textAlign: "center",
+          opacity: nameIn,
+          transform: `translateY(${interpolate(nameIn, [0, 1], [18, 0])}px)`
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 84, fontWeight: 700, letterSpacing: 10, color: TEXT2 }, children: COPY.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+            "div",
+            {
+              style: {
+                marginTop: 18,
+                fontFamily: MONO2,
+                fontSize: 17,
+                letterSpacing: 7,
+                color: "rgba(232,177,94,.86)"
+              },
+              children: COPY.nameEn
+            }
+          )
+        ]
+      }
+    )
+  ] });
+};
+
+// web/main.tsx
+var import_jsx_runtime72 = __toESM(require_jsx_runtime());
+var VIBE = {
+  id: "VibeJam",
+  label: "\u5E7D\u7075\u5835\u8F66",
+  component: VibeJam,
+  width: W2,
+  height: H2,
+  fps: FPS,
+  durationInFrames: FRAMES,
+  // 300 = 10.000s
+  kicker: "Vibe Knowledge \xB7 Traffic Ring \xB7 46 cars",
+  title: "\u5E7D\u7075\u5835\u8F66 \xB7 10 \u79D2\u6837\u7247",
+  blurb: "46 \u8F86\u8F66\u8DD1\u5728\u4E00\u6761\u73AF\u5F62\u5355\u884C\u9053\u4E0A\uFF0C\u6CA1\u6709\u7EA2\u7EFF\u706F\u3001\u6CA1\u6709\u4EBA\u53D8\u9053\u3001\u6CA1\u6709\u4E8B\u6545\u3002\u524D 5 \u79D2\u5B83\u4EEC\u5300\u901F\u884C\u9A76\uFF0C\u7B2C 5 \u79D2\u8D77\u6BCF\u4E2A\u4EBA\u5F00\u59CB\u300C\u6162\u534A\u62CD\u300D\u2014\u2014\u62E5\u5835\u5C31\u81EA\u5DF1\u4ECE\u8F66\u6D41\u91CC\u957F\u4E86\u51FA\u6765\u3002",
+  filePrefix: "\u5E7D\u7075\u5835\u8F66",
+  meta: ["1920\xD71080", "16:9", "30 fps", "300 \u5E27", "10.000s", "46 \u8F66 / 200 \u683C", "Noto Sans CJK", "\u65E0\u914D\u4E50"]
+};
 var SAMPLE = {
   id: "NewtonSample",
-  label: "\u5F00\u5934\u6837\u7247",
+  label: "\u725B\u987F\u6837\u7247",
   component: NewtonSample,
   width: 1920,
   height: 1080,
   fps: FPS,
-  durationInFrames: SAMPLE_FRAMES
+  durationInFrames: SAMPLE_FRAMES,
   // 300 = 10.000s
+  kicker: "Newton's First Law \xB7 Film 01 \xB7 12 shots",
+  title: "\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B \xB7 \u5F00\u5934\u6837\u7247",
+  blurb: "\u5982\u679C\u5730\u7403\u4E0A\u6240\u6709\u7684\u6469\u64E6\u7A81\u7136\u6D88\u5931\uFF0C\u4F60\u63A8\u51FA\u53BB\u7684\u7269\u4F53\u8FD8\u4F1A\u505C\u4E0B\u6765\u5417\uFF1F\u6837\u7247\u53EA\u505A\u300C\u63D0\u95EE\u300D\u548C\u300C\u76F4\u89C9\u300D\u4E24\u955C\uFF0C10 \u79D2\u505C\u5728\u521A\u677E\u624B\u7684\u90A3\u4E00\u523B\u2014\u2014\u7B54\u6848\u7559\u7ED9\u5168\u7247\u3002",
+  filePrefix: "\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B",
+  meta: ["1920\xD71080", "16:9", "30 fps", `${SAMPLE_FRAMES} \u5E27`, "10.000s", "\u5168\u7247 12 \u955C / 98.000s", "Noto Sans CJK", "\u542B\u914D\u4E50"]
 };
-var COMPS = [SAMPLE];
+var COMPS = [VIBE, SAMPLE];
 var PLANS = [
   { container: "mp4", videoCodec: "h264", audioCodec: "aac", note: "MP4 / H.264 + AAC\uFF08\u63A8\u8350\uFF09" },
   { container: "webm", videoCodec: "vp8", audioCodec: "opus", note: "WebM / VP8 + Opus\uFF08\u515C\u5E95\uFF09" }
@@ -56053,7 +56377,7 @@ var App = () => {
       setResult({
         url: URL.createObjectURL(blob),
         size: blob.size,
-        name: `\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B-${comp.label}.${plan.container}`
+        name: `${comp.filePrefix}-${comp.label}.${plan.container}`
       });
       setProgress(100);
       setStatus("\u5B8C\u6210");
@@ -56069,7 +56393,7 @@ var App = () => {
     if (!isRunning || progress < 2 || elapsed < 1) return null;
     return Math.max(0, elapsed / progress * (100 - progress));
   }, [isRunning, progress, elapsed]);
-  return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(
     "main",
     {
       style: {
@@ -56080,7 +56404,7 @@ var App = () => {
         color: "#E9F3FF"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
           "div",
           {
             style: {
@@ -56090,12 +56414,12 @@ var App = () => {
               textTransform: "uppercase",
               marginBottom: 10
             },
-            children: "Newton's First Law \xB7 Film 01 \xB7 12 shots"
+            children: comp.kicker
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("h1", { style: { fontSize: 31, margin: "0 0 10px", letterSpacing: 0.5, lineHeight: 1.3 }, children: "\u725B\u987F\u7B2C\u4E00\u5B9A\u5F8B \xB7 \u5F00\u5934\u6837\u7247" }),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("p", { style: { color: "rgba(233,243,255,.58)", margin: "0 0 18px", fontSize: 15, lineHeight: 1.8 }, children: "\u5982\u679C\u5730\u7403\u4E0A\u6240\u6709\u7684\u6469\u64E6\u7A81\u7136\u6D88\u5931\uFF0C\u4F60\u63A8\u51FA\u53BB\u7684\u7269\u4F53\u8FD8\u4F1A\u505C\u4E0B\u6765\u5417\uFF1F\u6837\u7247\u53EA\u505A\u300C\u63D0\u95EE\u300D\u548C\u300C\u76F4\u89C9\u300D\u4E24\u955C\uFF0C 10 \u79D2\u505C\u5728\u521A\u677E\u624B\u7684\u90A3\u4E00\u523B\u2014\u2014\u7B54\u6848\u7559\u7ED9\u5168\u7247\u3002" }),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 14 }, children: COMPS.map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("h1", { style: { fontSize: 31, margin: "0 0 10px", letterSpacing: 0.5, lineHeight: 1.3 }, children: comp.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("p", { style: { color: "rgba(233,243,255,.58)", margin: "0 0 18px", fontSize: 15, lineHeight: 1.8 }, children: comp.blurb }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { display: "flex", gap: 8, marginBottom: 14 }, children: COMPS.map((c2, i) => /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(
           "button",
           {
             onClick: () => {
@@ -56122,7 +56446,7 @@ var App = () => {
           },
           c2.id
         )) }),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
           Player,
           {
             component: comp.component,
@@ -56149,7 +56473,7 @@ var App = () => {
           },
           comp.id
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
           "div",
           {
             style: {
@@ -56160,16 +56484,7 @@ var App = () => {
               fontSize: 12.5,
               color: "rgba(233,243,255,.46)"
             },
-            children: [
-              "1920\xD71080",
-              "16:9",
-              "30 fps",
-              `${comp.durationInFrames} \u5E27`,
-              `${(comp.durationInFrames / comp.fps).toFixed(3)}s`,
-              "\u5168\u7247 12 \u955C / 98.000s",
-              "Noto Sans CJK",
-              "\u542B\u914D\u4E50"
-            ].map((t) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+            children: comp.meta.map((t) => /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
               "span",
               {
                 style: {
@@ -56184,7 +56499,7 @@ var App = () => {
             ))
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(
           "section",
           {
             style: {
@@ -56195,13 +56510,13 @@ var App = () => {
               background: "linear-gradient(180deg, rgba(53,224,255,.07), rgba(255,255,255,.015))"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 12.5, color: "rgba(233,243,255,.5)", letterSpacing: 1.4 }, children: "\u6D4F\u89C8\u5668\u5185\u51FA\u7247\uFF08WebCodecs\uFF0C\u4E0D\u7ECF\u8FC7\u5BB9\u5668 Chromium\uFF09" }),
-              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 15.5, marginTop: 6, color: "rgba(233,243,255,.86)" }, children: plan ? plan.note : checked ? "\u8FD9\u53F0\u6D4F\u89C8\u5668\u6CA1\u6709\u53EF\u7528\u7684\u7F16\u7801\u7EC4\u5408" : "\u68C0\u6D4B\u4E2D\u2026" }),
-              issues.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("details", { style: { marginTop: 10, fontSize: 12.5, color: "rgba(233,243,255,.45)" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("summary", { style: { cursor: "pointer" }, children: "\u68C0\u6D4B\u8BE6\u60C5" }),
-                /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("ul", { style: { paddingLeft: 18, lineHeight: 1.7 }, children: issues.map((i) => /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("li", { children: i }, i)) })
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { fontSize: 12.5, color: "rgba(233,243,255,.5)", letterSpacing: 1.4 }, children: "\u6D4F\u89C8\u5668\u5185\u51FA\u7247\uFF08WebCodecs\uFF0C\u4E0D\u7ECF\u8FC7\u5BB9\u5668 Chromium\uFF09" }),
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { fontSize: 15.5, marginTop: 6, color: "rgba(233,243,255,.86)" }, children: plan ? plan.note : checked ? "\u8FD9\u53F0\u6D4F\u89C8\u5668\u6CA1\u6709\u53EF\u7528\u7684\u7F16\u7801\u7EC4\u5408" : "\u68C0\u6D4B\u4E2D\u2026" }),
+              issues.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("details", { style: { marginTop: 10, fontSize: 12.5, color: "rgba(233,243,255,.45)" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("summary", { style: { cursor: "pointer" }, children: "\u68C0\u6D4B\u8BE6\u60C5" }),
+                /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("ul", { style: { paddingLeft: 18, lineHeight: 1.7 }, children: issues.map((i) => /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("li", { children: i }, i)) })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
                 "button",
                 {
                   onClick: start,
@@ -56222,7 +56537,7 @@ var App = () => {
                   children: isRunning ? "\u6E32\u67D3\u4E2D\u2026" : `\u6E32\u67D3\u300C${comp.label}\u300D${(comp.durationInFrames / comp.fps).toFixed(0)} \u79D2`
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(
                 "div",
                 {
                   style: {
@@ -56234,15 +56549,15 @@ var App = () => {
                     color: "rgba(233,243,255,.6)"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("span", { children: status }),
-                    /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("span", { style: { fontVariantNumeric: "tabular-nums" }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { children: status }),
+                    /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("span", { style: { fontVariantNumeric: "tabular-nums" }, children: [
                       elapsed > 0 ? `\u5DF2\u7528 ${fmt(elapsed)}s` : "",
                       eta !== null ? ` \xB7 \u7EA6\u5269 ${fmt(eta)}s` : ""
                     ] })
                   ]
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
                 "div",
                 {
                   style: {
@@ -56252,7 +56567,7 @@ var App = () => {
                     background: "rgba(255,255,255,.1)",
                     overflow: "hidden"
                   },
-                  children: /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+                  children: /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
                     "div",
                     {
                       style: {
@@ -56265,7 +56580,7 @@ var App = () => {
                   )
                 }
               ),
-              error2 && /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+              error2 && /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
                 "pre",
                 {
                   style: {
@@ -56281,8 +56596,8 @@ var App = () => {
                   children: error2
                 }
               ),
-              result && /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("div", { style: { marginTop: 16 }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+              result && /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("div", { style: { marginTop: 16 }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
                   "video",
                   {
                     src: result.url,
@@ -56291,7 +56606,7 @@ var App = () => {
                     style: { width: "100%", borderRadius: 10, background: "#000" }
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(
                   "a",
                   {
                     href: result.url,
@@ -56310,11 +56625,11 @@ var App = () => {
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)("section", { style: { marginTop: 26 }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("div", { style: { fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }, children: "\u5206\u955C \xB7 \u5168\u7247 12 \u955C / 2940 \u5E27 / 98.000s\uFF08\u6837\u7247 = \u955C 1 + \u955C 2 \u524D 2s\uFF09" }),
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)("section", { style: { marginTop: 26 }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", { style: { fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }, children: "\u5206\u955C \xB7 \u5168\u7247 12 \u955C / 2940 \u5E27 / 98.000s\uFF08\u6837\u7247 = \u955C 1 + \u955C 2 \u524D 2s\uFF09" }),
           SHOTS.map((s) => {
             const done = s.to <= SAMPLE_FRAMES;
-            return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(
+            return /* @__PURE__ */ (0, import_jsx_runtime72.jsxs)(
               "div",
               {
                 style: {
@@ -56328,10 +56643,10 @@ var App = () => {
                   color: done ? "rgba(233,243,255,.86)" : "rgba(233,243,255,.4)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.66 }, children: String(s.id).padStart(2, "0") }),
-                  /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.6 }, children: s.tc }),
-                  /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("span", { children: s.title }),
-                  /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.66 }, children: String(s.id).padStart(2, "0") }),
+                  /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { style: { fontFamily: "ui-monospace, monospace", opacity: 0.6 }, children: s.tc }),
+                  /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("span", { children: s.title }),
+                  /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
                     "span",
                     {
                       style: {
@@ -56348,12 +56663,12 @@ var App = () => {
             );
           })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime71.jsx)("p", { style: { margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }, children: "\u6837\u7247\u53EA\u6709 300 \u5E27\uFF0C\u624B\u673A\u4E0A\u5927\u7EA6 1\u20132 \u5206\u949F\u51FA\u7247\uFF1B\u5168\u7247 2940 \u5E27\u53E6\u7B97\u3002 \u6E32\u67D3\u65F6\u8BF7\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u522B\u9501\u5C4F\uFF0C\u5207\u540E\u53F0\u53EF\u80FD\u4E2D\u65AD\uFF0C\u91CD\u6765\u5373\u53EF\u3002" })
+        /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("p", { style: { margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }, children: "\u6837\u7247\u53EA\u6709 300 \u5E27\uFF0C\u624B\u673A\u4E0A\u5927\u7EA6 1\u20132 \u5206\u949F\u51FA\u7247\uFF1B\u5168\u7247 2940 \u5E27\u53E6\u7B97\u3002 \u6E32\u67D3\u65F6\u8BF7\u4FDD\u6301\u672C\u9875\u5728\u524D\u53F0\u3001\u522B\u9501\u5C4F\uFF0C\u5207\u540E\u53F0\u53EF\u80FD\u4E2D\u65AD\uFF0C\u91CD\u6765\u5373\u53EF\u3002" })
       ]
     }
   );
 };
-(0, import_client2.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime71.jsx)(App, {}));
+(0, import_client2.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime72.jsx)(App, {}));
 /*! Bundled license information:
 
 react/cjs/react.production.js:
