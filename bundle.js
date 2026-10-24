@@ -55174,14 +55174,27 @@ var Subtitles = () => {
 var HORIZON_Y = 466;
 var NEAR_Y = 1046;
 var NEAR_HALF_W = 642;
-var BALL_R0 = 54;
-var D0 = 340;
+var BALL_R0 = 88;
 var yOf = (u) => HORIZON_Y + (NEAR_Y - HORIZON_Y) * u;
 var halfOf = (u) => NEAR_HALF_W * u;
 var rOf = (u) => BALL_R0 * u;
 var xOf = (u, lateral = 0) => W / 2 + lateral * halfOf(u);
-var uAt = (t, speed = 0.62) => 1 / (1 + speed * Math.max(0, t));
-var SLEEPERS = Array.from({ length: 16 }, (_, i) => 1 / Math.pow(1.29, i));
+var SLEEP_A = 1.29;
+var SLEEP_COUNT = 18;
+var FOLLOW_U = 0.66;
+var SCROLL_RATE = 1.9;
+var wrap = (v, m) => (v % m + m) % m;
+var sleeperUnits = (scroll, count = SLEEP_COUNT) => {
+  const frac = scroll - Math.floor(scroll);
+  const out = [];
+  for (let i = 0; i < count; i += 1) {
+    const u = Math.pow(SLEEP_A, frac - i);
+    if (u <= 1.12) out.push(u);
+  }
+  return out;
+};
+var speckU = (m, scroll) => Math.pow(SLEEP_A, -wrap(m - scroll, SLEEP_COUNT));
+var SLEEPERS = Array.from({ length: 16 }, (_, i) => 1 / Math.pow(SLEEP_A, i));
 var mulberry322 = (seed2) => () => {
   seed2 |= 0;
   seed2 = seed2 + 1831565813 | 0;
@@ -55192,39 +55205,42 @@ var mulberry322 = (seed2) => () => {
 var SPECKS = (() => {
   const rand = mulberry322(20261023);
   const out = [];
-  for (let i = 0; i < 130; i += 1) {
-    const u = 0.026 + Math.pow(rand(), 0.55) * 1;
-    const lateral = (rand() * 2 - 1) * 1.34;
-    out.push({ u, lateral, r: 0.6 + rand() * 1.9, a: 0.24 + rand() * 0.5 });
+  for (let i = 0; i < 220; i += 1) {
+    out.push({
+      m: rand() * SLEEP_COUNT,
+      lateral: (rand() * 2 - 1) * 1.34,
+      r: 0.6 + rand() * 1.9,
+      a: 0.24 + rand() * 0.5
+    });
   }
-  return out.sort((a2, b2) => b2.u - a2.u);
+  return out;
 })();
 
 // src/newton/components/Ball.tsx
 var import_jsx_runtime64 = __toESM(require_jsx_runtime());
 var clamp01 = (v) => Math.max(0, Math.min(1, v));
-var Ball = ({ u, spin = 0, opacity = 1, trail = true, glow = 1 }) => {
-  const x = xOf(u);
+var Ball = ({ u, lateral = 0, spin = 0, opacity = 1, trail = true, glow = 1 }) => {
+  const x = xOf(u, lateral);
   const y = yOf(u);
   const r = rOf(u);
-  const marks = clamp01((r - 8) / 12);
+  const marks = clamp01((r - 10) / 14);
   return /* @__PURE__ */ (0, import_jsx_runtime64.jsxs)(import_jsx_runtime64.Fragment, { children: [
-    trail && [1, 2, 3].map((i) => {
-      const ut = Math.min(1.05, u * (1 + 0.052 * i));
+    trail && [1, 2, 3, 4].map((i) => {
+      const ut = Math.min(1.14, u * (1 + 0.045 * i));
       const rt = rOf(ut);
       return /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
         "div",
         {
           style: {
             position: "absolute",
-            left: xOf(ut) - rt,
+            left: xOf(ut, lateral) - rt,
             top: yOf(ut) - 2 * rt,
             width: 2 * rt,
             height: 2 * rt,
             borderRadius: "50%",
-            background: "rgba(214,232,255,.55)",
-            opacity: opacity * (0.1 / i),
-            filter: "blur(1px)"
+            background: "rgba(206,228,255,.7)",
+            opacity: opacity * (0.16 / i),
+            filter: "blur(1.6px)"
           }
         },
         i
@@ -55235,13 +55251,13 @@ var Ball = ({ u, spin = 0, opacity = 1, trail = true, glow = 1 }) => {
       {
         style: {
           position: "absolute",
-          left: x - 1.7 * r,
-          top: y - 0.42 * r,
-          width: 3.4 * r,
-          height: 0.84 * r,
+          left: x - 3.2 * r,
+          top: y - 1 * r,
+          width: 6.4 * r,
+          height: 2 * r,
           borderRadius: "50%",
-          background: "radial-gradient(ellipse at center, rgba(0,0,0,.66), rgba(0,0,0,0) 72%)",
-          opacity: 0.85 * opacity
+          background: "radial-gradient(ellipse at center, rgba(53,224,255,.30) 0%, rgba(53,224,255,.12) 42%, rgba(53,224,255,0) 72%)",
+          opacity: 0.9 * opacity * glow
         }
       }
     ),
@@ -55250,12 +55266,27 @@ var Ball = ({ u, spin = 0, opacity = 1, trail = true, glow = 1 }) => {
       {
         style: {
           position: "absolute",
-          left: x - 1.9 * r,
-          top: y - r - 1.9 * r,
-          width: 3.8 * r,
-          height: 3.8 * r,
+          left: x - 1.75 * r,
+          top: y - 0.4 * r,
+          width: 3.5 * r,
+          height: 0.8 * r,
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(53,224,255,.18) 0%, rgba(53,224,255,.05) 42%, rgba(53,224,255,0) 68%)",
+          background: "radial-gradient(ellipse at center, rgba(0,0,0,.72), rgba(0,0,0,0) 74%)",
+          opacity: 0.92 * opacity
+        }
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: x - 2.25 * r,
+          top: y - r - 2.25 * r,
+          width: 4.5 * r,
+          height: 4.5 * r,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(53,224,255,.34) 0%, rgba(53,224,255,.12) 40%, rgba(53,224,255,0) 68%)",
           opacity: glow * opacity
         }
       }
@@ -55271,8 +55302,13 @@ var Ball = ({ u, spin = 0, opacity = 1, trail = true, glow = 1 }) => {
           height: 2 * r,
           borderRadius: "50%",
           opacity,
-          background: "radial-gradient(circle at 34% 27%, #FFFFFF 0%, #E8EFFA 32%, #BCCBDF 60%, #8697AE 84%, #5E6E85 100%)",
-          boxShadow: `inset ${-0.24 * r}px ${-0.3 * r}px ${0.6 * r}px rgba(0,0,0,.34), 0 ${0.1 * r}px ${0.9 * r}px rgba(53,224,255,.18)`,
+          background: "radial-gradient(circle at 34% 26%, #FFFFFF 0%, #F6FAFF 26%, #DFEAF9 48%, #B3C6DE 72%, #7C8FA8 92%, #66788F 100%)",
+          boxShadow: [
+            `inset ${-0.2 * r}px ${-0.26 * r}px ${0.55 * r}px rgba(0,0,0,.26)`,
+            `inset ${0.1 * r}px ${0.12 * r}px ${0.22 * r}px rgba(120,220,255,.30)`,
+            `0 0 ${0.62 * r}px rgba(120,215,255,.55)`,
+            `0 ${0.12 * r}px ${bf(r)}px rgba(53,224,255,.30)`
+          ].join(", "),
           overflow: "hidden"
         },
         children: [
@@ -55283,13 +55319,13 @@ var Ball = ({ u, spin = 0, opacity = 1, trail = true, glow = 1 }) => {
                 position: "absolute",
                 left: "50%",
                 top: "50%",
-                width: r * 0.22,
-                height: r * 0.22,
-                marginLeft: -r * 0.11,
-                marginTop: -r * 0.11,
+                width: r * 0.2,
+                height: r * 0.2,
+                marginLeft: -r * 0.1,
+                marginTop: -r * 0.1,
                 borderRadius: "50%",
-                background: "rgba(86,106,134,.5)",
-                transform: `rotate(${spin + k * 120}deg) translateX(${r * 0.54}px)`
+                background: "rgba(84,104,132,.42)",
+                transform: `rotate(${spin + k * 120}deg) translateX(${r * 0.56}px)`
               }
             },
             k
@@ -55299,22 +55335,53 @@ var Ball = ({ u, spin = 0, opacity = 1, trail = true, glow = 1 }) => {
             {
               style: {
                 position: "absolute",
-                left: r * 0.26,
-                top: r * 0.2,
-                width: r * 0.62,
-                height: r * 0.44,
+                left: r * 0.24,
+                top: r * 0.18,
+                width: r * 0.64,
+                height: r * 0.46,
                 borderRadius: "50%",
-                background: "rgba(255,255,255,.55)",
-                filter: "blur(2px)",
-                opacity: 0.75
+                background: "rgba(255,255,255,.72)",
+                filter: "blur(2px)"
+              }
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: r * 0.18,
+                top: r * 1.34,
+                width: r * 1.64,
+                height: r * 0.34,
+                borderRadius: "50%",
+                background: "rgba(120,220,255,.22)",
+                filter: "blur(4px)"
               }
             }
           )
         ]
       }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime64.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: x - r - 2,
+          top: y - 2 * r - 2,
+          width: 2 * r + 4,
+          height: 2 * r + 4,
+          borderRadius: "50%",
+          border: "1.5px solid rgba(170,235,255,.34)",
+          boxShadow: "0 0 10px rgba(120,215,255,.35)",
+          opacity: opacity * 0.9
+        }
+      }
     )
   ] });
 };
+var bf = (r) => Math.max(6, r * 0.5);
 
 // src/newton/components/Track.tsx
 var import_jsx_runtime65 = __toESM(require_jsx_runtime());
@@ -55331,7 +55398,7 @@ var quad = (latL, latR) => {
     [xOf(U_FAR, latL), yF]
   ].map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
 };
-var Track = ({ grow = 1, dust = 1, id = "t" }) => {
+var Track = ({ grow = 1, dust = 1, scroll = 0, id = "t" }) => {
   const yN = yOf(U_NEAR);
   const yF = yOf(U_FAR);
   const bottom = NEAR_Y + 120;
@@ -55365,7 +55432,7 @@ var Track = ({ grow = 1, dust = 1, id = "t" }) => {
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime65.jsxs)("g", { clipPath: `url(#${id}-clip)`, children: [
           /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("polygon", { points: quad(-1.5, 1.5), fill: `url(#${id}-bed)` }),
-          SLEEPERS.map((u, i) => {
+          sleeperUnits(scroll).map((u, i) => {
             const y = yOf(u);
             const w = Math.max(1.1, 7.4 * u);
             return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
@@ -55384,17 +55451,21 @@ var Track = ({ grow = 1, dust = 1, id = "t" }) => {
           }),
           /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("polygon", { points: quad(-1 - RAIL_W, -1 + RAIL_W), fill: `url(#${id}-rail)` }),
           /* @__PURE__ */ (0, import_jsx_runtime65.jsx)("polygon", { points: quad(1 - RAIL_W, 1 + RAIL_W), fill: `url(#${id}-rail)` }),
-          dust > 0 && SPECKS.map((s, i) => /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
-            "circle",
-            {
-              cx: xOf(s.u, s.lateral),
-              cy: yOf(s.u),
-              r: Math.max(0.4, s.r * s.u * 2.2),
-              fill: "#8B98AB",
-              opacity: Math.min(1, s.a * (0.18 + 0.82 * s.u)) * dust
-            },
-            i
-          ))
+          dust > 0 && SPECKS.map((s, i) => {
+            const u = speckU(s.m, scroll);
+            if (u > 1.12) return null;
+            return /* @__PURE__ */ (0, import_jsx_runtime65.jsx)(
+              "circle",
+              {
+                cx: xOf(u, s.lateral),
+                cy: yOf(u),
+                r: Math.max(0.4, s.r * u * 2.2),
+                fill: "#8B98AB",
+                opacity: Math.min(1, s.a * (0.18 + 0.82 * u)) * dust
+              },
+              i
+            );
+          })
         ] })
       ]
     }
@@ -55529,17 +55600,24 @@ var Rule = ({
 
 // src/newton/scenes/Shot01.tsx
 var import_jsx_runtime68 = __toESM(require_jsx_runtime());
+var ENTER_FROM = 44;
+var ENTER_TO = 116;
 var Shot01 = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const grow = interpolate(frame, [10, 58], [0, 1], { ...CLAMP, easing: EASE_OUT });
   const black = interpolate(frame, [0, 10], [1, 0], CLAMP);
-  const enter = fadeIn(frame, 44, 14);
-  const t = Math.max(0, frame - 44) / fps;
-  const u = uAt(t, 0.62);
-  const spin = (D0 / u - D0) / BALL_R0 * 24;
-  const cam = interpolate(frame, [0, 240], [1, 1.045], { ...CLAMP, easing: EASE_OUT });
-  const dim = interpolate(frame, [120, 152], [1, 0.82], { ...CLAMP, easing: EASE_OUT });
+  const entry = interpolate(frame, [ENTER_FROM, ENTER_TO], [0, 1], {
+    ...CLAMP,
+    easing: EASE_OUT
+  });
+  const u = interpolate(entry, [0, 1], [1.08, FOLLOW_U]);
+  const lateral = interpolate(entry, [0, 1], [-0.6, 0]);
+  const enterSec = (ENTER_TO - ENTER_FROM) / fps;
+  const s = frame <= ENTER_FROM ? 0 : frame <= ENTER_TO ? 0.5 * SCROLL_RATE * Math.pow((frame - ENTER_FROM) / fps, 2) / enterSec : 0.5 * SCROLL_RATE * enterSec + SCROLL_RATE * ((frame - ENTER_TO) / fps);
+  const spin = s * 106;
+  const cam = interpolate(frame, [0, 240], [1, 1.035], { ...CLAMP, easing: EASE_OUT });
+  const dim = interpolate(frame, [120, 152], [1, 0.88], { ...CLAMP, easing: EASE_OUT });
   const q = fadeIn(frame, 120, 14);
   const ruleW = interpolate(frame, [120, 150], [0, 96], { ...CLAMP, easing: EASE_OUT });
   const glow = 0.42 + 0.28 * fadeIn(frame, 110, 40);
@@ -55556,10 +55634,10 @@ var Shot01 = () => {
             transformOrigin: `50% ${HORIZON_Y}px`
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Track, { grow, dust: 1, id: "s1" }),
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Track, { grow, dust: 1, scroll: s, id: "s1" }),
             /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(VanishingGlow, { opacity: glow }),
             /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(HorizonLine, { opacity: 0.5 * grow, width: 1700 }),
-            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)("div", { style: { position: "absolute", inset: 0, transform: `translateY(${(1 - enter) * 140}px)` }, children: /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Ball, { u, spin, opacity: enter, glow: 1 }) })
+            /* @__PURE__ */ (0, import_jsx_runtime68.jsx)(Ball, { u, lateral, spin, opacity: fadeIn(frame, ENTER_FROM, 10), glow: 1 })
           ]
         }
       )
