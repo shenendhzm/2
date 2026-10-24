@@ -46,7 +46,7 @@ entries.append({'path': '.nojekyll', 'mode': '100644', 'type': 'blob', 'sha': ca
 
 tree = call('POST', '/git/trees', {'base_tree': base_tree, 'tree': entries})
 newc = call('POST', '/git/commits', {
-    'message': 'deploy: vibe jam 10s sample',
+    'message': 'deploy: newton first law 15s sample',
     'tree': tree['sha'],
     'parents': [head],
 })

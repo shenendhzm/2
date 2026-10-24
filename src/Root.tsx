@@ -22,7 +22,7 @@ import { FRAMES as VIBE_FRAMES, W as VIBE_W, H as VIBE_H } from "./vibe/jam";
  * - Cover169       封面 1920×1080（16:9，B站 / 西瓜）
  *
  * 在制
- * - NewtonSample   《牛顿第一定律》开头样片：300 帧 / 10.000s
+ * - NewtonSample   《牛顿第一定律》15 秒样片：450 帧 / 15.000s（镜 1 + 镜 2 前 7s）
  */
 export const RemotionRoot: React.FC = () => {
   return (

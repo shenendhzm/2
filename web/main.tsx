@@ -38,13 +38,22 @@ const SAMPLE = {
   width: 1920,
   height: 1080,
   fps: FPS,
-  durationInFrames: SAMPLE_FRAMES, // 300 = 10.000s
+  durationInFrames: SAMPLE_FRAMES, // 450 = 15.000s
   kicker: "Newton's First Law · Film 01 · 12 shots",
-  title: "牛顿第一定律 · 开头样片",
+  title: "牛顿第一定律 · 15 秒样片",
   blurb:
-    "如果地球上所有的摩擦突然消失，你推出去的物体还会停下来吗？样片只做「提问」和「直觉」两镜，10 秒停在刚松手的那一刻——答案留给全片。",
+    "如果地球上所有的摩擦突然消失，你推出去的物体还会停下来吗？15 秒样片走完「提问」与「直觉」两镜：推、松手、滑行、停——最后落在那句「运动需要力来维持」。全片就从推翻这句话开始。",
   filePrefix: "牛顿第一定律",
-  meta: ["1920×1080", "16:9", "30 fps", `${SAMPLE_FRAMES} 帧`, "10.000s", "全片 12 镜 / 98.000s", "Noto Sans CJK", "含配乐"],
+  meta: [
+    "1920×1080",
+    "16:9",
+    "30 fps",
+    `${SAMPLE_FRAMES} 帧`,
+    "15.000s",
+    "全片 12 镜 / 98.000s",
+    "Noto Sans CJK",
+    "含配乐",
+  ],
 };
 const COMPS = [VIBE, SAMPLE];
 
@@ -425,7 +434,7 @@ const App: React.FC = () => {
 
       <section style={{ marginTop: 26 }}>
         <div style={{ fontSize: 13, letterSpacing: 1.4, color: "rgba(233,243,255,.5)", marginBottom: 10 }}>
-          分镜 · 全片 12 镜 / 2940 帧 / 98.000s（样片 = 镜 1 + 镜 2 前 2s）
+          分镜 · 全片 12 镜 / 2940 帧 / 98.000s（样片 = 镜 1 + 镜 2 前 7s）
         </div>
         {SHOTS.map((s) => {
           const done = s.to <= SAMPLE_FRAMES;
@@ -463,7 +472,7 @@ const App: React.FC = () => {
       </section>
 
       <p style={{ margin: "20px 0 0", fontSize: 12.5, lineHeight: 1.85, color: "rgba(233,243,255,.4)" }}>
-        样片只有 300 帧，手机上大约 1–2 分钟出片；全片 2940 帧另算。
+        样片 450 帧，手机上大约 1–2 分钟出片；全片 2940 帧另算。
         渲染时请保持本页在前台、别锁屏，切后台可能中断，重来即可。
       </p>
     </main>

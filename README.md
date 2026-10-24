@@ -1,104 +1,86 @@
-# 韬（τ）定律 · Remotion 工程
+# 牛顿第一定律 · Remotion 工程
 
-> **当前状态（2026-10-23）**：工程已切到 16 镜 / 114.000s 的《韬（τ）定律》技术讲解片。
-> 片头 0–10s（镜 1–2）已出，合成 `TauLawSample`（300 帧）；出片页 = WebCodecs 渲染页。
-> 新代码在 `src/film/`（look / data / components / scenes），分镜见 `docs/分镜表.md`。
-> 旧的「六风格片头」代码仍保留在 `src/plates.tsx`、`src/scenes/*`、`src/looks/*`，未注册、不再使用。
-> 配乐：`public/score-sample.m4a`（11s）+ `public/impact-open.wav`（0.9s 第一击）。
-
-# 韬（τ）定律 · Remotion 视频（片头样片 8 秒 × 六风格）
-
-本工程做完 `华为韬定律-技术解析脚本.md`（120 秒 / 8 个镜头）的**片头 S1**：
-横屏 1920×1080 / 30fps / **240 帧 = 8.000s**，同一段画面配六套色板（纯黑底 / 黑金 / 黑点阵 / 黑光晕 / 黑横线 / CRT），
-用来定全片风格。完整 8 镜分镜表见 `docs/分镜表.md`，确认后再做 S2–S8。
-
-配乐由 `scripts/make-title-score.py` 用 numpy 合成（A 小调 pad + 55Hz 次低音 + 每 2s 一次低频脉冲，8.000s 收在琶音进入前）。
+> **当前状态（2026-10-24）**：工程已切到 12 镜 / 2940 帧 / 98.000s 的《牛顿第一定律》讲解片。
+> 现在出的是**15 秒样片**：镜 1 + 镜 2 前 7s，合成 `NewtonSample`（450 帧 = 15.000s）。
+> 新代码在 `src/newton/`，分镜见 `docs/分镜表-牛顿第一定律.md`，部署链路见 `docs/运维备忘.md`。
+> 旧的《韬（τ）定律》16 镜代码仍保留在 `src/film/`、`src/plates.tsx` 等，未注册、不再使用。
+> 声音：`public/newton-sample.wav`（15.000s，`scripts/make-newton-sample.py` 纯 Python 合成）。
 
 ## 现在就能看
 
 | 用途 | 地址 | 状态 |
 | --- | --- | --- |
+| 公网出片页（手机浏览器直接出 MP4） | https://shenendhzm.github.io/2/ | GitHub Pages（永久） |
 | Remotion Studio（预览 / 拖时间轴 / 热更新） | http://127.0.0.1:3033 | 需 `npm run studio` |
-| 浏览器渲染页（手机上直接出 MP4） | http://127.0.0.1:3034 | 需 `npm run web:serve` |
-| 公网出片页 | https://shenendhzm.github.io/2/ | GitHub Pages（永久） |
+| 本地出片页 | http://127.0.0.1:3034 | 需 `npm run web:serve` |
 
-出片页里点风格卡片实时预览，点「渲染」在手机浏览器里用 WebCodecs 逐帧编码，
-完成后直接预览和下载，不经过容器里的 Chromium。
+出片页点「渲染」，浏览器用 WebCodecs 逐帧编码，完成后直接预览和下载，**不经过容器里的 Chromium**。
+
+## 时间轴（唯一来源：`src/newton/data.ts`）
+
+| 镜 | 帧区间 | 时间码 | 内容 |
+| --- | --- | --- | --- |
+| 1 | 0–240 | 00:00–00:08 | 轨道生长、球入画、抛出问题 |
+| 2 | 240–465 | 00:08–00:15.5 | 推箱松手，直觉登场 |
+| 3 | 465–750 | 00:15.5–00:25 | 伽利略双斜面 |
+| 4 | 750–990 | 00:25–00:33 | 斜面放平，越滚越远 |
+| 5 | 990–1305 | 00:33–00:43.5 | 白场，定律原文 |
+| 6 | 1305–1545 | 00:43.5–00:51.5 | 惯性：那层壳 |
+| 7 | 1545–1785 | 00:51.5–00:59.5 | 公交车前后倾 |
+| 8 | 1785–2010 | 00:59.5–01:07 | 太空探测器 |
+| 9 | 2010–2235 | 01:07–01:14.5 | 力 = 改变 |
+| 10 | 2235–2460 | 01:14.5–01:22 | 惯性不是力 |
+| 11 | 2460–2700 | 01:22–01:30 | 闭环：摩擦消失 |
+| 12 | 2700–2940 | 01:30–01:38 | 金句与片名 |
+
+样片 = 0–450 帧（15.000s）；全片 2940 帧 = 98.000s。字幕 33 条，与 `牛顿第一定律-旁白字幕.srt` 逐条对齐。
 
 ## 目录
 
 ```
-src/index.ts        registerRoot 入口
-src/Root.tsx        合成注册：TauLawBlack / Gold / Dots / Glow / Lines / Crt（240 帧 / 30fps / 1920×1080）
-src/looks/tau.ts    六套色板 + 缓动工具
-src/components/TauBackdrop.tsx  片头背景语言（网格 / 点阵 / 光晕 / 横纹 / 扫描线）
-src/scenes/S1Tau.tsx            S1「τ 浮现」镜头（帧 0–240）
-src/plates.tsx      六支片头样片 = 同一镜头 × 六套色板
-src/score.ts        配乐地址解析（兼容 Studio / 本地 / gh-pages 子路径）
-public/score-title.m4a  8 秒原创配乐（AAC 192k）
-scripts/make-title-score.py  numpy 加法合成片头配乐
-web/main.tsx        出片页（@remotion/web-renderer + AAC 音频）
-web/index.html      出片页入口（必须指向 ./bundle.js）
-dist-web/           渲染页构建产物（index.html + bundle.js + score-title.m4a）
-docs/分镜表.md       完整 8 镜分镜表 + S1 逐帧时间表
-docs/运维备忘.md     换对话接手必读（部署链路 / 本机坑）
+src/index.ts                    registerRoot 入口
+src/Root.tsx                    合成注册：NewtonSample（450 帧 / 30fps / 1920×1080）
+src/HelloWorld.tsx              整片时间轴（镜 1 + 镜 2，含字幕层与收黑）
+src/newton/look.ts              色板 / 字体 / interpolate·spring 工具
+src/newton/geometry.ts          轨道透视 u = D0/d、球半径、确定性摩擦噪点
+src/newton/data.ts              12 镜时间轴 + 33 条字幕（唯一时间来源）
+src/newton/components/          Stage / Track / Ball / Subtitles / ui
+src/newton/scenes/Shot01..02.tsx  已落地两镜
+src/newton/score.ts             声音地址解析（兼容 /2/ 子路径）
+web/main.tsx                    出片页（常量与 Root 同步）
+web/index.html                  出片页入口（必须指向 ./bundle.js）
+scripts/make-newton-sample.py   15s 声音合成
+scripts/deploy-gh-pages.mjs     用 Git Data API 发 gh-pages（不依赖 git push）
+docs/分镜表-牛顿第一定律.md      12 镜分镜表 + 33 条字幕轨
+docs/运维备忘.md                换对话接手必读（部署链路 / 本机坑）
 ```
 
 ## 命令
 
 ```bash
 npm run studio        # 起 Studio（3033），已带网络补丁
-npm run bundle        # 只打包（不需要浏览器），验证工程能否编译
-npm run web:bundle    # 重新构建浏览器渲染页（含配乐 M4A）
-npm run web:serve     # 起渲染页静态服务（3034）
-npm run score:title   # 重新合成 8 秒片头配乐并编码 M4A
-npm run render        # 命令行出片 —— 见下方「已知限制」，本机跑不通
-npm run still         # 导出单帧 —— 同上
+npm run web:bundle    # 重建出片页 dist-web/（会先清空）
+npm run web:serve     # 本地出片页（3034）
+npm run bundle        # 只打包，验证工程能否编译（不起浏览器）
+npm run score:sample  # 重新合成 10s 声音
+node scripts/deploy-gh-pages.mjs   # 发布 dist-web 到 gh-pages
+npm run render        # 命令行出片 —— 本机跑不通，见下
 ```
 
-注意：`remotion compositions`（列出合成）也要拉起浏览器，本机同样用不了，所以冒烟测试请用 `npm run bundle`。
+## 本机的坑（已绕过）
 
-## 换任意 GitHub 仓库的流程（已在官方模板上验证）
+1. **Chromium 起不来**：`remotion render` / `still` / `compositions` 都会在启动瞬间被平台 shim 杀掉（`free(): invalid pointer`）。所以本机只能走浏览器 WebCodecs 出片页。
+2. **不能用 `remotion.config.ts`**：esbuild 是静态 Go 程序，看不到假根路径，配置一律写命令行参数。
+3. **`os.networkInterfaces()` 抛 EACCES**：已用 `scripts/fix-network-interfaces.cjs` 打补丁，`npm run studio` 内置。
+4. **esbuild 只认相对路径**：出片页用 esbuild CLI 直打，entry/outfile 用相对路径。
+5. **画布栅格化的两个限制**（出片页与 Studio 可能不一致，务必按这两条写）：
+   - 一个元素的多层 `background-image` 只画第一层 → 网格、金属、光带都要拆成独立子层；
+   - SVG 内不放文字（渲染器用 `btoa()` 序列化，非 ASCII 会坏）。
+6. **`github.com` 直连时通时不通**：发布走 `scripts/deploy-gh-pages.mjs`（api.github.com + Git Data API）。
 
-用官方 `remotion-dev/template-helloworld`（带 zod schema、eslint 配置，348 个依赖）实测：
-下载 zip → `npm install`（2 分钟）→ 删掉 `remotion.config.ts` → `npm run bundle` 成功（33 MB 产物）。
-只有拉起浏览器的步骤会失败，其余全部正常。
+## 出片
 
-## 这个容器里踩到的三个坑（已绕过）
-
-1. **`os.networkInterfaces()` 抛 EACCES**（Android 不给枚举网卡）。Remotion 起预览服务器时会调它 → 用 `NODE_OPTIONS --require ./scripts/fix-network-interfaces.cjs` 包一层，失败返回 `{}`。`npm run studio` 已内置。
-2. **`remotion.config.ts` 加载失败**：Remotion 用 esbuild 编译配置文件，而本机是 LD_PRELOAD 假根（guest 路径 ↔ 宿主机 `/data/data/com.dsh.bxroot/files/linux/ubuntu`），esbuild 是静态 Go 程序，看不到 guest 绝对路径 → `Could not resolve .../remotion.config.ts`。所以本项目**不用配置文件**，需要什么就写在命令行参数里。同理，`vite build` 也会在这个环节失败，构建渲染页改用 `esbuild` CLI + 相对路径。
-3. **Chromium 起不来**，因此 `npm run render` / `remotion still` 在本机无效：
-   - 平台 shim 会无条件注入到每个子进程；它初始化时做 glibc livepatch，Chromium 一进来就 `free(): invalid pointer`（SIGABRT）。
-   - 用静态 busybox 做跳板、`env -u LD_PRELOAD`、宿主路径直跑都试过：注入仍在（子进程 environ 里照样有 `LD_PRELOAD`），换成 `BXROOT_NO_AUTORUN=1` 则 shim 初始化被跳过，Chromium 能 `--version` 但读文件时报 ICU 错误，node 直接被 seccomp 杀。
-   - 下载本身不是问题：第一次走 `www.remotion.dev` 跳转到 `playwright.download.prss.microsoft.com` 时 DNS 解析失败，但 arm64 的 `chrome-headless-shell` 可以从 `https://cdn.npmmirror.com/binaries/playwright/builds/chromium/1161/chromium-headless-shell-linux-arm64.zip` 手动下到；后来在官方模板里 Remotion 自己也成功下完了 93.6 MB（落盘 `node_modules/.remotion/`）。
-   - 问题在于**下到了也跑不起来**：无论走哪个来源，Chromium 进程都在启动瞬间被 shim 干掉。
-   - 结论：**容器内渲染这条路被平台堵死**，出片改走浏览器 WebCodecs（`web/main.tsx`）。到普通电脑上 `npm run render` 是正常的。
-
-## 换成你自己的 GitHub 仓库
-
-本机**直连 `github.com` 不通**，但 `codeload.github.com` 和几个代理可用：
-
-```bash
-# 方式一：直接下 zip（最省事）
-curl -L -o repo.zip https://codeload.github.com/<owner>/<repo>/zip/refs/heads/main
-unzip repo.zip && cd <repo>-main && npm install
-
-# 方式二：走代理 clone
-git clone https://ghproxy.net/https://github.com/<owner>/<repo>.git
-```
-
-装完把 `package.json` 里的 `scripts.studio` 换成：
-
-```
-NODE_OPTIONS=--require=./scripts/fix-network-interfaces.cjs remotion studio --port 3033 --no-open
-```
-
-（把本仓库的 `scripts/fix-network-interfaces.cjs` 拷过去；如果对方项目自带 `remotion.config.ts`，删掉它，配置改用命令行参数。）
-
-## 在普通电脑上出片
-
-```bash
-npm install
-npx remotion render HelloWorld out/video.mp4
-```
+1. 手机浏览器打开 https://shenendhzm.github.io/2/ （或本地 3034）。
+2. 页面顶部是 16:9 预览，`autoPlay + loop`，先看节奏对不对。
+3. 点「渲染「开头样片」10 秒」→ WebCodecs 逐帧编码 → 完成后直接预览 / 下载 MP4。
+4. 300 帧在手机上约 1–2 分钟；渲染时保持页面在前台、别锁屏。
